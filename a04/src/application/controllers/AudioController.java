@@ -1,5 +1,6 @@
 package application.controllers;
 
+import application.MethodHelper;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -10,6 +11,8 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 
 public class AudioController {
+
+    MethodHelper methodHelper = new MethodHelper();
 
     @FXML
     private TextField searchTextField;
@@ -132,8 +135,8 @@ public class AudioController {
     }
 
     @FXML
-    void toNextStageButton(ActionEvent event) {
-
+    void toNextStageButton(ActionEvent event) throws Exception {
+        methodHelper.changeScene(event, "scenes/Image.fxml");
     }
 
 }
