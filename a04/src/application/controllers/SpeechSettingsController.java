@@ -17,7 +17,8 @@ import java.util.ResourceBundle;
 public class SpeechSettingsController implements Initializable {
 
     MethodHelper methodHelper = new MethodHelper();
-    String currentLanguage;
+    String _currentLanguage;
+    String _currentGender;
 
     @FXML
     private Slider pitchBaseSlider;
@@ -49,8 +50,19 @@ public class SpeechSettingsController implements Initializable {
     }
 
     @FXML
-    void saveAction(ActionEvent event) {
+    void saveAction(ActionEvent event) throws Exception {
         // saves the current changes made in the settings scene
+
+        // return to audio scene
+        methodHelper.changeScene(event, "scenes/Audio.fxml");
+    }
+
+    public void setLanguage(String language) {
+        this._currentLanguage = language;
+    }
+
+    public void setGender(String gender) {
+        this._currentGender = gender;
     }
 
     @Override
@@ -61,7 +73,6 @@ public class SpeechSettingsController implements Initializable {
 
         genderChoiceBox.setValue("Male");
         genderChoiceBox.setItems(genderChoiceBoxList);
-
     }
 
     private ObservableList<String> languageChoiceBoxList = FXCollections.observableArrayList(

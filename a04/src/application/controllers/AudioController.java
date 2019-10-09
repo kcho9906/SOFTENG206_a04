@@ -138,8 +138,9 @@ public class AudioController {
     }
 
     @FXML
-    void toNextStageButton(ActionEvent event) {
-
+    void toNextStageButton(ActionEvent event) throws Exception {
+        // to the image scene
+        methodHelper.changeScene(event, "scenes/Images");
     }
 
     @FXML
