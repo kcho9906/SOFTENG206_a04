@@ -1,5 +1,6 @@
 package application.controllers;
 
+import application.MethodHelper;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
@@ -10,6 +11,8 @@ import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 
 public class AudioController {
+
+    MethodHelper methodHelper = new MethodHelper();
 
     @FXML
     private TextField searchTextField;
@@ -70,6 +73,9 @@ public class AudioController {
 
     @FXML
     private Button enableMusicButton;
+
+    @FXML
+    private Button speechSettingsButton;
 
     @FXML
     void cancelCreationAction(ActionEvent event) {
@@ -134,6 +140,11 @@ public class AudioController {
     @FXML
     void toNextStageButton(ActionEvent event) {
 
+    }
+
+    @FXML
+    void toSpeechSettingsAction(ActionEvent event) throws Exception {
+        methodHelper.changeScene(event, "scenes/eSpeakSettings.fxml");
     }
 
 }
