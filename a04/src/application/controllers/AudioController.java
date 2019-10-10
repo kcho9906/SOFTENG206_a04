@@ -75,6 +75,9 @@ public class AudioController {
     private Button enableMusicButton;
 
     @FXML
+    private Button speechSettingsButton;
+
+    @FXML
     void cancelCreationAction(ActionEvent event) {
 
     }
@@ -137,6 +140,11 @@ public class AudioController {
     @FXML
     void toNextStageButton(ActionEvent event) throws Exception {
         methodHelper.changeScene(event, "scenes/Image.fxml");
+    }
+
+    @FXML
+    void toSpeechSettingsAction(ActionEvent event) throws Exception {
+        methodHelper.changeScene(event, "scenes/eSpeakSettings.fxml");
     }
 
 }
