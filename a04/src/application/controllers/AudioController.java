@@ -1,14 +1,12 @@
 package application.controllers;
 
 import application.MethodHelper;
+import javafx.concurrent.WorkerStateEvent;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.ListView;
-import javafx.scene.control.ProgressBar;
-import javafx.scene.control.Slider;
-import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
+import application.*;
 
 public class AudioController {
 
@@ -18,13 +16,10 @@ public class AudioController {
     private TextField searchTextField;
 
     @FXML
-    private Button searchButton;
-
-    @FXML
-    private ProgressBar progressBar;
-
-    @FXML
     private TextArea wikiSearchTextArea;
+
+    @FXML
+    private Button searchButton;
 
     @FXML
     private Slider synthSlider;
@@ -57,7 +52,7 @@ public class AudioController {
     private Button removeAudioButton;
 
     @FXML
-    private ListView<?> selectAudioListView;
+    private ListView<?> selectedAudioListView;
 
     @FXML
     private Button moveAudioUpButton;
@@ -66,7 +61,7 @@ public class AudioController {
     private Button moveAudioDownButton;
 
     @FXML
-    private Button nextStageButton;
+    private Button toNextStageButton;
 
     @FXML
     private Button cancelCreationButton;
@@ -76,6 +71,11 @@ public class AudioController {
 
     @FXML
     private Button speechSettingsButton;
+
+    @FXML
+    void addAudioAction(ActionEvent event) {
+
+    }
 
     @FXML
     void cancelCreationAction(ActionEvent event) {
@@ -134,11 +134,37 @@ public class AudioController {
 
     @FXML
     void searchAction(ActionEvent event) {
+        // searches if the search term is not empty
+        String searchTerm = (searchTextField.getText().trim());
+        // use the terminal to wikit the term with a worker / task
+        //currentKeyWord.setText("Current Keyword: " + keyword);
+        TerminalWorker wikitWorker = new TerminalWorker("wikit " + searchTerm);
 
+        // start the progress bar
+        // startProgressBar("Searching for ...", wikitWorker);
+
+        wikitWorker.setOnSucceeded(new EventHandler<WorkerStateEvent>() {
+            @Override
+            public void handle(WorkerStateEvent event) {
+                String result = "\"" + wikitWorker.getValue().trim() + "\"";
+                if (result.contains("not found :^(")) {
+//                    // alert to say not found, resets the text field and area
+                } else {
+                    // Display the sentences in the display area
+                    wikiSearchTextArea.setText(wikitWorker.getValue().trim());
+                    wikiSearchTextArea.setWrapText(true);
+                    wikiSearchTextArea.setDisable(false);
+                    // need to reset stuff
+                }
+            }
+        });
+
+        Thread th = new Thread(wikitWorker);
+        th.start();
     }
 
     @FXML
-    void toNextStageButton(ActionEvent event) throws Exception {
+    void toNextStageAction(ActionEvent event) throws Exception {
         methodHelper.changeScene(event, "scenes/Image.fxml");
     }
 
@@ -148,3 +174,7 @@ public class AudioController {
     }
 
 }
+
+
+
+
