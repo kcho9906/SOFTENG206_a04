@@ -7,9 +7,12 @@ import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
 
+import java.io.File;
+
 public class MediaController {
 
     MethodHelper methodHelper = new MethodHelper();
+    private static File _creationFile;
 
     @FXML
     private Label timeLabel;
@@ -37,6 +40,10 @@ public class MediaController {
 
     @FXML
     private Button creationListButton;
+
+    public static void setMedia(File creationFile) {
+        _creationFile = creationFile;
+    }
 
     @FXML
     void fastForwardMedia(ActionEvent event) {

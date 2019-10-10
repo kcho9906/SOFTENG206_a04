@@ -10,6 +10,7 @@ import javafx.scene.control.ButtonType;
 import javafx.stage.Stage;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.InputStreamReader;
 import java.util.Optional;
 
@@ -26,7 +27,7 @@ public class MethodHelper {
     public boolean addConfirmationAlert(String title, String contentText) {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle(title);
-        alert.setContentText(contentText);
+        alert.setHeaderText(contentText);
 
         Optional<ButtonType> result = alert.showAndWait();
         if (result.get() == ButtonType.OK){
@@ -88,4 +89,26 @@ public class MethodHelper {
         return "Error";
     }
 
+    /**
+     * Creates a file directory of a given name
+     */
+    public void createDirectories() {
+
+        try {
+
+            new File("./src/creations").mkdir();
+            new File("./src/audio").mkdir();
+            new File("./src/tempImages").mkdir();
+        } catch (Exception e) {
+
+            createAlertBox("Error: " + e.getMessage());
+        }
+    }
+
+    private static void createAlertBox(String message) {
+
+        Alert alert = new Alert(Alert.AlertType.WARNING);
+        alert.setHeaderText(message);
+        alert.show();
+    }
 }

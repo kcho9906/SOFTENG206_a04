@@ -6,10 +6,15 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
+import java.lang.reflect.Method;
+
 public class Main extends Application {
 
     @Override
     public void start(Stage primaryStage) throws Exception {
+
+        MethodHelper methodHelper = new MethodHelper();
+        methodHelper.createDirectories();
 
         Parent root = FXMLLoader.load(getClass().getResource("scenes/MainMenu.fxml"));
         primaryStage.setTitle("VARpedia");
