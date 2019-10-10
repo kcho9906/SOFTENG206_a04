@@ -1,17 +1,20 @@
 package application.controllers;
 
 import application.MethodHelper;
+import application.TerminalWorker;
+import javafx.concurrent.WorkerStateEvent;
 import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.ListView;
-import javafx.scene.control.Slider;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 
 public class AudioController {
 
+
     MethodHelper methodHelper = new MethodHelper();
+
+    @FXML
+    public TextArea wikiSearchTextArea;
 
     @FXML
     private TextField searchTextField;
@@ -65,12 +68,81 @@ public class AudioController {
 
     @FXML
     void searchAction(ActionEvent event) {
+        // searches if the search term is not empty
+        String searchTerm = (searchTextField.getText().trim());
+        // use the terminal to wikit the term with a worker / task
+        //currentKeyWord.setText("Current Keyword: " + keyword);
+        TerminalWorker wikitWorker = new TerminalWorker("wikit " + searchTerm);
+
+        // start the progress bar
+        // startProgressBar("Searching for ...", wikitWorker);
+
+        wikitWorker.setOnSucceeded(new EventHandler<WorkerStateEvent>() {
+            @Override
+            public void handle(WorkerStateEvent event) {
+                String result = "\"" + wikitWorker.getValue().trim() + "\"";
+                if (result.contains("not found :^(")) {
+//                    // alert to say not found, resets the text field and area
+                } else {
+                    // Display the sentences in the display area
+                    wikiSearchTextArea.setText(wikitWorker.getValue().trim());
+                    wikiSearchTextArea.setWrapText(true);
+                    wikiSearchTextArea.setDisable(false);
+                    // need to reset stuff
+                }
+            }
+        });
+
+        Thread th = new Thread(wikitWorker);
+        th.start();
+    }
+
+    @FXML
+    void toSpeechSettingsAction(ActionEvent event) throws Exception {
+        methodHelper.changeScene(event, "scenes/eSpeakSettings.fxml");
+    }
+
+    public void toNextStageButton(ActionEvent event) throws Exception {
+        methodHelper.changeScene(event, "scenes/Image.fxml");
+    }
+
+
+    @FXML
+    void deleteAllAction(ActionEvent event) {
 
     }
 
     @FXML
-    void toNextStageButton(ActionEvent event) throws Exception {
-        methodHelper.changeScene(event, "scenes/Image.fxml");
+    void deleteAudioAction(ActionEvent event) {
+
     }
 
+    @FXML
+    void moveAudioDownAction(ActionEvent event) {
+
+    }
+
+    @FXML
+    void moveAudioUpAction(ActionEvent event) {
+
+    }
+
+    @FXML
+    void playAudioAction(ActionEvent event) {
+
+    }
+
+    @FXML
+    void removeAudioAction(ActionEvent event) {
+
+    }
+
+    @FXML
+    void addAudioAction(ActionEvent actionEvent) {
+    }
 }
+
+
+
+
+

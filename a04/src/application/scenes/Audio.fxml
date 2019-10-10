@@ -6,7 +6,6 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.ListView?>
 <?import javafx.scene.control.ProgressBar?>
-<?import javafx.scene.control.Slider?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
 <?import javafx.scene.layout.AnchorPane?>
@@ -14,6 +13,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
+<?import javafx.scene.control.Slider?>
 <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="556.0" prefWidth="716.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.controllers.AudioController">
    <children>
       <VBox alignment="CENTER" layoutX="93.0" layoutY="160.0" prefHeight="508.0" prefWidth="623.0" spacing="10.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
@@ -48,7 +48,8 @@
                   </HBox>
                </children>
             </VBox>
-            <TextArea prefHeight="200.0" prefWidth="200.0">
+            <TextArea fx:id="wikiSearchTextArea" prefHeight="200.0" prefWidth="200.0">
+
                <VBox.margin>
                   <Insets />
                </VBox.margin>
@@ -63,6 +64,7 @@
                         <Label text="eSpeak" />
                         <Slider fx:id="synthSlider" blockIncrement="1.0" majorTickUnit="1.0" max="1.0" minorTickCount="0" prefHeight="20.0" prefWidth="100.0" snapToTicks="true" />
                         <Label text="Festival" />
+
                      </children>
                   </HBox>
                   <ButtonBar nodeOrientation="LEFT_TO_RIGHT" prefHeight="37.0" prefWidth="404.0">
@@ -85,17 +87,17 @@
                         </ListView>
                         <HBox alignment="CENTER">
                            <children>
-                              <Button mnemonicParsing="false" text="Play">
+                              <Button fx:id="playAudioButton" mnemonicParsing="false" onAction="#playAudioAction" text="Play">
                                  <HBox.margin>
                                     <Insets right="10.0" />
                                  </HBox.margin>
                               </Button>
-                              <Button mnemonicParsing="false" text="Delete">
+                              <Button fx:id="deleteAudioButton" mnemonicParsing="false" onAction="#deleteAudioAction" text="Delete">
                                  <HBox.margin>
                                     <Insets right="10.0" />
                                  </HBox.margin>
                               </Button>
-                              <Button mnemonicParsing="false" text="Delete All" />
+                              <Button fx:id="deleteAllButton" mnemonicParsing="false" onAction="#deleteAllAction" text="Delete All" />
                            </children>
                            <VBox.margin>
                               <Insets top="10.0" />
@@ -105,8 +107,8 @@
                   </VBox>
                   <VBox alignment="CENTER">
                      <children>
-                        <Button mnemonicParsing="false" text="&gt;&gt;" />
-                        <Button mnemonicParsing="false" text="&lt;&lt;">
+                        <Button fx:id="addAudioButton" mnemonicParsing="false" onAction="#addAudioAction" text="&gt;&gt;" />
+                        <Button fx:id="removeAudioButton" mnemonicParsing="false" onAction="#removeAudioAction" text="&lt;&lt;">
                            <VBox.margin>
                               <Insets top="20.0" />
                            </VBox.margin>
@@ -123,12 +125,12 @@
                         </ListView>
                         <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
                            <children>
-                              <Button mnemonicParsing="false" text="Move Up">
+                              <Button fx:id="moveAudioUpButton" mnemonicParsing="false" onAction="#moveAudioUpAction" text="Move Up">
                                  <HBox.margin>
                                     <Insets right="10.0" />
                                  </HBox.margin>
                               </Button>
-                              <Button mnemonicParsing="false" text="Move Down" />
+                              <Button fx:id="moveAudioDownButton" mnemonicParsing="false" onAction="#moveAudioDownAction" text="Move Down" />
                            </children>
                            <VBox.margin>
                               <Insets top="10.0" />
