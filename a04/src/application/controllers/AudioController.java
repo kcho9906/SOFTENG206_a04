@@ -4,10 +4,9 @@ import application.MethodHelper;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
+import javafx.scene.control.Label;
 import javafx.scene.control.ListView;
-import javafx.scene.control.ProgressBar;
 import javafx.scene.control.Slider;
-import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 
 public class AudioController {
@@ -21,10 +20,7 @@ public class AudioController {
     private Button searchButton;
 
     @FXML
-    private ProgressBar progressBar;
-
-    @FXML
-    private TextArea wikiSearchTextArea;
+    private Label statusLabel;
 
     @FXML
     private Slider synthSlider;
@@ -36,78 +32,16 @@ public class AudioController {
     private Button saveTextButton;
 
     @FXML
-    private Button resetButton;
-
-    @FXML
     private ListView<?> existingAudioListView;
 
     @FXML
-    private Button playAudioButton;
+    private Button resetButton;
 
     @FXML
-    private Button deleteAudioButton;
+    private Button MenuButton;
 
     @FXML
-    private Button deleteAllButton;
-
-    @FXML
-    private Button addAudioButton;
-
-    @FXML
-    private Button removeAudioButton;
-
-    @FXML
-    private ListView<?> selectAudioListView;
-
-    @FXML
-    private Button moveAudioUpButton;
-
-    @FXML
-    private Button moveAudioDownButton;
-
-    @FXML
-    private Button nextStageButton;
-
-    @FXML
-    private Button cancelCreationButton;
-
-    @FXML
-    private Button enableMusicButton;
-
-    @FXML
-    void cancelCreationAction(ActionEvent event) {
-
-    }
-
-    @FXML
-    void deleteAllAction(ActionEvent event) {
-
-    }
-
-    @FXML
-    void deleteAudioAction(ActionEvent event) {
-
-    }
-
-    @FXML
-    void enableMusicAction(ActionEvent event) {
-
-    }
-
-    @FXML
-    void moveAudioDownAction(ActionEvent event) {
-
-    }
-
-    @FXML
-    void moveAudioUpAction(ActionEvent event) {
-
-    }
-
-    @FXML
-    void playAudioAction(ActionEvent event) {
-
-    }
+    private Button nextButton;
 
     @FXML
     void previewTextAction(ActionEvent event) {
@@ -115,13 +49,13 @@ public class AudioController {
     }
 
     @FXML
-    void removeAudioAction(ActionEvent event) {
+    void resetAction(ActionEvent event) {
 
     }
 
     @FXML
-    void resetAction(ActionEvent event) {
-
+    void returnToMenu(ActionEvent event) throws Exception {
+        methodHelper.changeScene(event, "scenes/MainMenu.fxml");
     }
 
     @FXML

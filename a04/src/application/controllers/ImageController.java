@@ -56,7 +56,7 @@ public class ImageController {
     }
 
     @FXML
-    void nextScene(ActionEvent event) {
+    void createCreation(ActionEvent event) {
 
     }
 
