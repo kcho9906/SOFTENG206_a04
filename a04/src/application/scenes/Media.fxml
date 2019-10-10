@@ -5,20 +5,21 @@
 <?import javafx.scene.control.ButtonBar?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Slider?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.media.MediaView?>
 
-
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="534.0" prefWidth="820.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="534.0" prefWidth="820.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <bottom>
       <VBox alignment="CENTER" prefHeight="86.0" prefWidth="889.0" BorderPane.alignment="CENTER">
          <children>
             <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" spacing="10.0">
                <children>
                   <Label fx:id="timeLabel" text="00:00 / 00:00" />
-                  <Slider fx:id="timeSlider" />
+                  <Slider fx:id="timeSlider" HBox.hgrow="ALWAYS" />
                </children>
                <padding>
                   <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
@@ -37,9 +38,23 @@
                   </HBox>
                   <ButtonBar prefHeight="40.0" prefWidth="200.0">
                     <buttons>
-                        <Button fx:id="rewindButton" mnemonicParsing="false" onAction="#rewindMedia" text="&lt;&lt;" />
+                        <Button fx:id="rewindButton" mnemonicParsing="false" onAction="#rewindMedia">
+                           <graphic>
+                              <ImageView fitHeight="20.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true" rotate="180.0">
+                                 <image>
+                                    <Image url="@../../../../componentImages/fastForward.png" />
+                                 </image>
+                              </ImageView>
+                           </graphic></Button>
                       <Button fx:id="playPauseButton" mnemonicParsing="false" onAction="#playPauseMedia" text="Pause" />
-                        <Button fx:id="fastForwardButton" mnemonicParsing="false" onAction="#fastForwardMedia" text="&gt;&gt;" />
+                        <Button fx:id="fastForwardButton" mnemonicParsing="false" onAction="#fastForwardMedia">
+                           <graphic>
+                              <ImageView fitHeight="20.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../../../../componentImages/fastForward.png" />
+                                 </image>
+                              </ImageView>
+                           </graphic></Button>
                     </buttons>
                   </ButtonBar>
                   <ButtonBar prefHeight="26.0" prefWidth="260.0">
