@@ -4,81 +4,34 @@ import application.MethodHelper;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
-import javafx.scene.control.ListView;
-import javafx.scene.control.ProgressBar;
-import javafx.scene.layout.HBox;
+import javafx.scene.control.TextField;
+import javafx.scene.image.ImageView;
+
+import java.awt.image.BufferedImage;
+import java.util.List;
 
 public class ImageController {
 
     MethodHelper methodHelper = new MethodHelper();
+    private List<BufferedImage> imageList;
 
     @FXML
-    private ListView<?> flickrImagesList;
+    private ImageView image1, image2, image3, image4, image5, image6, image7, image8, image9, image10, image11, image12, image13, image14, image15, image16;
 
     @FXML
-    private Button addButton;
+    private Button backButton, CreateButton;
 
     @FXML
-    private Button removeButton;
-
-    @FXML
-    private ListView<?> creationImageList;
-
-    @FXML
-    private Button shiftUpButton;
-
-    @FXML
-    private Button shiftDownButton;
-
-    @FXML
-    private HBox imageDisplay;
-
-    @FXML
-    private Button getImageButton;
-
-    @FXML
-    private ProgressBar progressBar;
-
-    @FXML
-    private Button backButton;
-
-    @FXML
-    private Button nextButton;
-
-    @FXML
-    void addImageToCreation(ActionEvent event) {
-
-    }
-
-    @FXML
-    void getImages(ActionEvent event) {
-
-    }
+    private TextField creationNameInput;
 
     @FXML
     void createCreation(ActionEvent event) {
-
+        imageList = methodHelper.getImageList();
     }
 
     @FXML
-    void toPreviousScene(ActionEvent event) throws Exception {
+    void returnToAudio(ActionEvent event) throws Exception {
         methodHelper.changeScene(event, "scenes/Audio.fxml");
-
-    }
-
-    @FXML
-    void removeImageFromCreation(ActionEvent event) {
-
-    }
-
-    @FXML
-    void shiftOrderDown(ActionEvent event) {
-
-    }
-
-    @FXML
-    void shiftOrderUp(ActionEvent event) {
-
     }
 
 }

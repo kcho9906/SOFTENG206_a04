@@ -9,11 +9,16 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.stage.Stage;
 
+import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 public class MethodHelper {
+
+    private List<BufferedImage> imageList= new ArrayList<>();
 
     public void changeScene(ActionEvent event, String scene) throws Exception {
         Parent newSceneParent = FXMLLoader.load(getClass().getResource(scene));
@@ -88,4 +93,16 @@ public class MethodHelper {
         return "Error";
     }
 
+    public List<BufferedImage> getImages(String searchTerm) {
+        imageList = FlickrImageExtractor.downloadImages(searchTerm, 16);
+        return imageList;
+    }
+
+    public List<BufferedImage> getImageList() {
+        return imageList;
+    }
+
+    public void uploadImages(String searchTerm) {
+        
+    }
 }
