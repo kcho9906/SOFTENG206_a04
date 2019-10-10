@@ -118,11 +118,7 @@
                   </VBox>
                   <VBox alignment="CENTER" prefHeight="199.0" prefWidth="58.0">
                      <children>
-<<<<<<< HEAD
-                        <Button fx:id="addAudioButton" mnemonicParsing="false" text="&gt;&gt;" />
-=======
                         <Button fx:id="addAudioButton" mnemonicParsing="false" onAction="#addAudioAction" text="&gt;&gt;" />
->>>>>>> SceneBuilder
                         <Button fx:id="removeAudioButton" mnemonicParsing="false" onAction="#removeAudioAction" text="&lt;&lt;">
                            <VBox.margin>
                               <Insets top="20.0" />
@@ -136,11 +132,7 @@
                   <VBox alignment="TOP_CENTER" prefHeight="200.0" prefWidth="100.0" HBox.hgrow="ALWAYS">
                      <children>
                         <Label text="3) Select audio for creation" />
-<<<<<<< HEAD
-                        <ListView fx:id="selectAudioListView" prefHeight="200.0" prefWidth="200.0">
-=======
                         <ListView fx:id="selectedAudioListView" prefHeight="200.0" prefWidth="200.0">
->>>>>>> SceneBuilder
                            <VBox.margin>
                               <Insets top="10.0" />
                            </VBox.margin>
@@ -172,18 +164,8 @@
                   <Insets />
                </VBox.margin>
                <children>
-<<<<<<< HEAD
-<<<<<<< HEAD
-                  <Button fx:id="nextButton" mnemonicParsing="false" onAction="#toNextStageButton" text="Proceed to next stage" />
-                  <Button mnemonicParsing="false" text="Cancel Creation">
-=======
-                  <Button fx:id="nextStageButton" mnemonicParsing="false" onAction="#toNextStageButton" text="Proceed to next stage" />
-                  <Button fx:id="cancelCreationButton" mnemonicParsing="false" onAction="#cancelCreationAction" text="Cancel Creation">
->>>>>>> eSpeak
-=======
                   <Button fx:id="toNextStageButton" mnemonicParsing="false" onAction="#toNextStageAction" text="Proceed to next stage" />
                   <Button fx:id="cancelCreationButton" mnemonicParsing="false" onAction="#cancelCreationAction" text="Cancel Creation">
->>>>>>> SceneBuilder
                      <HBox.margin>
                         <Insets />
                      </HBox.margin>
