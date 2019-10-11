@@ -50,7 +50,7 @@ public class CreationWorker extends Task<String> {
         if (create) {
 
             methodHelper.command(command);
-            imagesFound = FlickrImageExtractor.downloadImages(_creationDir, _numImages, _searchTerm);
+            imagesFound = FlickrImageExtractor.downloadImages(_searchTerm, _numImages);
             String message;
             if (imagesFound < 0) {
 

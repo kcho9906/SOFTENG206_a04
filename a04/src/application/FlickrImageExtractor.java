@@ -4,8 +4,6 @@ import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileReader;
-import java.util.ArrayList;
-import java.util.List;
 import javax.imageio.ImageIO;
 import com.flickr4java.flickr.*;
 import com.flickr4java.flickr.photos.*;
@@ -47,20 +45,20 @@ public class FlickrImageExtractor {
 
     /**
      * This method downloads the images from the Flickr website of the searched term.
-     * @param searchTerm
+     * @param query
      * @param numImages
      * @return
      */
-    public static List<BufferedImage> downloadImages(String searchTerm, int numImages) {
+    public static int downloadImages(String query, int numImages) {
 
-        List<BufferedImage> imageList = new ArrayList<>();
         try {
 
             String apiKey = getAPIKey("apiKey");
             String sharedSecret = getAPIKey("sharedSecret");
 
             Flickr flickr = new Flickr(apiKey, sharedSecret, new REST());
-
+            File file = new File("src/tempImages");
+            file.mkdir();
             int resultsPerPage = numImages;
             int page = 0;
 
@@ -68,7 +66,7 @@ public class FlickrImageExtractor {
             SearchParameters params = new SearchParameters();
             params.setSort(SearchParameters.RELEVANCE);
             params.setMedia("photos");
-            params.setText(searchTerm);
+            params.setText(query);
 
             PhotoList<Photo> results = photos.search(params, resultsPerPage, page);
             if (results.getTotal() > 0) {
@@ -78,21 +76,20 @@ public class FlickrImageExtractor {
                     try {
 
                         BufferedImage image = photos.getImage(photo, Size.LARGE);
-                        imageList.add(image);
-//                        String filename = "." + searchTerm.trim().replace(' ', '-') + "-" + System.currentTimeMillis() + "-" + photo.getId() + ".jpg";
-//                        File outputfile = new File("src/tempImages",  filename);
-//                        ImageIO.write(image, "jpg", outputfile);
+                        String filename = "." + query.trim().replace(' ', '-') + "-" + System.currentTimeMillis() + "-" + photo.getId() + ".jpg";
+                        File outputfile = new File(file.getPath(),  filename);
+                        ImageIO.write(image, "jpg", outputfile);
                     } catch (FlickrException fe) {
 
                         System.err.println("Ignoring image " + photo.getId() + ": " + fe.getMessage());
                     }
                 }
             }
-            return imageList;
+            return results.size();
         } catch (Exception e) {
 
             e.printStackTrace();
-            return null;
+            return -1;
         }
     }
 }

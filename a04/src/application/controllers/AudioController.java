@@ -95,7 +95,9 @@ public class AudioController {
         });
 
         wikitWorker.setOnSucceeded(event1 -> {
-            methodHelper.uploadImages(searchTerm);
+            ImageController controller = new ImageController();
+            controller.getImages(searchTerm);
+
         });
         Thread th = new Thread(wikitWorker);
         th.start();
