@@ -3,13 +3,31 @@ package application.controllers;
 import application.MethodHelper;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
+import javafx.scene.media.MediaView;
+import javafx.util.Duration;
 
-public class MediaController {
+import java.io.File;
+import java.net.URL;
+import java.util.ResourceBundle;
 
-    MethodHelper methodHelper = new MethodHelper();
+public class MediaController implements Initializable {
+
+    private MethodHelper methodHelper = new MethodHelper();
+    private Media video;
+    private MediaPlayer player;
+    private Duration duration;
+
+
+
+
+    @FXML
+    private MediaView mediaView;
 
     @FXML
     private Label timeLabel;
@@ -68,5 +86,27 @@ public class MediaController {
 
     }
 
+    /**
+     * This creates the media player with name of the creation being played
+     */
+    public void createMediaPlayer(File fileUrl) {
+
+        video = new Media(fileUrl.toURI().toString());
+        player = new MediaPlayer(video);
+        player.setAutoPlay(true);
+
+        String command = "ffprobe -v error -show_entries format=duration -of default=noprint_wrappers=1:nokey=1 " + fileUrl;
+        String getDuration = methodHelper.command(command);
+
+        double milliseconds = Double.parseDouble(getDuration) * 1000;
+        duration = new Duration(milliseconds);
+        timeSlider.setValue(0);
+
+    }
+
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        createMediaPlayer();
+    }
 }
 

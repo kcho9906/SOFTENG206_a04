@@ -1,5 +1,6 @@
 package application;
 
+import application.controllers.MediaController;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -10,6 +11,7 @@ import javafx.scene.control.ButtonType;
 import javafx.stage.Stage;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.InputStreamReader;
 import java.util.Optional;
 
@@ -86,6 +88,12 @@ public class MethodHelper {
             e.printStackTrace();
         }
         return "Error";
+    }
+
+    public void playVideo(File video) throws Exception {
+        changeScene(null, "scenes/Media.fxml");
+        MediaController controller = new MediaController();
+        controller.createMediaPlayer(video);
     }
 
 }
