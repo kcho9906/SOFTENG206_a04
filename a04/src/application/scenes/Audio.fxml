@@ -44,96 +44,81 @@
                   <ProgressIndicator fx:id="loadingCircle" prefHeight="43.0" prefWidth="30.0" visible="false" />
                </children>
             </HBox>
-            <TextArea fx:id="wikiSearchTextArea" prefHeight="200.0" prefWidth="200.0">
-
-               <VBox.margin>
-                  <Insets />
-               </VBox.margin>
-            </TextArea>
-            <HBox alignment="CENTER" prefHeight="57.0" prefWidth="676.0" spacing="50.0">
-               <VBox.margin>
-                  <Insets />
-               </VBox.margin>
+            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="10.0" VBox.vgrow="ALWAYS">
                <children>
-                  <HBox alignment="CENTER" prefHeight="44.0" prefWidth="239.0" spacing="5.0">
+                  <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" spacing="10.0" HBox.hgrow="ALWAYS">
                      <children>
-                        <Label text="eSpeak" />
-                        <Slider fx:id="synthSlider" blockIncrement="1.0" majorTickUnit="1.0" max="1.0" minorTickCount="0" prefHeight="20.0" prefWidth="100.0" snapToTicks="true" />
-                        <Label text="Festival" />
-
+                        <HBox alignment="CENTER" prefHeight="27.0" prefWidth="448.0" spacing="10.0" VBox.vgrow="NEVER">
+                           <children>
+                              <Label text="Current keyword:" />
+                              <Label fx:id="currentKeywordLabel" text="N/A" />
+                           </children>
+                        </HBox>
+                        <TextArea fx:id="wikiSearchTextArea" VBox.vgrow="ALWAYS" />
+                        <HBox alignment="CENTER" prefHeight="57.0" prefWidth="676.0">
+                           <children>
+                              <HBox alignment="CENTER" prefHeight="57.0" prefWidth="349.0" spacing="5.0" HBox.hgrow="NEVER">
+                                 <children>
+                                    <Label text="eSpeak" />
+                                    <Slider fx:id="synthSlider" blockIncrement="1.0" majorTickUnit="1.0" max="1.0" minorTickCount="0" prefHeight="20.0" prefWidth="100.0" snapToTicks="true" />
+                                    <Label text="Festival" />
+                                 </children>
+                              </HBox>
+                              <HBox alignment="CENTER" prefHeight="57.0" prefWidth="345.0" spacing="10.0" HBox.hgrow="ALWAYS">
+                                 <children>
+                                    <Button fx:id="previewTextButton" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#previewTextAction" prefHeight="27.0" prefWidth="120.0" text="Play " />
+                                    <Button fx:id="saveTextButton" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#saveTextAction" prefHeight="27.0" prefWidth="120.0" text="Save" />
+                                 </children>
+                              </HBox>
+                           </children>
+                           <padding>
+                              <Insets left="10.0" right="10.0" />
+                           </padding>
+                        </HBox>
+                     </children>
+                  </VBox>
+                  <HBox prefHeight="409.0" prefWidth="250.0" spacing="10.0">
+                     <children>
+                        <VBox alignment="CENTER" spacing="10.0">
+                           <children>
+                              <HBox alignment="CENTER" VBox.vgrow="NEVER">
+                                 <children>
+                                    <Label text="Existing audio files" />
+                                 </children>
+                              </HBox>
+                              <ListView fx:id="audioListView" prefHeight="305.0" prefWidth="211.0">
+                                 <VBox.margin>
+                                    <Insets top="10.0" />
+                                 </VBox.margin>
+                              </ListView>
+                              <HBox alignment="CENTER">
+                                 <children>
+                                    <Button fx:id="playAudioButton" mnemonicParsing="false" onAction="#playAudioAction" text="Play">
+                                       <HBox.margin>
+                                          <Insets right="10.0" />
+                                       </HBox.margin>
+                                    </Button>
+                                    <Button fx:id="deleteAudioButton" mnemonicParsing="false" onAction="#deleteAudioAction" text="Delete">
+                                       <HBox.margin>
+                                          <Insets right="10.0" />
+                                       </HBox.margin>
+                                    </Button>
+                                    <Button fx:id="deleteAllButton" mnemonicParsing="false" onAction="#deleteAllAction" text="Delete All" />
+                                 </children>
+                                 <VBox.margin>
+                                    <Insets top="10.0" />
+                                 </VBox.margin>
+                              </HBox>
+                           </children>
+                        </VBox>
+                        <VBox alignment="CENTER" prefHeight="409.0" prefWidth="30.0" spacing="10.0">
+                           <children>
+                              <Button fx:id="moveUpButton" mnemonicParsing="false" onAction="#moveAudioUp" text="^" />
+                              <Button fx:id="moveDownButton" mnemonicParsing="false" onAction="#moveAudioDown" text="V" />
+                           </children>
+                        </VBox>
                      </children>
                   </HBox>
-                  <ButtonBar nodeOrientation="LEFT_TO_RIGHT" prefHeight="37.0" prefWidth="404.0">
-                     <buttons>
-                        <Button fx:id="previewTextButton" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#previewTextAction" prefHeight="27.0" prefWidth="120.0" text="Preview Audio" />
-                        <Button fx:id="saveTextButton" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#saveTextAction" prefHeight="27.0" prefWidth="120.0" text="Save Audio" />
-                     </buttons>
-                  </ButtonBar>
-               </children>
-            </HBox>
-            <HBox alignment="CENTER" prefHeight="170.0" prefWidth="696.0" spacing="10.0">
-               <children>
-                  <VBox alignment="TOP_CENTER">
-                     <children>
-                        <Label text="Existing audio files" />
-                        <ListView fx:id="existingAudioListView" prefHeight="200.0">
-                           <VBox.margin>
-                              <Insets top="10.0" />
-                           </VBox.margin>
-                        </ListView>
-                        <HBox alignment="CENTER">
-                           <children>
-                              <Button fx:id="playAudioButton" mnemonicParsing="false" onAction="#playAudioAction" text="Play">
-                                 <HBox.margin>
-                                    <Insets right="10.0" />
-                                 </HBox.margin>
-                              </Button>
-                              <Button fx:id="deleteAudioButton" mnemonicParsing="false" onAction="#deleteAudioAction" text="Delete">
-                                 <HBox.margin>
-                                    <Insets right="10.0" />
-                                 </HBox.margin>
-                              </Button>
-                              <Button fx:id="deleteAllButton" mnemonicParsing="false" onAction="#deleteAllAction" text="Delete All" />
-                           </children>
-                           <VBox.margin>
-                              <Insets top="10.0" />
-                           </VBox.margin>
-                        </HBox>
-                     </children>
-                  </VBox>
-                  <VBox alignment="CENTER">
-                     <children>
-                        <Button fx:id="addAudioButton" mnemonicParsing="false" onAction="#addAudioAction" text="&gt;&gt;" />
-                        <Button fx:id="removeAudioButton" mnemonicParsing="false" onAction="#removeAudioAction" text="&lt;&lt;">
-                           <VBox.margin>
-                              <Insets top="20.0" />
-                           </VBox.margin>
-                        </Button>
-                     </children>
-                  </VBox>
-                  <VBox alignment="TOP_CENTER">
-                     <children>
-                        <Label text="3) Select audio for creation" />
-                        <ListView prefHeight="200.0">
-                           <VBox.margin>
-                              <Insets top="10.0" />
-                           </VBox.margin>
-                        </ListView>
-                        <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
-                           <children>
-                              <Button fx:id="moveAudioUpButton" mnemonicParsing="false" onAction="#moveAudioUpAction" text="Move Up">
-                                 <HBox.margin>
-                                    <Insets right="10.0" />
-                                 </HBox.margin>
-                              </Button>
-                              <Button fx:id="moveAudioDownButton" mnemonicParsing="false" onAction="#moveAudioDownAction" text="Move Down" />
-                           </children>
-                           <VBox.margin>
-                              <Insets top="10.0" />
-                           </VBox.margin>
-                        </HBox>
-                     </children>
-                  </VBox>
                </children>
             </HBox>
             <ButtonBar maxWidth="420.0" nodeOrientation="LEFT_TO_RIGHT" prefHeight="26.0" prefWidth="417.0">
