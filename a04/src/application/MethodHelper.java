@@ -90,10 +90,4 @@ public class MethodHelper {
         return "Error";
     }
 
-    public void playVideo(File video) throws Exception {
-        changeScene(null, "scenes/Media.fxml");
-        MediaController controller = new MediaController();
-        controller.createMediaPlayer(video);
-    }
-
 }

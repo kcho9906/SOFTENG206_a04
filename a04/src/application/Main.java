@@ -20,8 +20,6 @@ public class Main extends Application {
         primaryStage.setTitle("VARpedia");
         primaryStage.setScene(new Scene(root, 600, 600));
         primaryStage.show();
-        MethodHelper methodHelper = new MethodHelper();
-        methodHelper.playVideo(new File("src/creations/test/test.mp4"));
     }
 
 
