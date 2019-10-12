@@ -2,17 +2,29 @@ package application.controllers;
 
 import application.MethodHelper;
 import application.TerminalWorker;
+import javafx.beans.binding.BooleanBinding;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.concurrent.WorkerStateEvent;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 
-public class AudioController {
+import java.net.URL;
+import java.util.ResourceBundle;
 
+public class AudioController implements Initializable {
 
     MethodHelper methodHelper = new MethodHelper();
     String searchTerm = "";
+
+    private ObservableList<String> selectedAudio = FXCollections.observableArrayList();
+    private ObservableList<String> listForCreation = FXCollections.observableArrayList();
+
+    @FXML
+    private ProgressIndicator loadingCircle;
 
     @FXML
     public TextArea wikiSearchTextArea;
@@ -69,7 +81,7 @@ public class AudioController {
 
     @FXML
     void searchAction(ActionEvent event) {
-
+        loadingCircle.setVisible(true);
         methodHelper.resetSearchTerm();
         // searches if the search term is not empty
         searchTerm = (searchTextField.getText().trim());
@@ -83,9 +95,11 @@ public class AudioController {
         wikitWorker.setOnSucceeded(new EventHandler<WorkerStateEvent>() {
             @Override
             public void handle(WorkerStateEvent event) {
+                loadingCircle.setVisible(false);
+                ImageController.getImages(searchTerm);
                 String result = "\"" + wikitWorker.getValue().trim() + "\"";
                 if (result.contains("not found :^(")) {
-//                    // alert to say not found, resets the text field and area
+                    statusLabel.setText(searchTerm + " not found. Please try again.  ⃠");
                 } else {
                     // Display the sentences in the display area
                     wikiSearchTextArea.setText(wikitWorker.getValue().trim());
@@ -96,11 +110,6 @@ public class AudioController {
             }
         });
 
-        wikitWorker.setOnSucceeded(event1 -> {
-            ImageController controller = new ImageController();
-            controller.getImages(searchTerm);
-
-        });
         Thread th = new Thread(wikitWorker);
         th.start();
     }
@@ -147,6 +156,21 @@ public class AudioController {
 
     @FXML
     void addAudioAction(ActionEvent actionEvent) {
+    }
+
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+    //----------------------------SET UP DISABLE BINDINGS------------------------------//
+        searchButton.disableProperty().bind(searchTextField.textProperty().isEmpty());
+        nextButton.disableProperty().bind(new BooleanBinding() {
+
+            @Override
+            protected boolean computeValue() {
+                return (searchTerm.equals(null) || selectedAudio.isEmpty());
+            }
+        });
+
+
     }
 }
 

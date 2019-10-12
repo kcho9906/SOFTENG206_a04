@@ -89,7 +89,7 @@ public class MethodHelper {
         return "Error";
     }
 
-    private static void createAlertBox(String message) {
+    public void createAlertBox(String message) {
 
         Alert alert = new Alert(Alert.AlertType.WARNING);
         alert.setHeaderText(message);

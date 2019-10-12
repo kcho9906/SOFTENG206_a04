@@ -6,6 +6,7 @@ import application.MethodHelper;
 import javafx.beans.binding.BooleanBinding;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
+import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
@@ -19,6 +20,7 @@ import javafx.scene.layout.TilePane;
 import java.io.File;
 import java.net.URL;
 import java.util.ResourceBundle;
+import java.util.concurrent.ExecutionException;
 
 public class ImageController implements Initializable {
 
@@ -29,15 +31,14 @@ public class ImageController implements Initializable {
 
     @FXML
     private ProgressIndicator loadingCircle;
-    MethodHelper methodHelper = new MethodHelper();
+    private static MethodHelper methodHelper = new MethodHelper();
     private ObservableList<File> imageList = FXCollections.observableArrayList();
     private ObservableList<File> selectedList = FXCollections.observableArrayList();
-    private String query = "";
+    private static String query = "";
     private String creationName = "";
 
     @FXML
     private TextField creationNameInput;
-
 
     @FXML
     void createCreation(ActionEvent event) throws Exception {
@@ -100,10 +101,25 @@ public class ImageController implements Initializable {
 
     }
 
-    public void getImages(String searchTerm) {
+    public static void getImages(String searchTerm) {
+
         query = searchTerm;
         int number = 12;
-        int numImage = FlickrImageExtractor.downloadImages(query, number);
+        AudioWorker audioWorker = new AudioWorker(number, query);
+        audioWorker.setOnSucceeded(event -> {
+            try {
+                int imagesRetrieved = audioWorker.get();
+                if (imagesRetrieved != number) {
+                    methodHelper.createAlertBox("Did not get " + number + " images\nOnly retrieved " + imagesRetrieved + " images");
+                }
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            } catch (ExecutionException e) {
+                e.printStackTrace();
+            }
+        });
+        Thread th = new Thread(audioWorker);
+        th.start();
     }
 
     public void uploadImages() {
@@ -114,7 +130,7 @@ public class ImageController implements Initializable {
 
             imageList.add(image);
         }
-        System.out.println(imageList.size());
+        System.out.println("image list has " + imageList.size() + " pictures");
         updateGrid();
     }
 
@@ -147,5 +163,22 @@ public class ImageController implements Initializable {
             }
         }
         return "create";
+    }
+
+    public static class AudioWorker extends Task<Integer> {
+
+        private int _numImages;
+        private String _query;
+
+        public AudioWorker(int numImages, String query) {
+
+            _numImages = numImages;
+            _query = query;
+        }
+
+        @Override
+        protected Integer call() throws Exception {
+            return FlickrImageExtractor.downloadImages(_query, _numImages);
+        }
     }
 }
