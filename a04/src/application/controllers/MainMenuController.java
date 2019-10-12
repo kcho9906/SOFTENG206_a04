@@ -12,12 +12,6 @@ public class MainMenuController {
     MethodHelper methodHelper = new MethodHelper();
 
     @FXML
-    private Button viewCreationButton;
-
-    @FXML
-    private Button createCreationButton;
-
-    @FXML
     void toCreationScene(ActionEvent event) throws Exception {
         methodHelper.changeScene(event, "scenes/Audio.fxml");
     }

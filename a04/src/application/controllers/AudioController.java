@@ -69,6 +69,8 @@ public class AudioController {
 
     @FXML
     void searchAction(ActionEvent event) {
+
+        methodHelper.resetSearchTerm();
         // searches if the search term is not empty
         searchTerm = (searchTextField.getText().trim());
         // use the terminal to wikit the term with a worker / task

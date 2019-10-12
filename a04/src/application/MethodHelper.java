@@ -1,8 +1,5 @@
 package application;
 
-import application.controllers.AudioController;
-import application.controllers.ImageController;
-import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
@@ -12,13 +9,9 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.stage.Stage;
-
-import java.awt.image.BufferedImage;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
-import java.util.List;
 import java.util.Optional;
 
 public class MethodHelper {
@@ -98,4 +91,10 @@ public class MethodHelper {
         return "Error";
     }
 
+    public void resetSearchTerm() {
+        command("rm src/tempImages/.*");
+    }
+
+    public void createCreation() {
+    }
 }
