@@ -22,6 +22,7 @@ import java.util.ResourceBundle;
 
 public class ImageController implements Initializable {
 
+    @FXML
     private Button createButton;
     @FXML
     private TilePane imagePane;
@@ -31,10 +32,12 @@ public class ImageController implements Initializable {
     MethodHelper methodHelper = new MethodHelper();
     private ObservableList<File> imageList = FXCollections.observableArrayList();
     private ObservableList<File> selectedList = FXCollections.observableArrayList();
-    private String query, creationName;
+    private String query = "";
+    private String creationName = "";
 
     @FXML
     private TextField creationNameInput;
+
 
     @FXML
     void createCreation(ActionEvent event) throws Exception {
@@ -111,6 +114,7 @@ public class ImageController implements Initializable {
 
             imageList.add(image);
         }
+        System.out.println(imageList.size());
         updateGrid();
     }
 
@@ -126,7 +130,7 @@ public class ImageController implements Initializable {
         createButton.disableProperty().bind(new BooleanBinding() {
             @Override
             protected boolean computeValue() {
-                return (creationNameInput.getText().isEmpty() && !creationName.matches("[a-zA-Z0-9_-]+"));
+                return (creationNameInput.getText().isEmpty() || !creationName.matches("[a-zA-Z0-9_-]+"));
             }
         });
     }
