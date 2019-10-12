@@ -22,7 +22,7 @@ public class MainMenuController {
     @FXML
     void toViewCreationScene(ActionEvent event) throws Exception {
 
-        methodHelper.changeScene(event, "scenes/Media.fxml");
+        methodHelper.changeScene(event, "scenes/CreationList.fxml");
     }
 
 

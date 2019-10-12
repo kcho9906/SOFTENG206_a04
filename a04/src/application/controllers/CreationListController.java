@@ -1,20 +1,28 @@
 package application.controllers;
 
 import application.MethodHelper;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
+import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
+import javafx.scene.control.cell.PropertyValueFactory;
+import javafx.scene.layout.BorderPane;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
+import javafx.scene.media.MediaView;
+import javafx.stage.Stage;
 
 import java.io.File;
-<<<<<<< HEAD
 import java.net.URL;
 import java.util.ResourceBundle;
-
-public class CreationListController implements Initializable {
-=======
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -24,10 +32,21 @@ import java.nio.file.attribute.BasicFileAttributes;
 import java.nio.file.attribute.FileTime;
 import java.text.SimpleDateFormat;
 
-public class CreationListController {
->>>>>>> master
+public class CreationListController implements Initializable{
 
     MethodHelper methodHelper = new MethodHelper();
+
+    @FXML
+    private TableColumn<Creation, String> nameColumn;
+
+    @FXML
+    private TableColumn<Creation, String> searchTermColumn;
+
+    @FXML
+    private TableColumn<Creation, String> durationColumn;
+
+    @FXML
+    private TableColumn<Creation, String> timeColumn;
 
     @FXML
     private TableView<Creation> creationTableView;
@@ -61,9 +80,14 @@ public class CreationListController {
     @FXML
     void playCreation(ActionEvent event) throws Exception {
         String creationName = creationTableView.getSelectionModel().getSelectedItem().toString();
-        File creationFile = new File("src/creations/" + creationName + "/" + creationName + ".mp4");
-        MediaController.setMedia(creationFile);
+        File videoFile = new File("src/creations/" + creationName + "/" + creationName + ".mp4");
+
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("scenes/Media.fxml"));
+        MediaController controller = new MediaController(videoFile);
+        loader.setController(controller);
+        loader.load();
     }
+
 
     @FXML
     void quizCreation(ActionEvent event) {
@@ -75,11 +99,39 @@ public class CreationListController {
         methodHelper.changeScene(event, "scenes/MainMenu.fxml");
     }
 
-<<<<<<< HEAD
+    /**
+     * This method is for getting the creations from the list.
+     * @return
+     */
+    private ObservableList<Creation> getCreations() {
+
+        ObservableList<Creation> creations = FXCollections.observableArrayList();
+        String path = System.getProperty("user.dir") + "/src/creations";
+        File[] directories = new File(path).listFiles(File::isDirectory);
+        for (File directory: directories) {
+
+            Creation creation = new Creation(directory);
+            creations.add(creation);
+        }
+        return creations;
+    }
+
+    /**
+     * updates the table
+     */
+    public void updateTable() {
+
+        creationTableView.setItems(getCreations());
+    }
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-
-=======
+        updateTable();
+        nameColumn.setCellValueFactory(new PropertyValueFactory<>("_creationName"));
+        searchTermColumn.setCellValueFactory(new PropertyValueFactory<>("_searchTerm"));
+        timeColumn.setCellValueFactory(new PropertyValueFactory<>("_timeCreated"));
+        durationColumn.setCellValueFactory(new PropertyValueFactory<>("_duration"));
+    }
     public class Creation {
 
         private String _creationName;
@@ -90,8 +142,8 @@ public class CreationListController {
         public Creation(File directory) {
             _creationName = directory.getName();
             _timeCreated = getCreationDate(directory);
-//        _duration = calculateDuration(directory);
-//        _searchTerm = findSearchTerm(directory);
+            _duration = calculateDuration(directory);
+            _searchTerm = findSearchTerm(directory);
         }
 
         public String get_creationName() {
@@ -158,24 +210,23 @@ public class CreationListController {
             return _creationName;
         }
 
-//    public String calculateDuration(File directory) {
-//
-//        //get file name for video
-//        String command = "ls " + directory.getPath() + " | grep .mp4$";
-//        String fileName = Terminal.command(command).trim();
-//        String lengthCommand = "ffmpeg -i " + directory.getPath() + "/" + fileName + " 2>&1 | grep Duration | cut -d ' ' -f 4 | sed s/,//";
-//        String duration = Terminal.command(lengthCommand).trim();
-//        return duration;
-//    }
-//
-//    public String findSearchTerm(File directory) {
-//
-//        //get file name for video
-//        String command = "ls -a " + directory.getPath() + " | grep .wav$ | sed 's/^.\\(.*\\)....$/\\1/'";
-//        String name = Terminal.command(command).trim();
-//        return name;
-//    }
->>>>>>> master
+        public String calculateDuration(File directory) {
+
+            //get file name for video
+            String command = "ls " + directory.getPath() + " | grep .mp4$";
+            String fileName = methodHelper.command(command).trim();
+            String lengthCommand = "ffmpeg -i " + directory.getPath() + "/" + fileName + " 2>&1 | grep Duration | cut -d ' ' -f 4 | sed s/,//";
+            String duration = methodHelper.command(lengthCommand).trim();
+            return duration;
+        }
+
+        public String findSearchTerm(File directory) {
+
+            //get file name for video
+            String command = "ls -a " + directory.getPath() + " | grep .wav$ | sed 's/^.\\(.*\\)....$/\\1/'";
+            String name = methodHelper.command(command).trim();
+            return name;
+        }
     }
 }
 

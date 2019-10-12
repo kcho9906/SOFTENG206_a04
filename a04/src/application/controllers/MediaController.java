@@ -9,38 +9,28 @@ import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.Node;
-import javafx.scene.Parent;
-import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
+import javafx.scene.layout.BorderPane;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.media.MediaView;
-import javafx.stage.Stage;
 import javafx.util.Duration;
-
-import javax.swing.*;
 import java.io.File;
-import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 
-import java.io.File;
+public class MediaController implements Initializable {
 
-public class MediaController {
+    @FXML
+    private BorderPane mediaPane;
 
-<<<<<<< HEAD
-    MethodHelper methodHelper = new MethodHelper();
-    private static File _creationFile;
-=======
     @FXML
     private Slider volumeSlider;
 
-    @FXML
+
     private MediaView mediaView;
->>>>>>> master
 
     @FXML
     private Label timeLabel;
@@ -61,17 +51,15 @@ public class MediaController {
     private Button fastForwardButton;
 
     private MethodHelper methodHelper = new MethodHelper();
-    private Media video;
-    private MediaPlayer player;
+    private MediaPlayer _player;
     private Duration duration;
-    private File videoFile;
+    private File _videoFile;
     private double[] volumeBeforeMute = {1};
     private FXMLLoader loader;
 
 
-    public MediaController() {
-        loader = new FXMLLoader(getClass().getResource("scenes/Media.fxml"));
-        videoFile = new File("src/creations/test/test.mp4");
+    public MediaController(File videoFile) {
+        _videoFile = videoFile;
         createMediaPlayer();
     }
 
@@ -82,9 +70,9 @@ public class MediaController {
             public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
 
                 if (oldValue != newValue) {
-                    System.out.println("old volume was " + player.getVolume());
-                    player.setVolume(volumeSlider.getValue()/100);
-                    System.out.println("new volume is " + player.getVolume());
+                    System.out.println("old volume was " + _player.getVolume());
+                    _player.setVolume(volumeSlider.getValue()/100);
+                    System.out.println("new volume is " + _player.getVolume());
 
                 }
             }
@@ -97,12 +85,12 @@ public class MediaController {
 
                 if (timeSlider.isPressed()) {
 
-                    player.seek(player.getMedia().getDuration().multiply(timeSlider.getValue() / 100.00));
+                    _player.seek(_player.getMedia().getDuration().multiply(timeSlider.getValue() / 100.00));
                 }
             }
         });
 
-        player.currentTimeProperty().addListener(new ChangeListener<Duration>() {
+        _player.currentTimeProperty().addListener(new ChangeListener<Duration>() {
 
             @Override
             public void changed(ObservableValue<? extends Duration> observable, Duration oldValue,
@@ -115,20 +103,16 @@ public class MediaController {
                 String totalMins = String.format("%02d", (int) duration.toMinutes());
                 String totalSecs = String.format("%02d", (int) (duration.toSeconds() - Integer.parseInt(totalMins)*60));
                 timeLabel.setText(time + "/" + totalMins + ":" + totalSecs);
-                timeSlider.setValue(player.getCurrentTime().toMinutes()/player.getTotalDuration().toMinutes()*100.00);
+                timeSlider.setValue(_player.getCurrentTime().toMinutes()/_player.getTotalDuration().toMinutes()*100.00);
             }
         });
 
     }
 
-    public static void setMedia(File creationFile) {
-        _creationFile = creationFile;
-    }
-
     @FXML
     void fastForwardMedia(ActionEvent event) {
 
-        player.seek( player.getCurrentTime().add( Duration.seconds(5)) );
+        _player.seek( _player.getCurrentTime().add( Duration.seconds(5)) );
     }
 
     @FXML
@@ -148,34 +132,34 @@ public class MediaController {
 
     @FXML
     void playPauseMedia(ActionEvent event) {
-        if (player.getStatus() == MediaPlayer.Status.PLAYING) {
+        if (_player.getStatus() == MediaPlayer.Status.PLAYING) {
 
-            player.pause();
+            _player.pause();
             playPauseButton.setText("Play");
         } else {
 
             playPauseButton.setText("Pause");
-            player.play();
+            _player.play();
         }    }
 
     @FXML
     void returnToCreationList(ActionEvent event) throws Exception {
-        player.stop();
-        player.dispose();
+        _player.stop();
+        _player.dispose();
         methodHelper.changeScene(event, "scenes/CreationList.fxml");
     }
 
     @FXML
     void returnToMenu(ActionEvent event) throws Exception {
-        player.stop();
-        player.dispose();
+        _player.stop();
+        _player.dispose();
         methodHelper.changeScene(event, "scenes/MainMenu.fxml");
     }
 
     @FXML
     void rewindMedia(ActionEvent event) {
 
-        player.seek( player.getCurrentTime().add( Duration.seconds(-3)) );
+        _player.seek( _player.getCurrentTime().add( Duration.seconds(-3)) );
     }
 
     /**
@@ -183,35 +167,49 @@ public class MediaController {
      */
     public void createMediaPlayer() {
 
-        video = new Media(videoFile.toURI().toString());
-        player = new MediaPlayer(video);
+        Media video = new Media(_videoFile.toURI().toString());
+        _player = new MediaPlayer(video);
+        mediaView = new MediaView(_player);
+        mediaView.setPreserveRatio(true);
 
-        String command = "ffprobe -v error -show_entries format=duration -of default=noprint_wrappers=1:nokey=1 " + videoFile;
+
+
+    }
+
+    @Override
+    public void initialize(URL location, ResourceBundle resources) {
+        System.out.println(mediaPane);
+
+        mediaView.setFitHeight(mediaPane.getHeight());
+        mediaView.setFitWidth(mediaPane.getWidth());
+        mediaPane.setCenter(mediaView);
+        String command = "ffprobe -v error -show_entries format=duration -of default=noprint_wrappers=1:nokey=1 " + _videoFile;
         String getDuration = methodHelper.command(command);
 
         double milliseconds = Double.parseDouble(getDuration) * 1000;
         duration = new Duration(milliseconds);
         System.out.println(duration);
-        player.setOnReady(new Runnable() {
+        _player.setOnReady(new Runnable() {
             @Override
             public void run() {
-                mediaView.setMediaPlayer(player);
+                System.out.println(mediaView);
+                System.out.println(_player);
+                mediaView.setMediaPlayer(_player);
                 setUpProperties();
-                player.play();
-                volumeBeforeMute[0] = player.getVolume()*100;
+                _player.play();
+                volumeBeforeMute[0] = _player.getVolume()*100;
             }
         });
 
-        player.setOnEndOfMedia(new Runnable() {
+        _player.setOnEndOfMedia(new Runnable() {
             @Override
             public void run() {
 
-                player.stop();
-                player.seek(Duration.minutes(0));
+                _player.stop();
+                _player.seek(Duration.minutes(0));
                 playPauseButton.setText("Play");
             }
         });
     }
-
 }
 

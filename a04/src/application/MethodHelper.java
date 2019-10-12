@@ -11,13 +11,10 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.stage.Stage;
 import java.io.BufferedReader;
-import java.io.File;
 import java.io.InputStreamReader;
 import java.util.Optional;
 
 public class MethodHelper {
-
-    public ObservableList<File> imageList;
 
     public void changeScene(ActionEvent event, String scene) throws Exception {
         Parent newSceneParent = FXMLLoader.load(getClass().getResource(scene));
