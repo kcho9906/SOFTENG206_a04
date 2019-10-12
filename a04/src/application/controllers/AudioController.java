@@ -12,6 +12,7 @@ public class AudioController {
 
 
     MethodHelper methodHelper = new MethodHelper();
+    String searchTerm = "";
 
     @FXML
     public TextArea wikiSearchTextArea;
@@ -68,8 +69,10 @@ public class AudioController {
 
     @FXML
     void searchAction(ActionEvent event) {
+
+        methodHelper.resetSearchTerm();
         // searches if the search term is not empty
-        String searchTerm = (searchTextField.getText().trim());
+        searchTerm = (searchTextField.getText().trim());
         // use the terminal to wikit the term with a worker / task
         //currentKeyWord.setText("Current Keyword: " + keyword);
         TerminalWorker wikitWorker = new TerminalWorker("wikit " + searchTerm);
@@ -93,6 +96,11 @@ public class AudioController {
             }
         });
 
+        wikitWorker.setOnSucceeded(event1 -> {
+            ImageController controller = new ImageController();
+            controller.getImages(searchTerm);
+
+        });
         Thread th = new Thread(wikitWorker);
         th.start();
     }

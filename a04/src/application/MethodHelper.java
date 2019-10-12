@@ -1,5 +1,7 @@
 package application;
 
+
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -8,13 +10,14 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.stage.Stage;
-
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.InputStreamReader;
 import java.util.Optional;
 
 public class MethodHelper {
+
+    public ObservableList<File> imageList;
 
     public void changeScene(ActionEvent event, String scene) throws Exception {
         Parent newSceneParent = FXMLLoader.load(getClass().getResource(scene));
@@ -89,26 +92,15 @@ public class MethodHelper {
         return "Error";
     }
 
-    /**
-     * Creates a file directory of a given name
-     */
-    public void createDirectories() {
-
-        try {
-
-            new File("./src/creations").mkdir();
-            new File("./src/audio").mkdir();
-            new File("./src/tempImages").mkdir();
-        } catch (Exception e) {
-
-            createAlertBox("Error: " + e.getMessage());
-        }
-    }
-
     private static void createAlertBox(String message) {
 
         Alert alert = new Alert(Alert.AlertType.WARNING);
         alert.setHeaderText(message);
         alert.show();
     }
+
+    public void resetSearchTerm() {
+        command("rm src/tempImages/.*");
+    }
+
 }
