@@ -75,8 +75,10 @@ public class MediaController {
             public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
 
                 if (oldValue != newValue) {
+                    System.out.println("old volume was " + player.getVolume());
+                    player.setVolume(volumeSlider.getValue()/100);
+                    System.out.println("new volume is " + player.getVolume());
 
-                    player.setVolume(volumeSlider.getValue());
                 }
             }
         });
@@ -102,7 +104,7 @@ public class MediaController {
                 String time = "";
                 time += String.format("%02d", (int) newValue.toMinutes());
                 time += ":";
-                time += String.format("%02d", (int) newValue.toSeconds());
+                time += String.format("%02d", (int) newValue.toSeconds()%60);
                 String totalMins = String.format("%02d", (int) duration.toMinutes());
                 String totalSecs = String.format("%02d", (int) (duration.toSeconds() - Integer.parseInt(totalMins)*60));
                 timeLabel.setText(time + "/" + totalMins + ":" + totalSecs);
@@ -185,7 +187,6 @@ public class MediaController {
                 mediaView.setMediaPlayer(player);
                 setUpProperties();
                 player.play();
-                System.out.println(player.getVolume());
                 volumeBeforeMute[0] = player.getVolume()*100;
             }
         });
@@ -195,6 +196,7 @@ public class MediaController {
             public void run() {
 
                 player.stop();
+                player.seek(Duration.minutes(0));
                 playPauseButton.setText("Play");
             }
         });
