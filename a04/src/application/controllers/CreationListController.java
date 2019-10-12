@@ -79,13 +79,17 @@ public class CreationListController implements Initializable{
 
     @FXML
     void playCreation(ActionEvent event) throws Exception {
+
         String creationName = creationTableView.getSelectionModel().getSelectedItem().toString();
         File videoFile = new File("src/creations/" + creationName + "/" + creationName + ".mp4");
-
-        FXMLLoader loader = new FXMLLoader(getClass().getResource("scenes/Media.fxml"));
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("../scenes/Media.fxml"));
         MediaController controller = new MediaController(videoFile);
         loader.setController(controller);
-        loader.load();
+        Parent newSceneParent = loader.load();
+        Scene newScene = new Scene(newSceneParent);
+        Stage window = (Stage) (((Node)event.getSource()).getScene().getWindow());
+        window.setScene(newScene);
+        window.show();
     }
 
 

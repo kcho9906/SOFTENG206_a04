@@ -27,10 +27,10 @@ public class MediaController implements Initializable {
     private BorderPane mediaPane;
 
     @FXML
-    private Slider volumeSlider;
-
-
     private MediaView mediaView;
+
+    @FXML
+    private Slider volumeSlider;
 
     @FXML
     private Label timeLabel;
@@ -60,7 +60,6 @@ public class MediaController implements Initializable {
 
     public MediaController(File videoFile) {
         _videoFile = videoFile;
-        createMediaPlayer();
     }
 
     private void setUpProperties() {
@@ -167,10 +166,7 @@ public class MediaController implements Initializable {
      */
     public void createMediaPlayer() {
 
-        Media video = new Media(_videoFile.toURI().toString());
-        _player = new MediaPlayer(video);
-        mediaView = new MediaView(_player);
-        mediaView.setPreserveRatio(true);
+
 
 
 
@@ -178,22 +174,18 @@ public class MediaController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        System.out.println(mediaPane);
 
-        mediaView.setFitHeight(mediaPane.getHeight());
-        mediaView.setFitWidth(mediaPane.getWidth());
-        mediaPane.setCenter(mediaView);
+        Media video = new Media(_videoFile.toURI().toString());
+        _player = new MediaPlayer(video);
+        mediaView.setMediaPlayer(_player);
         String command = "ffprobe -v error -show_entries format=duration -of default=noprint_wrappers=1:nokey=1 " + _videoFile;
         String getDuration = methodHelper.command(command);
 
         double milliseconds = Double.parseDouble(getDuration) * 1000;
         duration = new Duration(milliseconds);
-        System.out.println(duration);
         _player.setOnReady(new Runnable() {
             @Override
             public void run() {
-                System.out.println(mediaView);
-                System.out.println(_player);
                 mediaView.setMediaPlayer(_player);
                 setUpProperties();
                 _player.play();
