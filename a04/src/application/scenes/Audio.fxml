@@ -103,7 +103,7 @@
                                           <Insets right="10.0" />
                                        </HBox.margin>
                                     </Button>
-                                    <Button fx:id="deleteAllButton" mnemonicParsing="false" onAction="#deleteAllAction" text="Delete All" />
+                                    <Button fx:id="deleteAllButton" mnemonicParsing="false" onAction="#deleteAudioAction" text="Delete All" />
                                  </children>
                                  <VBox.margin>
                                     <Insets top="10.0" />

@@ -1,6 +1,5 @@
 package application.controllers;
 
-import application.MethodHelper;
 import application.*;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -16,6 +15,7 @@ public class MainMenuController {
 
     @FXML
     void toCreationScene(ActionEvent event) throws Exception {
+
         methodHelper.changeScene(event, "scenes/Audio.fxml");
     }
 
