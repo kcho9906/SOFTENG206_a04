@@ -2,14 +2,18 @@ package application.controllers;
 
 import application.CreationWorker;
 import application.FlickrImageExtractor;
+import application.Main;
 import application.MethodHelper;
-import javafx.beans.binding.BooleanBinding;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
 import javafx.scene.control.Button;
 import javafx.scene.control.ProgressIndicator;
 import javafx.scene.control.TextField;
@@ -17,7 +21,10 @@ import javafx.scene.control.ToggleButton;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.TilePane;
+import javafx.stage.Stage;
+
 import java.io.File;
+import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 import java.util.concurrent.ExecutionException;
@@ -31,11 +38,12 @@ public class ImageController implements Initializable {
 
     @FXML
     private ProgressIndicator loadingCircle;
-    private static MethodHelper methodHelper = new MethodHelper();
+    private static MethodHelper methodHelper = Main.getMethodHelper();
     private ObservableList<File> imageList = FXCollections.observableArrayList();
     private ObservableList<File> selectedList = FXCollections.observableArrayList();
     private static String query = "";
     private String creationName = "";
+    private final static int[] imagesRetrieved = {0};
 
     @FXML
     private TextField creationNameInput;
@@ -52,14 +60,35 @@ public class ImageController implements Initializable {
 
         System.out.println(selectedList.size() + " selected images");
         loadingCircle.setVisible(true);
-        CreationWorker creationWorker = new CreationWorker(selectedList.size(), query, action, creationDir);
+        CreationWorker creationWorker = new CreationWorker(selectedList, query, action, creationDir);
         Thread th = new Thread(creationWorker);
         th.start();
 
         creationWorker.setOnSucceeded(complete  -> {
 
             loadingCircle.setVisible(false);
-            methodHelper.addConfirmationAlert("Success!", creationName + " was created successfully!\nPlay creation?");
+            boolean answer = methodHelper.addConfirmationAlert("Success!", creationName + " was created successfully!\nPlay creation?");
+            if (answer) {
+                File videoFile = new File (creationDir.getPath() + "/" + creationDir.getName() + ".mp4");
+                try {
+                    FXMLLoader loader = new FXMLLoader(getClass().getResource("../scenes/Media.fxml"));
+                    MediaController controller = new MediaController(videoFile);
+                    loader.setController(controller);
+                    Parent newSceneParent = loader.load();
+                    Scene newScene = new Scene(newSceneParent);
+                    Stage window = (Stage) (((Node)event.getSource()).getScene().getWindow());
+                    window.setScene(newScene);
+                    window.show();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+            } else {
+                try {
+                    methodHelper.changeScene(event, "scenes/MainMenu.fxml");
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
         });
     }
 
@@ -70,8 +99,8 @@ public class ImageController implements Initializable {
 
     public void updateGrid() {
 
-        System.out.println(imagePane.getChildren().size());
-        for (int i = 0; i < imagePane.getChildren().size(); i++) {
+        System.out.println();
+        for (int i = 0; i < imagesRetrieved[0]; i++) {
 
             ToggleButton imageButton = (ToggleButton) imagePane.getChildren().get(i);
             ImageView imageView = (ImageView) imageButton.getGraphic();
@@ -93,41 +122,56 @@ public class ImageController implements Initializable {
                         System.out.println(imageFile + " was added to the list of selected images");
                     }
 
-                } else {
-
                 }
+
             });
         }
 
     }
 
-    public static void getImages(String searchTerm) {
+    public static void getImages(String searchTerm, Button nextButton) {
 
         query = searchTerm;
-        int number = 12;
-        AudioWorker audioWorker = new AudioWorker(number, query);
-        audioWorker.setOnSucceeded(event -> {
-            try {
-                int imagesRetrieved = audioWorker.get();
-                if (imagesRetrieved != number) {
-                    methodHelper.createAlertBox("Did not get " + number + " images\nOnly retrieved " + imagesRetrieved + " images");
+        boolean exists = false;
+        File searchTermImagesDir = new File("src/tempImages/" + searchTerm);
+        if (searchTermImagesDir.isDirectory()) {
+            System.out.println("exists");
+            imagesRetrieved[0] = 12;
+            exists = true;
+        }
+
+        if (!exists) {
+            nextButton.setDisable(true);
+            nextButton.setText("downloading images");
+            int number = 12;
+            AudioWorker audioWorker = new AudioWorker(number, query);
+            audioWorker.setOnSucceeded(event -> {
+                try {
+                    imagesRetrieved[0] = audioWorker.get();
+                    if (imagesRetrieved[0] != number) {
+                        methodHelper.createAlertBox("Did not get " + number + " images\nOnly retrieved " + imagesRetrieved + " images");
+                    }
+                    nextButton.setDisable(false);
+                    nextButton.setText("Next");
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                } catch (ExecutionException e) {
+                    e.printStackTrace();
                 }
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            } catch (ExecutionException e) {
-                e.printStackTrace();
-            }
-        });
-        Thread th = new Thread(audioWorker);
-        th.start();
+            });
+            Thread th = new Thread(audioWorker);
+            th.start();
+        }
     }
 
     public void uploadImages() {
 
-        String path = System.getProperty("user.dir") + "/src/tempImages";
+        String path = System.getProperty("user.dir") + "/src/tempImages/" + query;
         File[] imageFiles = new File(path).listFiles(File::isFile);
+
         for (File image: imageFiles) {
 
+            System.out.println(image.getName());
             imageList.add(image);
         }
         System.out.println("image list has " + imageList.size() + " pictures");
@@ -136,19 +180,22 @@ public class ImageController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-
+        System.out.println(methodHelper.getDuration());
         uploadImages();
         bindProperties();
     }
 
     public void bindProperties() {
 
-        createButton.disableProperty().bind(new BooleanBinding() {
-            @Override
-            protected boolean computeValue() {
-                return (creationNameInput.getText().isEmpty() || !creationName.matches("[a-zA-Z0-9_-]+"));
-            }
-        });
+        creationNameInput.textProperty().addListener(
+                (observable, old_value, new_value) -> {
+                    if(new_value.contains(" "))
+                    {
+                        //prevents from the new space char
+                        creationNameInput.setText(old_value);
+                    }
+                });
+
     }
 
     private String getAction(File file) {

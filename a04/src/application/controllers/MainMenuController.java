@@ -12,7 +12,7 @@ import java.io.File;
 
 public class MainMenuController {
 
-    MethodHelper methodHelper = new MethodHelper();
+    private static MethodHelper methodHelper = Main.getMethodHelper();
 
     @FXML
     void toCreationScene(ActionEvent event) throws Exception {

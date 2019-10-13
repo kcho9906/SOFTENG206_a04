@@ -1,5 +1,6 @@
 package application.controllers;
 
+import application.Main;
 import application.MethodHelper;
 import javafx.beans.InvalidationListener;
 import javafx.beans.Observable;
@@ -50,7 +51,7 @@ public class MediaController implements Initializable {
     @FXML
     private Button fastForwardButton;
 
-    private MethodHelper methodHelper = new MethodHelper();
+    private static MethodHelper methodHelper = Main.getMethodHelper();
     private MediaPlayer _player;
     private Duration duration;
     private File _videoFile;

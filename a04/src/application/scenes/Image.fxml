@@ -12,7 +12,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.TilePane?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.controllers.ImageController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="700.0" xmlns="http://javafx.com/javafx/" xmlns:fx="http://javafx.com/fxml/" fx:controller="application.controllers.ImageController">
    <center>
       <ScrollPane hbarPolicy="NEVER" vbarPolicy="ALWAYS" BorderPane.alignment="CENTER">
          <content>
@@ -98,7 +98,7 @@
                <children>
                   <TextField fx:id="creationNameInput" />
                   <Button fx:id="createButton" minWidth="90.0" mnemonicParsing="false" onAction="#createCreation" text="Create" />
-                  <ProgressIndicator prefHeight="28.0" prefWidth="29.0" visible="false" />
+                  <ProgressIndicator fx:id="loadingCircle" prefHeight="28.0" prefWidth="29.0" visible="false" />
                </children>
             </HBox>
          </children>

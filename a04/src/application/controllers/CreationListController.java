@@ -1,6 +1,8 @@
 package application.controllers;
 
+import application.Main;
 import application.MethodHelper;
+import javafx.beans.binding.Bindings;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -14,10 +16,6 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
-import javafx.scene.layout.BorderPane;
-import javafx.scene.media.Media;
-import javafx.scene.media.MediaPlayer;
-import javafx.scene.media.MediaView;
 import javafx.stage.Stage;
 
 import java.io.File;
@@ -34,7 +32,7 @@ import java.text.SimpleDateFormat;
 
 public class CreationListController implements Initializable{
 
-    MethodHelper methodHelper = new MethodHelper();
+    private static MethodHelper methodHelper = Main.getMethodHelper();
 
     @FXML
     private TableColumn<Creation, String> nameColumn;
@@ -135,6 +133,9 @@ public class CreationListController implements Initializable{
         searchTermColumn.setCellValueFactory(new PropertyValueFactory<>("_searchTerm"));
         timeColumn.setCellValueFactory(new PropertyValueFactory<>("_timeCreated"));
         durationColumn.setCellValueFactory(new PropertyValueFactory<>("_duration"));
+
+        playButton.disableProperty().bind(Bindings.isEmpty(creationTableView.getSelectionModel().getSelectedItems()));
+        deleteButton.disableProperty().bind(Bindings.isEmpty(creationTableView.getSelectionModel().getSelectedItems()));
     }
     public class Creation {
 
@@ -216,20 +217,19 @@ public class CreationListController implements Initializable{
 
         public String calculateDuration(File directory) {
 
-            //get file name for video
-            String command = "ls " + directory.getPath() + " | grep .mp4$";
-            String fileName = methodHelper.command(command).trim();
-            String lengthCommand = "ffmpeg -i " + directory.getPath() + "/" + fileName + " 2>&1 | grep Duration | cut -d ' ' -f 4 | sed s/,//";
-            String duration = methodHelper.command(lengthCommand).trim();
-            return duration;
+            String command = "tail -1 " + directory.getPath() + "/info.txt";
+            String durationString = methodHelper.command(command);
+            command = "eval \"echo $(date -ud \"@" + durationString + "\" +'%M mins %S secs')\"";
+            durationString = methodHelper.command(command);
+            return durationString.trim();
         }
 
         public String findSearchTerm(File directory) {
 
             //get file name for video
-            String command = "ls -a " + directory.getPath() + " | grep .wav$ | sed 's/^.\\(.*\\)....$/\\1/'";
-            String name = methodHelper.command(command).trim();
-            return name;
+            String command = "head -1 " + directory.getPath() + "/info.txt";
+            String name = methodHelper.command(command);
+            return name.trim();
         }
     }
 }

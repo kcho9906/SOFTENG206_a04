@@ -1,7 +1,9 @@
 package application.controllers;
 
+import application.Main;
 import application.MethodHelper;
 import application.TerminalWorker;
+import com.sun.org.apache.xpath.internal.operations.Bool;
 import javafx.beans.binding.BooleanBinding;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -14,19 +16,24 @@ import javafx.scene.control.*;
 
 import java.io.File;
 import java.net.URL;
+import java.util.Collections;
 import java.util.ResourceBundle;
 
 public class AudioController implements  Initializable {
 
+    @FXML
+    private Button nextButton;
+    private String gender = "";
+    private String speed = "";
+    private Thread thread = new Thread();
     @FXML
     public Button moveUpButton;
 
     @FXML
     public Button moveDownButton;
 
-    private ObservableList<String> selectedAudio = FXCollections.observableArrayList();
     private ObservableList<String> listForCreation = FXCollections.observableArrayList();
-    private MethodHelper methodHelper = new MethodHelper();
+    private static MethodHelper methodHelper = Main.getMethodHelper();
     private String searchTerm = "";
 
     @FXML
@@ -48,7 +55,10 @@ public class AudioController implements  Initializable {
     private TextArea wikiSearchTextArea;
 
     @FXML
-    private Slider synthSlider;
+    private Slider speedSlider;
+
+    @FXML
+    private Slider genderSlider;
 
     @FXML
     private Button previewTextButton;
@@ -66,32 +76,44 @@ public class AudioController implements  Initializable {
     private Button deleteAudioButton;
 
     @FXML
-    private Button deleteAllButton;
-
-    @FXML
-    private Button resetButton;
-
-    @FXML
-    private Button MenuButton;
-
-    @FXML
-    private Button nextButton;
-
-    @FXML
     void deleteAudioAction(ActionEvent event) {
 
+        String selectedAudio = audioListView.getSelectionModel().getSelectedItem();
+        listForCreation.remove(selectedAudio);
+        String command = "rm -f src/audio/" + searchTerm + "/" + selectedAudio;
+        methodHelper.command(command);
+        getAudioFileList();
 
-       // audioListView.getItems().remove(audioListView.getSelectionModel().getSelectedItem());
     }
 
     @FXML
     void playAudioAction(ActionEvent event) {
+        String command = "ffplay -nodisp -autoexit src/audio/" + searchTerm + "/" + audioListView.getSelectionModel().getSelectedItem() + " >/dev/null 2>&1";
+        TerminalWorker playSelectedWorker = new TerminalWorker(command); //send to background thread
+        thread = new Thread(playSelectedWorker);
+        thread.start();
 
     }
 
     @FXML
     void previewTextAction(ActionEvent event) {
 
+        String selectedText = wikiSearchTextArea.getSelectedText();
+        boolean speak = countMaxWords(selectedText);
+        if (speak) {
+            TerminalWorker previewSpeechWorker; //create worker to do task
+            getSliderValues();
+
+            String command = "espeak -v " + gender + " -s " + speed + " \"" + selectedText + "\"";
+            previewSpeechWorker = new TerminalWorker(command);
+
+            thread = new Thread(previewSpeechWorker);
+            thread.start();
+
+            previewSpeechWorker.setOnSucceeded(event1 -> {
+            });
+
+        }
     }
 
     @FXML
@@ -113,12 +135,35 @@ public class AudioController implements  Initializable {
     @FXML
     void saveTextAction(ActionEvent event) {
 
+        methodHelper.createFileDirectory("src/audio/" + searchTerm);
+        String selectedText = wikiSearchTextArea.getSelectedText();
+        boolean validRange = countMaxWords(selectedText);
+        if (validRange) {
+
+            getSliderValues();
+            String path = "src/audio/" + searchTerm + "/";
+            String firstWord = selectedText.substring(0, selectedText.indexOf(' '));
+            String lastWord = selectedText.substring(selectedText.lastIndexOf(' ') + 1);
+            String fileName = searchTerm + "_" + firstWord + "_" + lastWord + ".wav";
+            String command = "espeak -v " + gender + " -s " + speed + " \"" + selectedText + "\" -w " + path + fileName + "; lame -b 320 -h " + path + fileName + "; rm " + path + "*.wav";
+            TerminalWorker audioWorker = new TerminalWorker(command);
+            Thread th = new Thread(audioWorker);
+            th.start();
+
+            audioWorker.setOnSucceeded(event1 -> {
+
+                getAudioFileList();
+            });
+
+
+
+        }
+
     }
 
     @FXML
     void searchAction(ActionEvent event) {
         loadingCircle.setVisible(true);
-        methodHelper.resetSearchTerm();
         // searches if the search term is not empty
         searchTerm = (searchTextField.getText().trim());
         // use the terminal to wikit the term with a worker / task
@@ -132,9 +177,9 @@ public class AudioController implements  Initializable {
             @Override
             public void handle(WorkerStateEvent event) {
 
+                ImageController.getImages(searchTerm, nextButton);
                 currentKeywordLabel.setText(searchTerm);
                 loadingCircle.setVisible(false);
-                ImageController.getImages(searchTerm);
                 getAudioFileList();
                 String result = "\"" + wikitWorker.getValue().trim() + "\"";
                 if (result.contains("not found :^(")) {
@@ -156,7 +201,46 @@ public class AudioController implements  Initializable {
     @FXML
     void toNextStageButton(ActionEvent event) throws Exception {
 
-        methodHelper.changeScene(event, "scenes/Image.fxml");
+        TerminalWorker mergeAudioWorker = new TerminalWorker(mergeAudio());
+        thread = new Thread(mergeAudioWorker);
+        thread.start();
+
+        mergeAudioWorker.setOnSucceeded(finished -> {
+            String getLengthCommand = "soxi -D src/audio/" + searchTerm + "/" + searchTerm + "MERGED.wav";
+            double duration = Double.parseDouble(methodHelper.command(getLengthCommand));
+            methodHelper.setDuration(duration);
+            try {
+                methodHelper.changeScene(event, "scenes/Image.fxml");
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        });
+
+    }
+
+    private String mergeAudio() {
+
+        String command = "";
+        if (listForCreation.size()>0) {
+
+            String path = "src/audio/" + searchTerm + "/";
+            command = "ffmpeg ";
+            int count = 0;
+            for (String fileName : listForCreation) {
+
+                command += "-i " + path + fileName + " ";
+                count++;
+            }
+
+            command += "-filter_complex '";
+            for (int i = 0; i < count; i++) {
+
+                command += "[" + i + ":0]";
+            }
+            String outputPath = path + "" + searchTerm + "MERGED.wav";
+            command += "concat=n=" + count + ":v=0:a=1[out]' -map '[out]' " + outputPath;
+        }
+        return command;
     }
 
     //gets list of audio files related to the keyword
@@ -172,10 +256,11 @@ public class AudioController implements  Initializable {
 
                 if (file.isFile()) {
 
-                    audioListView.getItems().add(file.getName());
+                    listForCreation.add(file.getName());
                 }
             }
         }
+        audioListView.setItems(listForCreation);
         return audioListView;
     }
 
@@ -206,13 +291,43 @@ public class AudioController implements  Initializable {
         deleteAudioButton.disableProperty().bind(audioListView.getSelectionModel().selectedItemProperty().isNull());
         moveDownButton.disableProperty().bind(audioListView.getSelectionModel().selectedItemProperty().isNull());
         moveUpButton.disableProperty().bind(audioListView.getSelectionModel().selectedItemProperty().isNull());
+        playAudioButton.disableProperty().bind(audioListView.getSelectionModel().selectedItemProperty().isNull());
+        deleteAudioButton.disableProperty().bind(audioListView.getSelectionModel().selectedItemProperty().isNull());
+        previewTextButton.disableProperty().bind(wikiSearchTextArea.selectedTextProperty().isEmpty());
+        saveTextButton.disableProperty().bind(wikiSearchTextArea.selectedTextProperty().isEmpty());
+
+//        BooleanBinding threadBinding = new BooleanBinding() {
+//            @Override
+//            protected boolean computeValue() {
+//                return (thread.isAlive());
+//            }
+//        };
+//
+//        previewTextButton.disableProperty().bind(threadBinding);
+//        playAudioButton.disableProperty().bind(threadBinding);
 
     }
 
     public void moveAudioUp(ActionEvent actionEvent) {
+
+        String selectedAudio = audioListView.getSelectionModel().getSelectedItem();
+        int originalPos = listForCreation.indexOf(selectedAudio);
+        if (originalPos != 0) {
+
+            Collections.swap(listForCreation, originalPos, (originalPos - 1));
+        }
+        audioListView.setItems(listForCreation); //update list
     }
 
     public void moveAudioDown(ActionEvent actionEvent) {
+        String selectedAudio = audioListView.getSelectionModel().getSelectedItem();
+        int originalPos = listForCreation.indexOf(selectedAudio);
+        if (originalPos != listForCreation.size() - 1) {
+
+            Collections.swap(listForCreation, originalPos, originalPos + 1);
+        }
+
+        audioListView.setItems(listForCreation); //update list
     }
 
     //checks that selected text in within 30 words
@@ -225,6 +340,14 @@ public class AudioController implements  Initializable {
             return false;
         }
         return true;
+    }
+
+    private void getSliderValues() {
+        speed = Double.toString(speedSlider.getValue()*160);
+        if ( genderSlider.getValue() == 0 ) {
+
+            gender = "male3";
+        } else { gender = "female5";}
     }
 
 }
