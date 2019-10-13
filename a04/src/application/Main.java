@@ -5,9 +5,15 @@ import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
-import java.io.File;
 
 public class Main extends Application {
+
+    private static MethodHelper methodHelper = new MethodHelper();
+
+    public static MethodHelper getMethodHelper() {
+
+        return methodHelper;
+    }
 
     @Override
     public void start(Stage primaryStage) throws Exception {
@@ -28,11 +34,8 @@ public class Main extends Application {
 
     public void createDirs() {
 
-        File creationDir = new File("src/creations");
-        File tempImagesDir = new File("src/tempImages");
-        File audioDir = new File("src/audio");
-        creationDir.mkdir();
-        tempImagesDir.mkdir();
-        audioDir.mkdir();
+        methodHelper.createFileDirectory("src/creations");
+        methodHelper.createFileDirectory("src/tempImages");
+        methodHelper.createFileDirectory("src/audio");
     }
 }

@@ -1,5 +1,6 @@
 package application.controllers;
 
+import application.Main;
 import application.MethodHelper;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -16,7 +17,7 @@ import java.util.ResourceBundle;
 
 public class SpeechSettingsController implements Initializable {
 
-    MethodHelper methodHelper = new MethodHelper();
+    private static MethodHelper methodHelper = Main.getMethodHelper();
     String _currentLanguage;
     String _currentGender;
 

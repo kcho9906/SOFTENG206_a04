@@ -1,5 +1,6 @@
 package application;
 
+import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
 import java.io.File;
 
@@ -9,19 +10,21 @@ import java.io.File;
  */
 public class CreationWorker extends Task<Boolean> {
 
-    MethodHelper methodHelper = new MethodHelper();
+    private static MethodHelper methodHelper = Main.getMethodHelper();
     private double duration;
     private File _creationDir;
     private int _numImages, imagesFound;
-    private String command, _query, _path, _action;
+    private String command, _query, _creationPath, _action;
+    private ObservableList<File> _selectedList;
 
-    public CreationWorker(int numImages, String query, String action, File creationDir) {
+    public CreationWorker(ObservableList<File> selectedList, String query, String action, File creationDir) {
 
         _creationDir = creationDir;
-        _numImages = numImages;
-        _path = _creationDir.getPath();
+        _numImages = selectedList.size();
+        _creationPath = _creationDir.getPath();
         _query = query;
         _action = action;
+        _selectedList = selectedList;
     }
 
     @Override
@@ -32,11 +35,11 @@ public class CreationWorker extends Task<Boolean> {
         switch (_action) {
 
             case "overwrite":
-                command = "rm -rfv " + _path + "/; mkdir " + _creationDir.getPath();
+                command = "rm -rfv " + _creationPath + "/; mkdir " + _creationDir.getPath();
                 create = true;
                 break;
             case "create":
-                command = "mkdir " + _path;
+                command = "mkdir " + _creationPath;
                 create = true;
                 break;
             case "rename":
@@ -46,50 +49,68 @@ public class CreationWorker extends Task<Boolean> {
 
         // if create is true, then we create the creation
         if (create) {
-
             methodHelper.command(command);
-//            duration = _audio.mergeAudio(_creationDir); // merges audio
-//            if (duration != -1) {
-//
-//                //create the video
-//                String creationName = _creationDir.getName();
-//                String path = _creationDir.getPath();
-//                createVideo(creationName, path);
-//            } else {
-//
-//                String command = "rm -r -f " + _creationDir.getPath();
-//                methodHelper.command(command);
-//                return "No audio files selected for creation";
-////                }
-//            } else{
-//
-//                return "Could not make directory for creation";
-//            }
-//
-//            return message;
-            return true;
+            System.out.println("creating creation");
+            copyImages();
+
+            duration = methodHelper.getDuration();
+            imagesFound = _selectedList.size();
+            storeInfo();
+            System.out.println(duration);
+            System.out.println(imagesFound);
+            if (duration > 0) {
+
+                //create the video
+                String creationName = _creationDir.getName();
+                String path = _creationDir.getPath();
+                createVideo(creationName, path);
+            } else {
+
+                String command = "rm -r -f " + _creationDir.getPath();
+                methodHelper.command(command);
+            }
         }
         return false;
+    }
+
+    private void storeInfo() {
+        String command = "echo \"" + _query + "\n" + duration + "\" > " + _creationPath + "/info.txt";
+        methodHelper.command(command);
+        System.out.println(command);
     }
 
 
     private void createVideo(String creationName, String path) {
 
         // merge the images
-        command = "cat " + path + "/.*.jpg | ffmpeg -f image2pipe -framerate $((" + imagesFound + "))/" + duration + " -i - -vcodec libx264 -pix_fmt yuv420p -vf \"scale=w=1920:h=1080:force_original_aspect_ratio=1,pad=1920:1080:(ow-iw)/2:(oh-ih)/2\" -r 25 " + path + "/" + creationName + "Temp.mp4";
+        command = "cat " + _creationPath + "/*.jpg | ffmpeg -f image2pipe -framerate " + imagesFound/duration + " -i - -vcodec libx264 -pix_fmt yuv420p -vf \"scale=w=1920:h=1080:force_original_aspect_ratio=1,pad=1920:1080:(ow-iw)/2:(oh-ih)/2\" -r 25 " + path + "/" + creationName + "_imageOnly.mp4";
+        System.out.println(command);
         methodHelper.command(command);
 
-//        // add the name onto the video
-//        command = "ffmpeg -i " + path + "/" + creationName + "Temp.mp4 -vf drawtext=\"fontfile=/Library/Fonts/Verdana.ttf: text='" + _query + "': fontcolor=white: fontsize=100: box=1: boxcolor=black@0.5: boxborderw=5: x=(w-text_w)/2: y=(h-text_h)/2\" -r 25 -codec:a copy " + path + "/" + creationName + "Text.mp4";
-//        methodHelper.command(command);
-//
-//        // merge the video and images
-//        command = "ffmpeg -i " + path + "/" + creationName + "Text.mp4 -i " + path + "/." + _query + ".wav -c:v copy -c:a aac -strict experimental " + path + "/" + creationName + ".mp4";
-//        methodHelper.command(command);
-//
-//        //remove unnecessary files
-//        command = "rm " + path + "/" + creationName + "Temp.mp4; rm " + path + "/" + creationName + "Text.mp4";
-//        methodHelper.command(command);
+        // add the name onto the video
+        command = "ffmpeg -i " + path + "/" + creationName + "_imageOnly.mp4 -vf drawtext=\"fontfile=/Library/Fonts/Verdana.ttf: text='" + _query + "': fontcolor=white: fontsize=100: box=1: boxcolor=black@0.5: boxborderw=5: x=(w-text_w)/2: y=(h-text_h)/2\" -r 25 -codec:a copy " + path + "/" + _query+ ".mp4";
+        System.out.println(command);
+        methodHelper.command(command);
+
+        // merge the video and images
+        String audio = "src/audio/" + _query + "/" + _query + "MERGED.wav";
+        command = "ffmpeg -i " + path + "/" + _query + ".mp4 -i " + audio + " -c:v copy -c:a aac -strict experimental " + path + "/" + creationName + ".mp4";
+        System.out.println(command);
+        methodHelper.command(command);
+
+        methodHelper.command("rm " + audio + "; rm " + _creationPath + "/*.jpg");
+        System.out.println("removed audio");
+
+
+    }
+
+    private void copyImages() {
+        for (File file: _selectedList) {
+            System.out.println(file.getName());
+            command = "cp src/tempImages/" + _query + "/" + file.getName() + " " + _creationPath + "/" + file.getName();
+            methodHelper.command(command);
+            System.out.println(command);
+        }
     }
 }
 
