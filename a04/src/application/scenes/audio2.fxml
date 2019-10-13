@@ -55,18 +55,24 @@
                   <Insets />
                </VBox.margin>
                <children>
-                  <HBox alignment="CENTER" prefHeight="44.0" prefWidth="239.0" spacing="5.0">
+                  <HBox alignment="CENTER" prefHeight="48.0" prefWidth="479.0" spacing="5.0">
                      <children>
-                        <Label text="eSpeak" />
-                        <Slider fx:id="synthSlider" blockIncrement="1.0" majorTickUnit="1.0" max="1.0" minorTickCount="0" prefHeight="20.0" prefWidth="100.0" snapToTicks="true" />
-                        <Label text="Festival" />
+                        <Label text="Male" />
+                        <Slider fx:id="genderSlider" blockIncrement="1.0" majorTickUnit="1.0" max="1.0" minorTickCount="0" prefHeight="20.0" prefWidth="26.0" snapToTicks="true" />
+                        <Label text="Female" />
+                        <Label text="Speed">
+                           <HBox.margin>
+                              <Insets left="20.0" />
+                           </HBox.margin>
+                        </Label>
+                        <Slider fx:id="speedSlider" blockIncrement="1.0" max="300.0" showTickLabels="true" snapToTicks="true" value="100.0" />
 
                            </children>
                   </HBox>
                   <ButtonBar nodeOrientation="LEFT_TO_RIGHT" prefHeight="37.0" prefWidth="404.0">
                      <buttons>
-                        <Button fx:id="previewTextButton" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#previewTextAction" prefHeight="27.0" prefWidth="120.0" text="Preview Audio" />
-                        <Button fx:id="saveTextButton" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#saveTextAction" prefHeight="27.0" prefWidth="120.0" text="Save Audio" />
+                        <Button fx:id="previewAudioButton" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#previewAudioAction" prefHeight="27.0" prefWidth="120.0" text="Preview Audio" />
+                        <Button fx:id="saveAudioButton" maxWidth="1.7976931348623157E308" mnemonicParsing="false" onAction="#saveAudioAction" prefHeight="27.0" prefWidth="120.0" text="Save Audio" />
                      </buttons>
                   </ButtonBar>
                </children>
@@ -114,7 +120,7 @@
                   <VBox alignment="TOP_CENTER">
                      <children>
                         <Label text="3) Select audio for creation" />
-                        <ListView prefHeight="200.0">
+                        <ListView fx:id="selectedAudioListView" prefHeight="200.0">
                            <VBox.margin>
                               <Insets top="10.0" />
                            </VBox.margin>

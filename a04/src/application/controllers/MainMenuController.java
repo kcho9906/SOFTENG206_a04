@@ -16,7 +16,7 @@ public class MainMenuController {
     @FXML
     void toCreationScene(ActionEvent event) throws Exception {
 
-        methodHelper.changeScene(event, "scenes/Audio.fxml");
+        methodHelper.changeScene(event, "scenes/audio2.fxml");
     }
 
     @FXML

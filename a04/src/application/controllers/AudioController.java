@@ -48,16 +48,22 @@ public class AudioController implements  Initializable {
     private TextArea wikiSearchTextArea;
 
     @FXML
-    private Slider synthSlider;
+    private Slider genderSlider;
 
     @FXML
-    private Button previewTextButton;
+    private Slider speedSlider;
 
     @FXML
-    private Button saveTextButton;
+    private Button previewAudioButton;
 
     @FXML
-    private ListView<String> audioListView;
+    private Button saveAudioButton;
+
+    @FXML
+    private ListView<String> existingAudioListView;
+
+    @FXML
+    private ListView<String> selectedAudioListView;
 
     @FXML
     private Button playAudioButton;
@@ -85,19 +91,33 @@ public class AudioController implements  Initializable {
     }
 
     @FXML
+    void deleteAllAction(ActionEvent event) {
+
+
+        // audioListView.getItems().remove(audioListView.getSelectionModel().getSelectedItem());
+    }
+
+    @FXML
+    void addAudioAction(ActionEvent event) {
+
+
+        // audioListView.getItems().remove(audioListView.getSelectionModel().getSelectedItem());
+    }
+
+    @FXML
     void playAudioAction(ActionEvent event) {
 
     }
 
     @FXML
-    void previewTextAction(ActionEvent event) {
+    void previewAudioAction(ActionEvent event) {
 
     }
 
     @FXML
     void resetAction(ActionEvent event) {
 
-        audioListView.getItems().clear();
+        existingAudioListView.getItems().clear();
         searchTextField.clear();
         currentKeywordLabel.setText("N/A");
         wikiSearchTextArea.clear();
@@ -111,7 +131,12 @@ public class AudioController implements  Initializable {
     }
 
     @FXML
-    void saveTextAction(ActionEvent event) {
+    void saveAudioAction(ActionEvent event) {
+
+    }
+
+    @FXML
+    void removeAudioAction(ActionEvent event) {
 
     }
 
@@ -162,7 +187,7 @@ public class AudioController implements  Initializable {
     //gets list of audio files related to the keyword
     public ListView<String> getAudioFileList() {
 
-        audioListView.getItems().clear();
+        existingAudioListView.getItems().clear();
         String path = System.getProperty("user.dir") + "/src/audio/" + searchTerm;
         File folder = new File(path);
         if (folder.exists()) {
@@ -172,17 +197,17 @@ public class AudioController implements  Initializable {
 
                 if (file.isFile()) {
 
-                    audioListView.getItems().add(file.getName());
+                    existingAudioListView.getItems().add(file.getName());
                 }
             }
         }
-        return audioListView;
+        return existingAudioListView;
     }
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         //----------------------------SET UP DISABLE BINDINGS------------------------------//
-        setUpBindings();
+//        setUpBindings();
 
 //        BooleanBinding booleanBinding = new BooleanBinding() {
 //
@@ -202,17 +227,18 @@ public class AudioController implements  Initializable {
     private void setUpBindings() {
 
         searchButton.disableProperty().bind(searchTextField.textProperty().isEmpty());
-        playAudioButton.disableProperty().bind(audioListView.getSelectionModel().selectedItemProperty().isNull());
-        deleteAudioButton.disableProperty().bind(audioListView.getSelectionModel().selectedItemProperty().isNull());
-        moveDownButton.disableProperty().bind(audioListView.getSelectionModel().selectedItemProperty().isNull());
-        moveUpButton.disableProperty().bind(audioListView.getSelectionModel().selectedItemProperty().isNull());
+        playAudioButton.disableProperty().bind(existingAudioListView.getSelectionModel().selectedItemProperty().isNull());
+        deleteAudioButton.disableProperty().bind(existingAudioListView.getSelectionModel().selectedItemProperty().isNull());
+        moveDownButton.disableProperty().bind(existingAudioListView.getSelectionModel().selectedItemProperty().isNull());
+        moveUpButton.disableProperty().bind(existingAudioListView.getSelectionModel().selectedItemProperty().isNull());
 
     }
-
-    public void moveAudioUp(ActionEvent actionEvent) {
+    @FXML
+    void moveAudioUpAction(ActionEvent actionEvent) {
     }
 
-    public void moveAudioDown(ActionEvent actionEvent) {
+    @FXML
+    void moveAudioDownAction(ActionEvent actionEvent) {
     }
 
     //checks that selected text in within 30 words

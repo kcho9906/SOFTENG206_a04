@@ -31,6 +31,7 @@ public class Main extends Application {
         File creationDir = new File("src/creations");
         File tempImagesDir = new File("src/tempImages");
         File audioDir = new File("src/audio");
+
         creationDir.mkdir();
         tempImagesDir.mkdir();
         audioDir.mkdir();
