@@ -153,10 +153,8 @@ public class AudioController implements  Initializable {
             audioWorker.setOnSucceeded(event1 -> {
 
                 getAudioFileList();
+                nextButton.setDisable(isEmptyAudioList());
             });
-
-
-
         }
 
     }
@@ -191,6 +189,9 @@ public class AudioController implements  Initializable {
                     wikiSearchTextArea.setDisable(false);
                     // need to reset stuff
                 }
+
+                // changes the nextButton disable if needed
+                nextButton.setDisable(isEmptyAudioList());
             }
         });
 
@@ -206,6 +207,7 @@ public class AudioController implements  Initializable {
         thread.start();
 
         mergeAudioWorker.setOnSucceeded(finished -> {
+            System.out.println("Done");
             String getLengthCommand = "soxi -D src/audio/" + searchTerm + "/" + searchTerm + "MERGED.wav";
             double duration = Double.parseDouble(methodHelper.command(getLengthCommand));
             methodHelper.setDuration(duration);
@@ -213,6 +215,7 @@ public class AudioController implements  Initializable {
                 methodHelper.changeScene(event, "scenes/Image.fxml");
             } catch (Exception e) {
                 e.printStackTrace();
+                System.out.println(e.getMessage());
             }
         });
 
@@ -240,6 +243,9 @@ public class AudioController implements  Initializable {
             String outputPath = path + "" + searchTerm + "MERGED.wav";
             command += "concat=n=" + count + ":v=0:a=1[out]' -map '[out]' " + outputPath;
         }
+
+        System.out.println(command);
+
         return command;
     }
 
@@ -268,6 +274,9 @@ public class AudioController implements  Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         //----------------------------SET UP DISABLE BINDINGS------------------------------//
         setUpBindings();
+
+        nextButton.setDisable(isEmptyAudioList());
+
 
 //        BooleanBinding booleanBinding = new BooleanBinding() {
 //
@@ -348,6 +357,14 @@ public class AudioController implements  Initializable {
 
             gender = "male3";
         } else { gender = "female5";}
+    }
+
+    public boolean isEmptyAudioList() {
+        if (audioListView.getItems().isEmpty()) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
 }
