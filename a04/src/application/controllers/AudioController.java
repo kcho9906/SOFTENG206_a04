@@ -12,6 +12,7 @@ import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
+import javafx.scene.Scene;
 import javafx.scene.control.*;
 
 import java.io.File;
@@ -153,10 +154,8 @@ public class AudioController implements  Initializable {
             audioWorker.setOnSucceeded(event1 -> {
 
                 getAudioFileList();
+                nextButton.setDisable(isEmptyAudioList());
             });
-
-
-
         }
 
     }
@@ -191,6 +190,8 @@ public class AudioController implements  Initializable {
                     wikiSearchTextArea.setDisable(false);
                     // need to reset stuff
                 }
+
+                nextButton.setDisable(isEmptyAudioList());
             }
         });
 
@@ -268,6 +269,9 @@ public class AudioController implements  Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         //----------------------------SET UP DISABLE BINDINGS------------------------------//
         setUpBindings();
+
+        // disable the next button initially
+        nextButton.setDisable(true);
 
 //        BooleanBinding booleanBinding = new BooleanBinding() {
 //
@@ -348,6 +352,14 @@ public class AudioController implements  Initializable {
 
             gender = "male3";
         } else { gender = "female5";}
+    }
+
+    public boolean isEmptyAudioList() {
+        if (audioListView.getItems().isEmpty()) {
+            return true;
+        } else {
+            return false;
+        }
     }
 
 }

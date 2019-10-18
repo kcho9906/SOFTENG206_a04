@@ -92,8 +92,8 @@ public class CreationListController implements Initializable{
 
 
     @FXML
-    void quizCreation(ActionEvent event) {
-
+    void quizCreation(ActionEvent event) throws Exception {
+        methodHelper.changeScene(event, "scenes/Quiz.fxml");
     }
 
     @FXML
