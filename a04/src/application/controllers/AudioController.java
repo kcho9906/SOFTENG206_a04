@@ -21,6 +21,12 @@ import java.util.ResourceBundle;
 
 public class AudioController implements  Initializable {
 
+
+    @FXML
+    private ChoiceBox<String> bgMusicChoiceBox;
+    private String bgMusic = "";
+
+
     @FXML
     private Button nextButton;
     private String gender = "";
@@ -125,6 +131,7 @@ public class AudioController implements  Initializable {
         wikiSearchTextArea.clear();
         searchTerm = "";
         loadingCircle.setVisible(false);
+        bgMusicChoiceBox.setValue("None");
     }
 
     @FXML
@@ -206,7 +213,7 @@ public class AudioController implements  Initializable {
         thread.start();
 
         mergeAudioWorker.setOnSucceeded(finished -> {
-            String getLengthCommand = "soxi -D src/audio/" + searchTerm + "/" + searchTerm + "MERGED.wav";
+            String getLengthCommand = "mp3info -p \"%S\" " + "src/audio/" + searchTerm + "/" + "output.mp3";
             double duration = Double.parseDouble(methodHelper.command(getLengthCommand));
             methodHelper.setDuration(duration);
             try {
@@ -237,9 +244,18 @@ public class AudioController implements  Initializable {
 
                 command += "[" + i + ":0]";
             }
-            String outputPath = path + "" + searchTerm + "MERGED.wav";
-            command += "concat=n=" + count + ":v=0:a=1[out]' -map '[out]' " + outputPath;
+            String mergedPath = path + "output.mp3";
+            command += "concat=n=" + count + ":v=0:a=1[out]' -map '[out]' " + mergedPath;
+            command += "; ffmpeg -y -i " + mergedPath + " -acodec libmp3lame " + path + "output.mp3; ";
+
+            bgMusic = bgMusicChoiceBox.getValue();
+            if (!bgMusic.equals("None")) {
+                String bgMusicPath = System.getProperty("user.dir") + "/backgroundMusic/" + bgMusic + ".mp3";
+                command += "ffmpeg -y -i " + mergedPath + " -i " + bgMusicPath + " -filter_complex amix=inputs=2:duration=shortest " + path + "output.mp3";
+            }
+
         }
+        System.out.println(command);
         return command;
     }
 

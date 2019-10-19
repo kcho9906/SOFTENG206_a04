@@ -88,17 +88,17 @@ public class CreationWorker extends Task<Boolean> {
         methodHelper.command(command);
 
         // add the name onto the video
-        command = "ffmpeg -i " + path + "/" + creationName + "_imageOnly.mp4 -vf drawtext=\"fontfile=/Library/Fonts/Verdana.ttf: text='" + _query + "': fontcolor=white: fontsize=100: box=1: boxcolor=black@0.5: boxborderw=5: x=(w-text_w)/2: y=(h-text_h)/2\" -r 25 -codec:a copy " + path + "/" + _query+ ".mp4";
+        command = "ffmpeg -i " + path + "/" + creationName + "_imageOnly.mp4 -vf drawtext=\"fontfile=/Library/Fonts/Verdana.ttf: text='" + _query + "': fontcolor=white: fontsize=100: box=1: boxcolor=black@0.5: boxborderw=5: x=(w-text_w)/2: y=(h-text_h)/2\" -r 25 -codec:a copy " + path + "/noAudio.mp4";
         System.out.println(command);
         methodHelper.command(command);
 
         // merge the video and images
-        String audio = "src/audio/" + _query + "/" + _query + "MERGED.wav";
-        command = "ffmpeg -i " + path + "/" + _query + ".mp4 -i " + audio + " -c:v copy -c:a aac -strict experimental " + path + "/" + creationName + ".mp4";
+        String audio = "src/audio/" + _query + "/" + "output.mp3";
+        command = "ffmpeg -i " + path + "/noAudio.mp4 -i " + audio + " -c:v copy -c:a aac -strict experimental " + path + "/" + creationName + ".mp4";
         System.out.println(command);
         methodHelper.command(command);
 
-        methodHelper.command("rm " + audio + "; rm " + _creationPath + "/*.jpg");
+       // methodHelper.command("rm " + audio + "; rm " + _creationPath + "/*.jpg");
         System.out.println("removed audio");
 
 
