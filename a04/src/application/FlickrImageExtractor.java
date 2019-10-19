@@ -57,7 +57,7 @@ public class FlickrImageExtractor {
             String sharedSecret = getAPIKey("sharedSecret");
 
             Flickr flickr = new Flickr(apiKey, sharedSecret, new REST());
-            File file = new File("src/tempImages");
+            File file = new File("src/tempImages/" + query);
             file.mkdir();
             int resultsPerPage = numImages;
             int page = 0;
@@ -76,7 +76,7 @@ public class FlickrImageExtractor {
                     try {
 
                         BufferedImage image = photos.getImage(photo, Size.LARGE);
-                        String filename = "." + query.trim().replace(' ', '-') + "-" + System.currentTimeMillis() + "-" + photo.getId() + ".jpg";
+                        String filename = query.trim().replace(' ', '-') + "-" + System.currentTimeMillis() + "-" + photo.getId() + ".jpg";
                         File outputfile = new File(file.getPath(),  filename);
                         ImageIO.write(image, "jpg", outputfile);
                     } catch (FlickrException fe) {

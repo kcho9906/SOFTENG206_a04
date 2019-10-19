@@ -5,7 +5,7 @@ import javafx.concurrent.Task;
 public class TerminalWorker extends Task<String> {
 
     private String _command;
-    private MethodHelper methodHelper = new MethodHelper();
+    private static MethodHelper methodHelper = Main.getMethodHelper();
 
     public TerminalWorker(String command) {
 

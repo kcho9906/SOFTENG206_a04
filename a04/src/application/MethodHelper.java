@@ -1,7 +1,7 @@
 package application;
 
 
-import javafx.collections.ObservableList;
+import application.controllers.MediaController;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -11,10 +11,14 @@ import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.stage.Stage;
 import java.io.BufferedReader;
+import java.io.File;
+import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.Optional;
 
 public class MethodHelper {
+
+    private double _duration;
 
     public void changeScene(ActionEvent event, String scene) throws Exception {
         Parent newSceneParent = FXMLLoader.load(getClass().getResource(scene));
@@ -96,8 +100,27 @@ public class MethodHelper {
         alert.show();
     }
 
-    public void resetSearchTerm() {
-        command("rm src/tempImages/.*");
+    /**
+     * Creates a file directory of a given name
+     * @param directory
+     */
+    public void createFileDirectory(String directory) {
+
+        try {
+
+            new File(directory).mkdir();
+
+        } catch (Exception e) {
+            createAlertBox("Error: " + e.getMessage());
+        }
+    }
+
+    public void setDuration(double duration) {
+        _duration = duration;
+    }
+
+    public double getDuration() {
+        return _duration;
     }
 
 }
