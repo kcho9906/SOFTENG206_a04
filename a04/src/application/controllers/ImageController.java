@@ -23,6 +23,7 @@ import javafx.scene.image.ImageView;
 import javafx.scene.layout.TilePane;
 import javafx.stage.Stage;
 
+import java.awt.event.KeyEvent;
 import java.io.File;
 import java.io.IOException;
 import java.net.URL;
@@ -44,6 +45,7 @@ public class ImageController implements Initializable {
     private static String query = "";
     private String creationName = "";
     private final static int[] imagesRetrieved = {0};
+    private boolean textInput = false;
 
     @FXML
     private TextField creationNameInput;
@@ -56,7 +58,6 @@ public class ImageController implements Initializable {
 
         File creationDir = new File("src/creations/" + creationName);
         String action = getAction(creationDir);
-
 
         System.out.println(selectedList.size() + " selected images");
         loadingCircle.setVisible(true);
@@ -122,11 +123,10 @@ public class ImageController implements Initializable {
                         System.out.println(imageFile + " was added to the list of selected images");
                     }
 
+                    createButton.setDisable(imageSelectedAndCreationName());
                 }
-
             });
         }
-
     }
 
     public static void getImages(String searchTerm, Button nextButton) {
@@ -183,6 +183,13 @@ public class ImageController implements Initializable {
         System.out.println(methodHelper.getDuration());
         uploadImages();
         bindProperties();
+
+        creationNameInput.textProperty().addListener((observable, oldValue, newValue) -> {
+            createButton.setDisable(false);
+        });
+
+        // initially disable create button
+        createButton.setDisable(true);
     }
 
     public void bindProperties() {
@@ -226,6 +233,16 @@ public class ImageController implements Initializable {
         @Override
         protected Integer call() throws Exception {
             return FlickrImageExtractor.downloadImages(_query, _numImages);
+        }
+    }
+
+    public boolean imageSelectedAndCreationName() {
+
+        // check if there is at least one image selected and a creation name
+        if ((selectedList.size() > 0) && !(creationNameInput.getText().isEmpty())) {
+            return false;
+        } else {
+            return true;
         }
     }
 }

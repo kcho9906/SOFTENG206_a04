@@ -157,7 +157,6 @@ public class AudioController implements  Initializable {
                 nextButton.setDisable(isEmptyAudioList());
             });
         }
-
     }
 
     @FXML
