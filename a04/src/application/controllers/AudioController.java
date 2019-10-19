@@ -3,8 +3,6 @@ package application.controllers;
 import application.Main;
 import application.MethodHelper;
 import application.TerminalWorker;
-import com.sun.org.apache.xpath.internal.operations.Bool;
-import javafx.beans.binding.BooleanBinding;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.concurrent.WorkerStateEvent;
@@ -13,7 +11,6 @@ import javafx.event.EventHandler;
 import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
-
 import java.io.File;
 import java.net.URL;
 import java.util.Collections;
@@ -31,7 +28,11 @@ public class AudioController implements  Initializable {
     private Button nextButton;
     private String gender = "";
     private String speed = "";
+    private int maleAudioFiles = 0;
+    private int femaleAudioFiles = 0;
     private Thread thread = new Thread();
+    private TerminalWorker previewAudioWorker = new TerminalWorker("");
+    private TerminalWorker playAudioWorker = new TerminalWorker("");
     @FXML
     public Button moveUpButton;
 
@@ -94,9 +95,11 @@ public class AudioController implements  Initializable {
 
     @FXML
     void playAudioAction(ActionEvent event) {
-        String command = "ffplay -nodisp -autoexit src/audio/" + searchTerm + "/" + audioListView.getSelectionModel().getSelectedItem() + " >/dev/null 2>&1";
-        TerminalWorker playSelectedWorker = new TerminalWorker(command); //send to background thread
-        thread = new Thread(playSelectedWorker);
+
+        cancelPlayingAudio();
+        String command = "ffplay -nodisp -autoexit src/audio/" + searchTerm + "/" + audioListView.getSelectionModel().getSelectedItem();
+        playAudioWorker = new TerminalWorker(command); //send to background thread
+        thread = new Thread(playAudioWorker);
         thread.start();
 
     }
@@ -104,34 +107,49 @@ public class AudioController implements  Initializable {
     @FXML
     void previewTextAction(ActionEvent event) {
 
+        cancelPlayingAudio();
         String selectedText = wikiSearchTextArea.getSelectedText();
         boolean speak = countMaxWords(selectedText);
         if (speak) {
-            TerminalWorker previewSpeechWorker; //create worker to do task
             getSliderValues();
 
             String command = "espeak -v " + gender + " -s " + speed + " \"" + selectedText + "\"";
-            previewSpeechWorker = new TerminalWorker(command);
+            previewAudioWorker = new TerminalWorker(command);
 
-            thread = new Thread(previewSpeechWorker);
+            thread = new Thread(previewAudioWorker);
             thread.start();
-
-            previewSpeechWorker.setOnSucceeded(event1 -> {
-            });
-
         }
     }
 
+    private void cancelPlayingAudio() {
+
+        playAudioWorker.cancel();
+        previewAudioWorker.cancel();
+    }
+
+
     @FXML
     void resetAction(ActionEvent event) {
+        boolean reset = methodHelper.addConfirmationAlert("Reset search", "All progress will be lost. Continue?");
+        if (reset) {
 
-        audioListView.getItems().clear();
-        searchTextField.clear();
-        currentKeywordLabel.setText("N/A");
-        wikiSearchTextArea.clear();
-        searchTerm = "";
-        loadingCircle.setVisible(false);
-        bgMusicChoiceBox.setValue("None");
+            searchTextField.setDisable(false);
+            deleteAudioFiles();
+            searchTextField.clear();
+            maleAudioFiles = 0;
+            femaleAudioFiles = 0;
+            currentKeywordLabel.setText("N/A");
+            wikiSearchTextArea.clear();
+            searchTerm = "";
+            loadingCircle.setVisible(false);
+            bgMusicChoiceBox.setValue("None");
+        }
+    }
+
+    private void deleteAudioFiles() {
+
+        methodHelper.command("rm -rf src/audio/*");
+        getAudioFileList();
     }
 
     @FXML
@@ -149,9 +167,12 @@ public class AudioController implements  Initializable {
 
             getSliderValues();
             String path = "src/audio/" + searchTerm + "/";
-            String firstWord = selectedText.substring(0, selectedText.indexOf(' '));
-            String lastWord = selectedText.substring(selectedText.lastIndexOf(' ') + 1);
-            String fileName = searchTerm + "_" + firstWord + "_" + lastWord + ".wav";
+            String fileName = searchTerm + "_male_" + maleAudioFiles + ".wav";
+            if (gender.contains("female")) {
+
+                fileName = searchTerm + "_female_" + femaleAudioFiles + ".wav";
+            }
+
             String command = "espeak -v " + gender + " -s " + speed + " \"" + selectedText + "\" -w " + path + fileName + "; lame -b 320 -h " + path + fileName + "; rm " + path + "*.wav";
             TerminalWorker audioWorker = new TerminalWorker(command);
             Thread th = new Thread(audioWorker);
@@ -170,6 +191,7 @@ public class AudioController implements  Initializable {
 
     @FXML
     void searchAction(ActionEvent event) {
+
         loadingCircle.setVisible(true);
         // searches if the search term is not empty
         searchTerm = (searchTextField.getText().trim());
@@ -184,6 +206,8 @@ public class AudioController implements  Initializable {
             @Override
             public void handle(WorkerStateEvent event) {
 
+                searchTextField.clear();
+                searchTextField.setDisable(true);
                 ImageController.getImages(searchTerm, nextButton);
                 currentKeywordLabel.setText(searchTerm);
                 loadingCircle.setVisible(false);
@@ -214,6 +238,7 @@ public class AudioController implements  Initializable {
 
         mergeAudioWorker.setOnSucceeded(finished -> {
             String getLengthCommand = "mp3info -p \"%S\" " + "src/audio/" + searchTerm + "/" + "output.mp3";
+            System.out.println(getLengthCommand);
             double duration = Double.parseDouble(methodHelper.command(getLengthCommand));
             methodHelper.setDuration(duration);
             try {
@@ -231,7 +256,7 @@ public class AudioController implements  Initializable {
         if (listForCreation.size()>0) {
 
             String path = "src/audio/" + searchTerm + "/";
-            command = "ffmpeg ";
+            command = "ffmpeg -y ";
             int count = 0;
             for (String fileName : listForCreation) {
 
@@ -244,9 +269,9 @@ public class AudioController implements  Initializable {
 
                 command += "[" + i + ":0]";
             }
-            String mergedPath = path + "output.mp3";
+            String mergedPath = path + "output.wav";
             command += "concat=n=" + count + ":v=0:a=1[out]' -map '[out]' " + mergedPath;
-            command += "; ffmpeg -y -i " + mergedPath + " -acodec libmp3lame " + path + "output.mp3; ";
+            command += "; lame -b 192 -h " + mergedPath + " " + path + "output.mp3; ";
 
             bgMusic = bgMusicChoiceBox.getValue();
             if (!bgMusic.equals("None")) {
@@ -285,19 +310,6 @@ public class AudioController implements  Initializable {
         //----------------------------SET UP DISABLE BINDINGS------------------------------//
         setUpBindings();
 
-//        BooleanBinding booleanBinding = new BooleanBinding() {
-//
-//            {super.bind(currentKeywordLabel.textProperty(), audioListView.selectionModelProperty());}
-//
-//            @Override
-//            protected boolean computeValue() {
-//                return (searchTerm.equals("N/A") || audioListView.getSelectionModel().getSelectedItems().size()==0);
-//            }
-//        };
-//
-//        nextButton.disableProperty().bind(booleanBinding);
-
-
     }
 
     private void setUpBindings() {
@@ -311,16 +323,6 @@ public class AudioController implements  Initializable {
         deleteAudioButton.disableProperty().bind(audioListView.getSelectionModel().selectedItemProperty().isNull());
         previewTextButton.disableProperty().bind(wikiSearchTextArea.selectedTextProperty().isEmpty());
         saveTextButton.disableProperty().bind(wikiSearchTextArea.selectedTextProperty().isEmpty());
-
-//        BooleanBinding threadBinding = new BooleanBinding() {
-//            @Override
-//            protected boolean computeValue() {
-//                return (thread.isAlive());
-//            }
-//        };
-//
-//        previewTextButton.disableProperty().bind(threadBinding);
-//        playAudioButton.disableProperty().bind(threadBinding);
 
     }
 
@@ -363,7 +365,11 @@ public class AudioController implements  Initializable {
         if ( genderSlider.getValue() == 0 ) {
 
             gender = "male3";
-        } else { gender = "female5";}
+            maleAudioFiles++;
+        } else {
+            gender = "female5";
+            femaleAudioFiles++;
+        }
     }
 
 }

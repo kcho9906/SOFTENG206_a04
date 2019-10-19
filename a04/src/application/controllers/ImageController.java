@@ -93,6 +93,7 @@ public class ImageController implements Initializable {
 
     @FXML
     void returnToAudio(ActionEvent event) throws Exception {
+        methodHelper.command("rm src/audio/" + query + "/output.mp3"); //delete merged audio
         methodHelper.changeScene(event, "scenes/Audio.fxml");
     }
 
@@ -148,7 +149,7 @@ public class ImageController implements Initializable {
                 try {
                     imagesRetrieved[0] = audioWorker.get();
                     if (imagesRetrieved[0] != number) {
-                        methodHelper.createAlertBox("Did not get " + number + " images\nOnly retrieved " + imagesRetrieved + " images");
+                        methodHelper.createAlertBox("Did not get " + number + " images\nOnly retrieved " + imagesRetrieved[0] + " images");
                     }
                     nextButton.setDisable(false);
                     nextButton.setText("Next");

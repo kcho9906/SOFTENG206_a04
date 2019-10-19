@@ -18,6 +18,10 @@ public class TerminalWorker extends Task<String> {
         String output = methodHelper.command(_command);
         output = " " + output;
 
+        if (isCancelled()) {
+            return null;
+        }
         return output;
     }
+
 }

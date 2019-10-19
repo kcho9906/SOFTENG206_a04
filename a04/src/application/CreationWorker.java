@@ -98,7 +98,7 @@ public class CreationWorker extends Task<Boolean> {
         System.out.println(command);
         methodHelper.command(command);
 
-       // methodHelper.command("rm " + audio + "; rm " + _creationPath + "/*.jpg");
+        methodHelper.command("rm " + audio + "; rm " + _creationPath + "/*.jpg");
         System.out.println("removed audio");
 
 

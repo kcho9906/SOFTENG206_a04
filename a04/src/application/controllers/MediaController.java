@@ -198,6 +198,8 @@ public class MediaController implements Initializable {
             @Override
             public void run() {
 
+                volumeSlider.setValue(1.0);
+                muteButton.setText("Mute");
                 _player.stop();
                 _player.seek(Duration.minutes(0));
                 playPauseButton.setText("Play");

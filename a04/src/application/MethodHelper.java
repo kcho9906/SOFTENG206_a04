@@ -48,14 +48,14 @@ public class MethodHelper {
      * @return
      */
     public static String command(String command) {
-
+        Process process = null;
         try {
 
             String output = null;
 
             ProcessBuilder pb = new ProcessBuilder("bash", "-c", command);
 
-            Process process = pb.start();
+            process = pb.start();
 
             BufferedReader stdout = new BufferedReader(new InputStreamReader(process.getInputStream()));
             BufferedReader stderr = new BufferedReader(new InputStreamReader(process.getErrorStream()));
@@ -86,6 +86,8 @@ public class MethodHelper {
             }
 
             return output;
+        } catch (InterruptedException ie) {
+            process.destroy();
         } catch (Exception e) {
 
             e.printStackTrace();
