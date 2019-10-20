@@ -45,21 +45,20 @@ public class FlickrImageExtractor {
 
     /**
      * This method downloads the images from the Flickr website of the searched term.
-     * @param file
+     * @param query
      * @param numImages
-     * @param _searchTerm
      * @return
      */
-    public static int downloadImages(File file, int numImages, String _searchTerm) {
+    public static int downloadImages(String query, int numImages) {
 
         try {
 
-            String query = _searchTerm;
             String apiKey = getAPIKey("apiKey");
             String sharedSecret = getAPIKey("sharedSecret");
 
             Flickr flickr = new Flickr(apiKey, sharedSecret, new REST());
-
+            File file = new File("src/tempImages/" + query);
+            file.mkdir();
             int resultsPerPage = numImages;
             int page = 0;
 
@@ -77,7 +76,7 @@ public class FlickrImageExtractor {
                     try {
 
                         BufferedImage image = photos.getImage(photo, Size.LARGE);
-                        String filename = "." + query.trim().replace(' ', '-') + "-" + System.currentTimeMillis() + "-" + photo.getId() + ".jpg";
+                        String filename = query.trim().replace(' ', '-') + "-" + System.currentTimeMillis() + "-" + photo.getId() + ".jpg";
                         File outputfile = new File(file.getPath(),  filename);
                         ImageIO.write(image, "jpg", outputfile);
                     } catch (FlickrException fe) {
