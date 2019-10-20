@@ -19,6 +19,7 @@ import java.util.Optional;
 public class MethodHelper {
 
     private double _duration;
+    private Scene previousScene;
 
     public void changeScene(ActionEvent event, String scene) throws Exception {
         Parent newSceneParent = FXMLLoader.load(getClass().getResource(scene));
@@ -125,4 +126,18 @@ public class MethodHelper {
         return _duration;
     }
 
+    public void setPreviousScene(Scene scene) {
+        previousScene = scene;
+    }
+
+    public void changeCreationScene(ActionEvent event, String scene) throws Exception {
+        System.out.println(previousScene);
+        if (previousScene == null) {
+            changeScene(event, scene);
+        } else {
+            Stage window = (Stage) (((Node) event.getSource()).getScene().getWindow());
+            window.setScene(previousScene);
+            window.show();
+        }
+    }
 }
