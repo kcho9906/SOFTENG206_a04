@@ -19,6 +19,8 @@ import java.util.Optional;
 public class MethodHelper {
 
     private double _duration;
+    private int _correctAnswers = 0;
+    private int _totalAnswers = 0;
 
     public void changeScene(ActionEvent event, String scene) throws Exception {
         Parent newSceneParent = FXMLLoader.load(getClass().getResource(scene));
@@ -123,6 +125,16 @@ public class MethodHelper {
 
     public double getDuration() {
         return _duration;
+    }
+
+    public void setAnswers(int correct, int total) {
+        _correctAnswers = correct;
+        _totalAnswers = total;
+    }
+
+    public int[] getAnswers() {
+        int[] output = {_correctAnswers,_totalAnswers};
+        return output;
     }
 
 }

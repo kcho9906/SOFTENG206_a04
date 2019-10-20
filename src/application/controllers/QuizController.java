@@ -2,18 +2,14 @@ package application.controllers;
 
 import application.Main;
 import application.MethodHelper;
-import javafx.beans.InvalidationListener;
-import javafx.beans.Observable;
-import javafx.beans.value.ChangeListener;
-import javafx.beans.value.ObservableValue;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.Slider;
 import javafx.scene.control.TextField;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
@@ -36,31 +32,19 @@ public class QuizController implements Initializable {
     private Button checkAnswerButton;
 
     @FXML
-    private Label timeLabel;
+    private Button replayButton;
 
     @FXML
-    private Slider timeSlider;
+    private Button nextButton;
 
     @FXML
-    private Button muteButton;
-
-    @FXML
-    private Slider volumeSlider;
-
-    @FXML
-    private Button rewindButton;
-
-    @FXML
-    private Button playPauseButton;
-
-    @FXML
-    private Button fastForwardButton;
-
-    @FXML
-    private Button creationListButton;
+    private Button endQuizButton;
 
     @FXML
     private MediaView mediaView;
+
+    @FXML
+    private ImageView resultImage;
 
     private static MethodHelper methodHelper = Main.getMethodHelper();
     private MediaPlayer _player;
@@ -68,123 +52,106 @@ public class QuizController implements Initializable {
     private File _videoFile;
     private double[] volumeBeforeMute = {1};
     private FXMLLoader loader;
-
-    public QuizController(File videoFile) {
-        _videoFile = videoFile;
-    }
+    private String _currentCreationName = "";
+    private int _correctAnswers = 0;
+    private int _attemptedAnswers = 0;
+    private Image tick = new Image(new File("componentImage/greenTick.png").toURI().toString());
+    private Image cross = new Image(new File("componentImage/redCross.png").toURI().toString());
 
     private void setUpProperties() {
-        volumeSlider.valueProperty().addListener(new ChangeListener<Number>() {
 
-            @Override
-            public void changed(ObservableValue<? extends Number> observable, Number oldValue, Number newValue) {
-
-                if (oldValue != newValue) {
-                    System.out.println("old volume was " + _player.getVolume());
-                    _player.setVolume(volumeSlider.getValue()/100);
-                    System.out.println("new volume is " + _player.getVolume());
-
-                }
-            }
-        });
-
-        timeSlider.valueProperty().addListener(new InvalidationListener() {
-
-            @Override
-            public void invalidated(Observable observable) {
-
-                if (timeSlider.isPressed()) {
-
-                    _player.seek(_player.getMedia().getDuration().multiply(timeSlider.getValue() / 100.00));
-                }
-            }
-        });
-
-        _player.currentTimeProperty().addListener(new ChangeListener<Duration>() {
-
-            @Override
-            public void changed(ObservableValue<? extends Duration> observable, Duration oldValue,
-                                Duration newValue) {
-
-                String time = "";
-                time += String.format("%02d", (int) newValue.toMinutes());
-                time += ":";
-                time += String.format("%02d", (int) newValue.toSeconds()%60);
-                String totalMins = String.format("%02d", (int) duration.toMinutes());
-                String totalSecs = String.format("%02d", (int) (duration.toSeconds() - Integer.parseInt(totalMins)*60));
-                timeLabel.setText(time + "/" + totalMins + ":" + totalSecs);
-                timeSlider.setValue(_player.getCurrentTime().toMinutes()/_player.getTotalDuration().toMinutes()*100.00);
-            }
-        });
-
-    }
-
-
-    @FXML
-    void answerText(ActionEvent event) {
-        System.out.println("HI");
     }
 
     @FXML
     void checkAnswer(ActionEvent event) {
+        // compares the input to the textField with the current creation
+        String input = answerTextField.getText().trim().toLowerCase();
+        System.out.println(input);
+        System.out.println(_currentCreationName);
+        if (input.equals(_currentCreationName)) {
 
-    }
-
-    @FXML
-    void fastForwardMedia(ActionEvent event) {
-        _player.seek( _player.getCurrentTime().add( Duration.seconds(5)) );
-    }
-
-    @FXML
-    void muteMedia(ActionEvent event) {
-        if (volumeSlider.getValue()!=0) {
-
-            volumeBeforeMute[0] = volumeSlider.getValue();
-            volumeSlider.setValue(0);
-            muteButton.setText("Unmute");
+            // set image view to tick and disable check answers button
+            resultImage.setImage(tick);
+            checkAnswerButton.setDisable(true);
+            _correctAnswers++;
         } else {
 
-            muteButton.setText("Mute");
-            volumeSlider.setValue(volumeBeforeMute[0]);
+            // set image to a cross and disable check answer button
+            resultImage.setImage(cross);
+            checkAnswerButton.setDisable(true);
         }
+
+        _attemptedAnswers++;
+    }
+
+
+    @FXML
+    void replayQuiz(ActionEvent event) {
+        _player.play();
+        replayButton.setDisable(true);
     }
 
     @FXML
-    void playPauseMedia(ActionEvent event) {
-        if (_player.getStatus() == MediaPlayer.Status.PLAYING) {
+    void toResultScene (ActionEvent event) throws Exception {
 
-            _player.pause();
-            playPauseButton.setText("Play");
-        } else {
+        // set the answers
+        methodHelper.setAnswers(_correctAnswers, _attemptedAnswers);
 
-            playPauseButton.setText("Pause");
-            _player.play();
-        }
+        methodHelper.changeScene(event, "scenes/Results.fxml");
     }
 
     @FXML
-    void returnToCreationList(ActionEvent event) throws Exception {
-        _player.stop();
-        _player.dispose();
-        methodHelper.changeScene(event, "scenes/CreationList.fxml");
+    void toNextVideo (ActionEvent event) throws Exception {
+
+        // enables the check answer button
+        checkAnswerButton.setDisable(false);
+
+        // reset the image to blank
+        resultImage.setImage(null);
+
+        // reset the text field
+        answerTextField.setText("");
+
+        // plays the next video
+        playRandomVideo();
     }
 
-    @FXML
-    void rewindMedia(ActionEvent event) {
-        _player.seek( _player.getCurrentTime().add( Duration.seconds(-3)) );
+    /**
+     * method which will choose a random video and play it
+     */
+    public void playRandomVideo() {
+        // get the random video file
+        // get the number of creations
+        File file = new File("src/creations");
+        File[] files = file.listFiles();
+        int noOfCreations = files.length;
+
+        // get a random number between 1 and noOfCreations - cannot be zero
+        int videoFileNumber = (int) (Math.random() * noOfCreations + 1);
+        videoFileNumber -= 1;
+        System.out.println(videoFileNumber);
+
+        // select the random file
+        File selectedFile = files[videoFileNumber];
+        _currentCreationName = selectedFile.getName().toLowerCase();
+        String path = selectedFile.getPath();
+        File videoFile = new File(path + "/" + "noAudio.mp4");
+
+        // play the video straight away
+        Media video = new Media(videoFile.toURI().toString());
+        _player = new MediaPlayer(video);
+        mediaView.setMediaPlayer(_player);
     }
+
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
-        Media video = new Media(_videoFile.toURI().toString());
-        _player = new MediaPlayer(video);
-        mediaView.setMediaPlayer(_player);
-        String command = "ffprobe -v error -show_entries format=duration -of default=noprint_wrappers=1:nokey=1 " + _videoFile;
-        String getDuration = methodHelper.command(command);
+        playRandomVideo();
 
-        double milliseconds = Double.parseDouble(getDuration) * 1000;
-        duration = new Duration(milliseconds);
+        System.out.println(methodHelper.command("pwd"));
+
+        // prepare the video
         _player.setOnReady(new Runnable() {
             @Override
             public void run() {
@@ -198,12 +165,10 @@ public class QuizController implements Initializable {
         _player.setOnEndOfMedia(new Runnable() {
             @Override
             public void run() {
-
-                volumeSlider.setValue(1.0);
-                muteButton.setText("Mute");
                 _player.stop();
                 _player.seek(Duration.minutes(0));
-                playPauseButton.setText("Play");
+                replayButton.setDisable(false);
+                replayButton.setText("Replay");
             }
         });
     }
