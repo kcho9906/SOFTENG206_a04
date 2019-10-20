@@ -12,7 +12,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.media.MediaView?>
 
-<BorderPane fx:id="mediaPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="534.0" prefWidth="820.0" xmlns="http://javafx.com/javafx/" xmlns:fx="http://javafx.com/fxml/">
+<BorderPane fx:id="mediaPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="534.0" prefWidth="820.0" xmlns="http://javafx.com/javafx/" xmlns:fx="http://javafx.com/fxml/" >
    <bottom>
       <VBox alignment="CENTER" prefHeight="86.0" prefWidth="889.0" BorderPane.alignment="CENTER">
          <children>

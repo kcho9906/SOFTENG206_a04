@@ -5,6 +5,7 @@
 <?import javafx.scene.control.ButtonBar?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.Slider?>
+<?import javafx.scene.control.TextField?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.BorderPane?>
@@ -12,10 +13,20 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.media.MediaView?>
 
-<BorderPane fx:id="mediaPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="534.0" prefWidth="820.0" xmlns="http://javafx.com/javafx/" xmlns:fx="http://javafx.com/fxml/" >
+<BorderPane fx:id="mediaPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="534.0" prefWidth="820.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" >
    <bottom>
-      <VBox alignment="CENTER" prefHeight="86.0" prefWidth="889.0" BorderPane.alignment="CENTER">
+      <VBox alignment="CENTER" prefHeight="165.0" prefWidth="800.0" BorderPane.alignment="CENTER">
          <children>
+            <HBox alignment="CENTER" prefHeight="159.0" prefWidth="800.0">
+               <children>
+                  <TextField fx:id="answerTextField" onAction="#answerText">
+                     <HBox.margin>
+                        <Insets right="30.0" />
+                     </HBox.margin>
+                  </TextField>
+                  <Button fx:id="checkAnswerButton" mnemonicParsing="false" onAction="#checkAnswer" text="Check Answer" />
+               </children>
+            </HBox>
             <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" spacing="10.0">
                <children>
                   <Label fx:id="timeLabel" text="00:00 / 00:00" />
@@ -37,7 +48,7 @@
                      </children>
                   </HBox>
                   <ButtonBar prefHeight="40.0" prefWidth="200.0">
-                    <buttons>
+                     <buttons>
                         <Button fx:id="rewindButton" mnemonicParsing="false" onAction="#rewindMedia">
                            <graphic>
                               <ImageView fitHeight="20.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true" rotate="180.0">
@@ -45,8 +56,9 @@
                                     <Image url="@../../../../componentImages/fastForward.png" />
                                  </image>
                               </ImageView>
-                           </graphic></Button>
-                      <Button fx:id="playPauseButton" mnemonicParsing="false" onAction="#playPauseMedia" text="Pause" />
+                           </graphic>
+                        </Button>
+                        <Button fx:id="playPauseButton" mnemonicParsing="false" onAction="#playPauseMedia" text="Pause" />
                         <Button fx:id="fastForwardButton" mnemonicParsing="false" onAction="#fastForwardMedia">
                            <graphic>
                               <ImageView fitHeight="20.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
@@ -54,14 +66,14 @@
                                     <Image url="@../../../../componentImages/fastForward.png" />
                                  </image>
                               </ImageView>
-                           </graphic></Button>
-                    </buttons>
+                           </graphic>
+                        </Button>
+                     </buttons>
                   </ButtonBar>
                   <ButtonBar prefHeight="26.0" prefWidth="260.0">
-                    <buttons>
-                      <Button fx:id="menuButton" mnemonicParsing="false" onAction="#returnToMenu" text="Main Menu" />
+                     <buttons>
                         <Button fx:id="creationListButton" mnemonicParsing="false" onAction="#returnToCreationList" prefWidth="163.0" text="Creations List" />
-                    </buttons>
+                     </buttons>
                   </ButtonBar>
                </children>
             </HBox>

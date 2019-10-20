@@ -60,6 +60,7 @@ public class MediaController implements Initializable {
 
 
     public MediaController(File videoFile) {
+
         _videoFile = videoFile;
     }
 
@@ -140,7 +141,8 @@ public class MediaController implements Initializable {
 
             playPauseButton.setText("Pause");
             _player.play();
-        }    }
+        }
+    }
 
     @FXML
     void returnToCreationList(ActionEvent event) throws Exception {
