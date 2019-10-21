@@ -242,7 +242,8 @@ public class AudioController implements  Initializable {
             double duration = Double.parseDouble(methodHelper.command(getLengthCommand));
             methodHelper.setDuration(duration);
             try {
-                methodHelper.changeScene(event, "scenes/Image.fxml");
+                methodHelper.changeCreationScene(event, "scenes/Image.fxml");
+                methodHelper.setPreviousScene(nextButton.getScene());
             } catch (Exception e) {
                 e.printStackTrace();
             }

@@ -25,6 +25,7 @@ public class MethodHelper {
     private int _totalAnswers = 0;
     private int _scorePercentage = 0;
     private ObservableList<Creation> _answeredCreations = FXCollections.observableArrayList();
+    private Scene previousScene;
 
     public void changeScene(ActionEvent event, String scene) throws Exception {
         Parent newSceneParent = FXMLLoader.load(getClass().getResource(scene));
@@ -159,5 +160,19 @@ public class MethodHelper {
 
     public ObservableList<Creation> getAnsweredCreations() {
         return _answeredCreations;
+    }
+    public void setPreviousScene(Scene scene) {
+        previousScene = scene;
+    }
+
+    public void changeCreationScene(ActionEvent event, String scene) throws Exception {
+        System.out.println(previousScene);
+        if (previousScene == null) {
+            changeScene(event, scene);
+        } else {
+            Stage window = (Stage) (((Node) event.getSource()).getScene().getWindow());
+            window.setScene(previousScene);
+            window.show();
+        }
     }
 }

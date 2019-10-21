@@ -93,8 +93,10 @@ public class ImageController implements Initializable {
 
     @FXML
     void returnToAudio(ActionEvent event) throws Exception {
+
         methodHelper.command("rm src/audio/" + query + "/output.mp3"); //delete merged audio
-        methodHelper.changeScene(event, "scenes/Audio.fxml");
+        methodHelper.changeCreationScene(event, "scenes/Audio.fxml");
+        methodHelper.setPreviousScene(createButton.getScene());
     }
 
     public void updateGrid() {
