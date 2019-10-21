@@ -28,8 +28,6 @@ import java.util.concurrent.ExecutionException;
 
 public class ImageController implements Initializable {
 
-
-
     @FXML
     private Button createButton;
     @FXML
@@ -55,7 +53,6 @@ public class ImageController implements Initializable {
 
         File creationDir = new File("src/creations/" + creationName);
         String action = getAction(creationDir);
-
 
         System.out.println(selectedList.size() + " selected images");
         loadingCircle.setVisible(true);
@@ -122,6 +119,15 @@ public class ImageController implements Initializable {
                         selectedList.add(imageFile);
                         imageButton.setStyle("-fx-background-color: Yellow");
                         System.out.println(imageFile + " was added to the list of selected images");
+
+                    }
+
+                    if ((selectedList.size() > 0) && (!creationNameInput.getText().isEmpty())) {
+//                        methodHelper.setImageCreate(true);
+                        createButton.setDisable(false);
+                    } else {
+                        createButton.setDisable(true);
+//                        methodHelper.setImageCreate(false);
                     }
 
                 }
@@ -154,14 +160,6 @@ public class ImageController implements Initializable {
                         methodHelper.createAlertBox("Did not get " + number + " images\nOnly retrieved " + imagesRetrieved[0] + " images");
                     }
 
-                    methodHelper.setImagesDownloaded(true);
-                    nextButton.setText("Next");
-
-                    if (methodHelper.getNext()) {
-                        nextButton.setDisable(false);
-                    }
-//                    nextButton.setDisable(false);
-//                    nextButton.setText("Next");
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 } catch (ExecutionException e) {
@@ -170,6 +168,13 @@ public class ImageController implements Initializable {
             });
             Thread th = new Thread(audioWorker);
             th.start();
+        }
+
+        methodHelper.setImagesDownloaded(true);
+        nextButton.setText("Next");
+
+        if (methodHelper.getNext()) {
+            nextButton.setDisable(false);
         }
     }
 
@@ -188,10 +193,13 @@ public class ImageController implements Initializable {
     }
 
     @Override
-    public void initialize(URL location, ResourceBundle resources) {
+    public void initialize(URL locaion, ResourceBundle resources) {
         System.out.println(methodHelper.getDuration());
         uploadImages();
         bindProperties();
+
+        // disable create button
+        createButton.setDisable(true);
     }
 
     public void bindProperties() {

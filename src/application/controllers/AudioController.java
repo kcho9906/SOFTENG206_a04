@@ -65,6 +65,10 @@ public class AudioController implements  Initializable {
     private TerminalWorker previewAudioWorker = new TerminalWorker("");
     private TerminalWorker playAudioWorker = new TerminalWorker("");
 
+    /**
+     * Method to delete selected audio from the audio list
+     * @param event
+     */
     @FXML
     void deleteAudioAction(ActionEvent event) {
 
@@ -82,6 +86,10 @@ public class AudioController implements  Initializable {
 
     }
 
+    /**
+     * Plays the selected saved audio file
+     * @param event
+     */
     @FXML
     void playAudioAction(ActionEvent event) {
 
@@ -93,10 +101,16 @@ public class AudioController implements  Initializable {
 
     }
 
+    /**
+     * Previews the highlighted text in the text area through espeak
+     * @param event
+     */
     @FXML
     void previewTextAction(ActionEvent event) {
 
+        // cancels the previous audio playing
         cancelPlayingAudio();
+
         String selectedText = wikiSearchTextArea.getSelectedText();
         boolean speak = countMaxWords(selectedText);
         if (speak) {
@@ -110,15 +124,23 @@ public class AudioController implements  Initializable {
         }
     }
 
+    /**
+     * Method will cancel exisiting audio being played
+     */
     private void cancelPlayingAudio() {
 
         playAudioWorker.cancel();
         previewAudioWorker.cancel();
     }
 
-
+    /**
+     * Reset the whole creation scene
+     * @param event
+     */
     @FXML
     void resetAction(ActionEvent event) {
+
+        // alert to confirm whether they want to reset or not
         boolean reset = methodHelper.addConfirmationAlert("Reset search", "All progress will be lost. Continue?");
         if (reset) {
 
@@ -136,6 +158,10 @@ public class AudioController implements  Initializable {
         }
     }
 
+    /**
+     * Method to delete all the audio files.
+     * used in the reset method to clear everything
+     */
     private void deleteAudioFiles() {
 
         methodHelper.command("rm -rf src/audio/*");
@@ -144,11 +170,20 @@ public class AudioController implements  Initializable {
         nextButton.setDisable(true);
     }
 
+    /**
+     * Method to return to main menu
+     * @param event
+     * @throws Exception
+     */
     @FXML
     void returnToMenu(ActionEvent event) throws Exception {
         methodHelper.changeScene(event, "scenes/MainMenu.fxml");
     }
 
+    /**
+     * Save the selected text as a wav file that can be played when selected
+     * @param event
+     */
     @FXML
     void saveTextAction(ActionEvent event) {
 
@@ -179,25 +214,25 @@ public class AudioController implements  Initializable {
                     nextButton.setDisable(false);
                 }
             });
-
-
-
         }
 
     }
 
+    /**
+     * Method which will take a term searched in the search text field
+     * and use the bash command to wikit it. Then displays the output in
+     * the text area below.
+     * @param event
+     */
     @FXML
     void searchAction(ActionEvent event) {
 
         loadingCircle.setVisible(true);
         // searches if the search term is not empty
         searchTerm = (searchTextField.getText().trim());
-        // use the terminal to wikit the term with a worker / task
-        //currentKeyWord.setText("Current Keyword: " + keyword);
-        TerminalWorker wikitWorker = new TerminalWorker("wikit " + searchTerm);
 
-        // start the progress bar
-        // startProgressBar("Searching for ...", wikitWorker);
+        // use the terminal to wikit the term with a worker / task
+        TerminalWorker wikitWorker = new TerminalWorker("wikit " + searchTerm);
 
         wikitWorker.setOnSucceeded(new EventHandler<WorkerStateEvent>() {
             @Override
@@ -226,6 +261,12 @@ public class AudioController implements  Initializable {
         th.start();
     }
 
+    /**
+     * Changes scene to the image scene containing the images to be
+     * selected for the final creation.
+     * @param event
+     * @throws Exception
+     */
     @FXML
     void toNextStageButton(ActionEvent event) throws Exception {
 
@@ -248,10 +289,14 @@ public class AudioController implements  Initializable {
 
     }
 
+    /**
+     * Merges the audio for the final creation
+     * @return
+     */
     private String mergeAudio() {
 
         String command = "";
-        if (listForCreation.size()>0) {
+        if (listForCreation.size() > 0) {
 
             String path = "src/audio/" + searchTerm + "/";
             command = "ffmpeg -y ";
@@ -282,7 +327,9 @@ public class AudioController implements  Initializable {
         return command;
     }
 
-    //gets list of audio files related to the keyword
+    /**
+     * Method the gets list of audio files related to the keyword
+     */
     public ListView<String> getAudioFileList() {
 
         audioListView.getItems().clear();
@@ -303,9 +350,13 @@ public class AudioController implements  Initializable {
         return audioListView;
     }
 
+    /**
+     * Method which runs on initialisation of the scene
+     * @param location
+     * @param resources
+     */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
-        //----------------------------SET UP DISABLE BINDINGS------------------------------//
         setUpBindings();
 
         // disable the next button
@@ -313,6 +364,9 @@ public class AudioController implements  Initializable {
 
     }
 
+    /**
+     * Method which sets up all the necessary bindings for the scene.
+     */
     private void setUpBindings() {
 
         searchButton.disableProperty().bind(searchTextField.textProperty().isEmpty());
@@ -327,6 +381,10 @@ public class AudioController implements  Initializable {
 
     }
 
+    /**
+     * Button that moves the audio up in the saved audio list
+     * @param actionEvent
+     */
     public void moveAudioUp(ActionEvent actionEvent) {
 
         String selectedAudio = audioListView.getSelectionModel().getSelectedItem();
@@ -338,6 +396,10 @@ public class AudioController implements  Initializable {
         audioListView.setItems(listForCreation); //update list
     }
 
+    /**
+     * Button that moves the audio down in the saved audio list
+     * @param actionEvent
+     */
     public void moveAudioDown(ActionEvent actionEvent) {
         String selectedAudio = audioListView.getSelectionModel().getSelectedItem();
         int originalPos = listForCreation.indexOf(selectedAudio);
@@ -349,7 +411,9 @@ public class AudioController implements  Initializable {
         audioListView.setItems(listForCreation); //update list
     }
 
-    //checks that selected text in within 30 words
+    /**
+     * Method to check that selected text in within 30 words
+     */
     public boolean countMaxWords(String selectedText) {
 
         String[] words = selectedText.split("\\s+");
@@ -361,6 +425,9 @@ public class AudioController implements  Initializable {
         return true;
     }
 
+    /**
+     * Method to get the slider values for the gender of the speaker
+     */
     private void getSliderValues() {
         speed = Double.toString(speedSlider.getValue()*160);
         if ( genderSlider.getValue() == 0 ) {
@@ -372,7 +439,6 @@ public class AudioController implements  Initializable {
             femaleAudioFiles++;
         }
     }
-
 }
 
 

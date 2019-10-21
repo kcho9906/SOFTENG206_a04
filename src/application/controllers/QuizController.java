@@ -72,8 +72,6 @@ public class QuizController implements Initializable {
         boolean correct = false;
         // compares the input to the textField with the current creation
         String input = answerTextField.getText().trim().toLowerCase();
-        System.out.println(input);
-        System.out.println(_currentCreationName);
         if (input.equals(_currentCreationName)) {
 
             // set image view to tick and disable check answers button
@@ -146,7 +144,6 @@ public class QuizController implements Initializable {
         // get a random number between 1 and noOfCreations - cannot be zero
         int videoFileNumber = (int) (Math.random() * noOfCreations + 1);
         videoFileNumber -= 1;
-        System.out.println(videoFileNumber);
 
         // select the random file
         File selectedFile = files[videoFileNumber];

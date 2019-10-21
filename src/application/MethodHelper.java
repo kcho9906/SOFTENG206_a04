@@ -28,6 +28,8 @@ public class MethodHelper {
     private Scene previousScene;
     private boolean _next = false;
     private boolean _imagesDownloaded = false;
+    private boolean _imageCreate = false;
+    private boolean _textCreate = false;
 
     public void changeScene(ActionEvent event, String scene) throws Exception {
         Parent newSceneParent = FXMLLoader.load(getClass().getResource(scene));
@@ -192,5 +194,21 @@ public class MethodHelper {
 
     public boolean getBooleanImages() {
         return _imagesDownloaded;
+    }
+
+    public void setTextCreate(boolean textCreate) {
+        _textCreate = textCreate;
+    }
+
+    public boolean getTextCreate() {
+        return _textCreate;
+    }
+
+    public void setImageCreate(boolean imageCreate) {
+        _imageCreate = imageCreate;
+    }
+
+    public boolean getImageCreate() {
+        return _imageCreate;
     }
 }
