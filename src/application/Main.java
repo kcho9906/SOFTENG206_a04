@@ -5,6 +5,7 @@ import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.text.Font;
 import javafx.stage.Stage;
 
 public class Main extends Application {
@@ -19,7 +20,7 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
 
-
+        Font.loadFont(getClass().getResourceAsStream("src/Neon.ttf"),48);
         createDirs();
         Parent root = FXMLLoader.load(getClass().getResource("scenes/MainMenu.fxml"));
         primaryStage.setTitle("VARpedia");

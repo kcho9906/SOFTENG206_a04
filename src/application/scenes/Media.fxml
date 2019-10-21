@@ -12,7 +12,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.media.MediaView?>
 
-<BorderPane fx:id="mediaPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="534.0" prefWidth="820.0" xmlns="http://javafx.com/javafx/" xmlns:fx="http://javafx.com/fxml/">
+<BorderPane fx:id="mediaPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="534.0" prefWidth="820.0" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1">
    <bottom>
       <VBox alignment="CENTER" prefHeight="86.0" prefWidth="889.0" BorderPane.alignment="CENTER">
          <children>
@@ -32,7 +32,14 @@
                <children>
                   <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="10.0">
                      <children>
-                        <Button fx:id="muteButton" minWidth="70.0" mnemonicParsing="false" onAction="#muteMedia" text="Mute" />
+                        <Button fx:id="muteButton" minWidth="70.0" mnemonicParsing="false" onAction="#muteMedia">
+                           <graphic>
+                              <ImageView fitHeight="26.0" fitWidth="31.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../../componentImages/volumeOn.png" />
+                                 </image>
+                              </ImageView>
+                           </graphic></Button>
                         <Slider fx:id="volumeSlider" blockIncrement="1.0" majorTickUnit="10.0" max="100" minorTickCount="1" value="100.0" />
                      </children>
                   </HBox>
@@ -40,27 +47,48 @@
                     <buttons>
                         <Button fx:id="rewindButton" mnemonicParsing="false" onAction="#rewindMedia">
                            <graphic>
-                              <ImageView fitHeight="20.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true" rotate="180.0">
+                              <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
-                                    <Image url="@../../../../componentImages/fastForward.png" />
+                                    <Image url="@../../componentImages/rewind5.png" />
                                  </image>
                               </ImageView>
                            </graphic></Button>
-                      <Button fx:id="playPauseButton" mnemonicParsing="false" onAction="#playPauseMedia" text="Pause" />
+                      <Button fx:id="playPauseButton" mnemonicParsing="false" onAction="#playPauseMedia">
+                           <graphic>
+                              <ImageView fitHeight="35.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../../componentImages/pause.png" />
+                                 </image>
+                              </ImageView>
+                           </graphic></Button>
                         <Button fx:id="fastForwardButton" mnemonicParsing="false" onAction="#fastForwardMedia">
                            <graphic>
-                              <ImageView fitHeight="20.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
+                              <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
-                                    <Image url="@../../../../componentImages/fastForward.png" />
+                                    <Image url="@../../componentImages/fastForward5.png" />
                                  </image>
                               </ImageView>
                            </graphic></Button>
                     </buttons>
                   </ButtonBar>
-                  <ButtonBar prefHeight="26.0" prefWidth="260.0">
+                  <ButtonBar prefHeight="40.0" prefWidth="365.0">
                     <buttons>
-                      <Button fx:id="menuButton" mnemonicParsing="false" onAction="#returnToMenu" text="Main Menu" />
-                        <Button fx:id="creationListButton" mnemonicParsing="false" onAction="#returnToCreationList" prefWidth="163.0" text="Creations List" />
+                      <Button fx:id="menuButton" contentDisplay="RIGHT" mnemonicParsing="false" onAction="#returnToMenu" text="Main Menu">
+                           <graphic>
+                              <ImageView fitHeight="35.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../../componentImages/menu.png" />
+                                 </image>
+                              </ImageView>
+                           </graphic></Button>
+                        <Button fx:id="creationListButton" contentDisplay="RIGHT" mnemonicParsing="false" onAction="#returnToCreationList" prefWidth="190.0" text="Creations List">
+                           <graphic>
+                              <ImageView fitHeight="35.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../../componentImages/creationList.png" />
+                                 </image>
+                              </ImageView>
+                           </graphic></Button>
                     </buttons>
                   </ButtonBar>
                </children>

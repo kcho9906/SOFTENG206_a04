@@ -114,6 +114,7 @@ public class AudioController implements  Initializable {
             getSliderValues();
 
             String command = "espeak -v " + gender + " -s " + speed + " \"" + selectedText + "\"";
+            System.out.println(command);
             previewAudioWorker = new TerminalWorker(command);
 
             thread = new Thread(previewAudioWorker);
@@ -133,6 +134,7 @@ public class AudioController implements  Initializable {
         boolean reset = methodHelper.addConfirmationAlert("Reset search", "All progress will be lost. Continue?");
         if (reset) {
 
+            methodHelper.setPreviousScene(null);
             searchTextField.setDisable(false);
             deleteAudioFiles();
             searchTextField.clear();
@@ -276,7 +278,7 @@ public class AudioController implements  Initializable {
 
             bgMusic = bgMusicChoiceBox.getValue();
             if (!bgMusic.equals("None")) {
-                String bgMusicPath = System.getProperty("user.dir") + "/backgroundMusic/" + bgMusic + ".mp3";
+                String bgMusicPath = System.getProperty("user.dir") + "/src/backgroundMusic/" + bgMusic + ".mp3";
                 command += "ffmpeg -y -i " + mergedPath + " -i " + bgMusicPath + " -filter_complex amix=inputs=2:duration=shortest " + path + "output.mp3";
             }
 

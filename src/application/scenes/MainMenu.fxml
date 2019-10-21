@@ -8,31 +8,35 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/" xmlns:fx="http://javafx.com/fxml/" fx:controller="application.controllers.MainMenuController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" stylesheets="@../../cyanBlueGreyPalette.css" xmlns="http://javafx.com/javafx/8.0.171" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.controllers.MainMenuController">
    <children>
       <VBox alignment="CENTER" prefHeight="400.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
-            <Label text="SOFTENG 206 A4">
-               <font>
-                  <Font name="Times New Roman" size="35.0" />
-               </font>
-               <VBox.margin>
-                  <Insets bottom="20.0" />
-               </VBox.margin>
-            </Label>
-            <Label text="Welcome to VARpedia">
-               <font>
-                  <Font name="Times New Roman" size="13.0" />
-               </font>
-            </Label>
-            <HBox alignment="CENTER" prefHeight="72.0" prefWidth="600.0">
+            <VBox fx:id="topVBox" alignment="CENTER" VBox.vgrow="ALWAYS">
                <children>
-                  <Button fx:id="viewCreationButton" mnemonicParsing="false" onAction="#toViewCreationScene" prefHeight="116.0" prefWidth="226.0" text="View all creations">
+                  <Label text="VARpedia">
+                     <font>
+                        <Font size="40.0" />
+                     </font>
+                     <VBox.margin>
+                        <Insets bottom="20.0" />
+                     </VBox.margin>
+                  </Label>
+                  <Label text="Learning tool for secondary language students">
+                     <font>
+                        <Font size="20.0" />
+                     </font>
+                  </Label>
+               </children>
+            </VBox>
+            <HBox fx:id="bottomVBox" alignment="CENTER" prefHeight="232.0" prefWidth="600.0" VBox.vgrow="ALWAYS">
+               <children>
+                  <Button fx:id="viewCreationButton" mnemonicParsing="false" onAction="#toViewCreationScene" text="View Creations">
                      <font>
                         <Font name="Times New Roman" size="13.0" />
                      </font>
                   </Button>
-                  <Button fx:id="createCreationButton" mnemonicParsing="false" onAction="#toCreationScene" prefHeight="116.0" prefWidth="226.0" text="Create new creations">
+                  <Button fx:id="createCreationButton" mnemonicParsing="false" onAction="#toCreationScene" text="Create new creations">
                      <HBox.margin>
                         <Insets left="10.0" />
                      </HBox.margin>
@@ -42,8 +46,11 @@
                   </Button>
                </children>
                <VBox.margin>
-                  <Insets top="20.0" />
+                  <Insets />
                </VBox.margin>
+               <padding>
+                  <Insets bottom="10.0" top="10.0" />
+               </padding>
             </HBox>
          </children>
       </VBox>
