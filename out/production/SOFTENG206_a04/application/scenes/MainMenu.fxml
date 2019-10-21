@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<AnchorPane stylesheets="@../../cyanBlueGreyPalette.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.controllers.MainMenuController">
+   <children>
+      <VBox alignment="CENTER" prefHeight="400.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+         <children>
+            <VBox fx:id="topVBox" alignment="CENTER" VBox.vgrow="ALWAYS">
+               <children>
+                  <Label fx:id="title" text="VARpedia">
+                     <font>
+                        <Font size="40.0" />
+                     </font>
+                     <VBox.margin>
+                        <Insets />
+                     </VBox.margin>
+                     <graphic>
+                        <ImageView fitHeight="143.0" fitWidth="129.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../../componentImages/gradHat.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </Label>
+                  <Label fx:id="slogan" text="Learning tool for secondary language students">
+                     <font>
+                        <Font size="20.0" />
+                     </font>
+                  </Label>
+               </children>
+            </VBox>
+            <HBox fx:id="bottomVBox" alignment="CENTER" prefHeight="232.0" prefWidth="600.0" VBox.vgrow="ALWAYS">
+               <children>
+                  <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" HBox.hgrow="ALWAYS" />
+                  <VBox alignment="CENTER_RIGHT" prefHeight="200.0" spacing="10.0" HBox.hgrow="ALWAYS">
+                     <children>
+                        <Button fx:id="createCreationButton" contentDisplay="RIGHT" mnemonicParsing="false" onAction="#toCreationScene" prefWidth="41.0" text="Create Creation">
+                           <font>
+                              <Font name="Times New Roman" size="13.0" />
+                           </font>
+                           <graphic>
+                              <ImageView fitHeight="63.0" fitWidth="44.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../../componentImages/createCreation.png" />
+                                 </image>
+                              </ImageView>
+                           </graphic>
+                        </Button>
+                        <Button fx:id="viewCreationButton" contentDisplay="RIGHT" mnemonicParsing="false" onAction="#toViewCreationScene" text="View Creations">
+                           <font>
+                              <Font name="Times New Roman" size="13.0" />
+                           </font>
+                           <graphic>
+                              <ImageView fitHeight="78.0" fitWidth="51.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../../componentImages/creationList.png" />
+                                 </image>
+                              </ImageView>
+                           </graphic>
+                        </Button>
+                     </children>
+                     <padding>
+                        <Insets right="20.0" />
+                     </padding>
+                  </VBox>
+               </children>
+               <VBox.margin>
+                  <Insets />
+               </VBox.margin>
+               <padding>
+                  <Insets bottom="10.0" top="10.0" />
+               </padding>
+            </HBox>
+         </children>
+      </VBox>
+   </children>
+</AnchorPane>
