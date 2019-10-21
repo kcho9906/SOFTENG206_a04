@@ -211,6 +211,12 @@ public class ImageController implements Initializable {
                         //prevents from the new space char
                         creationNameInput.setText(old_value);
                     }
+
+                    if ((selectedList.size() > 0) && (!creationNameInput.getText().isEmpty())) {
+                        createButton.setDisable(false);
+                    } else {
+                        createButton.setDisable(true);
+                    }
                 });
 
     }

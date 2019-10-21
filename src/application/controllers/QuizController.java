@@ -56,6 +56,7 @@ public class QuizController implements Initializable {
     private double[] volumeBeforeMute = {1};
     private FXMLLoader loader;
     private String _currentCreationName = "";
+    private String answer = "";
     private int _correctAnswers = 0;
     private int _attemptedAnswers = 0;
     private Image tick = new Image(new File("componentImage/greenTick.png").toURI().toString());
@@ -72,7 +73,7 @@ public class QuizController implements Initializable {
         boolean correct = false;
         // compares the input to the textField with the current creation
         String input = answerTextField.getText().trim().toLowerCase();
-        if (input.equals(_currentCreationName)) {
+        if (input.equals(answer.toLowerCase())) {
 
             // set image view to tick and disable check answers button
             resultImage.setImage(tick);
@@ -147,9 +148,11 @@ public class QuizController implements Initializable {
 
         // select the random file
         File selectedFile = files[videoFileNumber];
-        _currentCreationName = selectedFile.getName().toLowerCase();
+        Creation creation = new Creation(selectedFile);
+        _currentCreationName = selectedFile.getName();
+        answer = creation.get_searchTerm().toLowerCase();
         String path = selectedFile.getPath();
-        File videoFile = new File(path + "/" + "noAudio.mp4");
+        File videoFile = new File(path + "/imageOnly.mp4");
 
         // play the video straight away
         Media video = new Media(videoFile.toURI().toString());
