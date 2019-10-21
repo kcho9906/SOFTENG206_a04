@@ -76,6 +76,7 @@ public class AudioController implements  Initializable {
         getAudioFileList();
 
         if (audioListView.getItems().isEmpty()) {
+            methodHelper.setNext(false);
             nextButton.setDisable(true);
         }
 
