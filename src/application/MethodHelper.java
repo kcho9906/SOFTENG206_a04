@@ -21,6 +21,7 @@ public class MethodHelper {
     private double _duration;
     private int _correctAnswers = 0;
     private int _totalAnswers = 0;
+    private int _scorePercentage = 0;
 
     public void changeScene(ActionEvent event, String scene) throws Exception {
         Parent newSceneParent = FXMLLoader.load(getClass().getResource(scene));
@@ -120,10 +121,12 @@ public class MethodHelper {
     }
 
     public void setDuration(double duration) {
+
         _duration = duration;
     }
 
     public double getDuration() {
+
         return _duration;
     }
 
@@ -133,8 +136,17 @@ public class MethodHelper {
     }
 
     public int[] getAnswers() {
-        int[] output = {_correctAnswers,_totalAnswers};
+        int[] output = {_correctAnswers,_totalAnswers,_scorePercentage};
         return output;
     }
 
+    public void setBestScore(int correct, int total) {
+
+        // calculate percentage
+        double decimal = ((double) correct) / total;
+        int percentage = (int) (decimal * 100);
+        if (percentage > _scorePercentage) {
+            _scorePercentage = percentage;
+        }
+    }
 }

@@ -23,6 +23,9 @@ public class ResultController implements Initializable {
     private Label totalAnswers;
 
     @FXML
+    private Label bestPercentage;
+
+    @FXML
     private ListView<?> answeredQuestionList;
 
     @FXML
@@ -38,5 +41,7 @@ public class ResultController implements Initializable {
         int[] answers = methodHelper.getAnswers();
         correctAnswers.setText("" + answers[0]);
         totalAnswers.setText("" + answers[1]);
+        bestPercentage.setText("Best Score Percentage: " + answers[2] + "%");
+
     }
 }

@@ -95,6 +95,7 @@ public class QuizController implements Initializable {
     void toResultScene (ActionEvent event) throws Exception {
 
         // set the answers
+        methodHelper.setBestScore(_correctAnswers,_attemptedAnswers);
         methodHelper.setAnswers(_correctAnswers, _attemptedAnswers);
 
         methodHelper.changeScene(event, "scenes/Results.fxml");
