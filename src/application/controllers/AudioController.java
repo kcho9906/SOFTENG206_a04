@@ -19,13 +19,44 @@ import java.util.ResourceBundle;
 public class AudioController implements  Initializable {
 
 
-    @FXML
-    private ChoiceBox<String> bgMusicChoiceBox;
+    @FXML private ChoiceBox<String> bgMusicChoiceBox;
+
+    @FXML private Button nextButton;
+
+    @FXML public Button moveUpButton;
+
+    @FXML public Button moveDownButton;
+
+    @FXML private TextField searchTextField;
+
+    @FXML private Button searchButton;
+
+    @FXML private Label statusLabel;
+
+    @FXML private Label currentKeywordLabel;
+
+    @FXML private ProgressIndicator loadingCircle;
+
+    @FXML private TextArea wikiSearchTextArea;
+
+    @FXML private Slider speedSlider;
+
+    @FXML private Slider genderSlider;
+
+    @FXML private Button previewTextButton;
+
+    @FXML private Button saveTextButton;
+
+    @FXML private ListView<String> audioListView;
+
+    @FXML private Button playAudioButton;
+
+    @FXML private Button deleteAudioButton;
+
+    private ObservableList<String> listForCreation = FXCollections.observableArrayList();
+    private static MethodHelper methodHelper = Main.getMethodHelper();
+    private String searchTerm = "";
     private String bgMusic = "";
-
-
-    @FXML
-    private Button nextButton;
     private String gender = "";
     private String speed = "";
     private int maleAudioFiles = 0;
@@ -33,54 +64,6 @@ public class AudioController implements  Initializable {
     private Thread thread = new Thread();
     private TerminalWorker previewAudioWorker = new TerminalWorker("");
     private TerminalWorker playAudioWorker = new TerminalWorker("");
-    @FXML
-    public Button moveUpButton;
-
-    @FXML
-    public Button moveDownButton;
-
-    private ObservableList<String> listForCreation = FXCollections.observableArrayList();
-    private static MethodHelper methodHelper = Main.getMethodHelper();
-    private String searchTerm = "";
-
-    @FXML
-    private TextField searchTextField;
-
-    @FXML
-    private Button searchButton;
-
-    @FXML
-    private Label statusLabel;
-
-    @FXML
-    private Label currentKeywordLabel;
-
-    @FXML
-    private ProgressIndicator loadingCircle;
-
-    @FXML
-    private TextArea wikiSearchTextArea;
-
-    @FXML
-    private Slider speedSlider;
-
-    @FXML
-    private Slider genderSlider;
-
-    @FXML
-    private Button previewTextButton;
-
-    @FXML
-    private Button saveTextButton;
-
-    @FXML
-    private ListView<String> audioListView;
-
-    @FXML
-    private Button playAudioButton;
-
-    @FXML
-    private Button deleteAudioButton;
 
     @FXML
     void deleteAudioAction(ActionEvent event) {
@@ -89,7 +72,12 @@ public class AudioController implements  Initializable {
         listForCreation.remove(selectedAudio);
         String command = "rm -f src/audio/" + searchTerm + "/" + selectedAudio;
         methodHelper.command(command);
+
         getAudioFileList();
+
+        if (audioListView.getItems().isEmpty()) {
+            nextButton.setDisable(true);
+        }
 
     }
 
@@ -143,6 +131,7 @@ public class AudioController implements  Initializable {
             searchTerm = "";
             loadingCircle.setVisible(false);
             bgMusicChoiceBox.setValue("None");
+            nextButton.setDisable(true);
         }
     }
 
@@ -150,6 +139,8 @@ public class AudioController implements  Initializable {
 
         methodHelper.command("rm -rf src/audio/*");
         getAudioFileList();
+        methodHelper.setNext(false);
+        nextButton.setDisable(true);
     }
 
     @FXML
@@ -181,6 +172,11 @@ public class AudioController implements  Initializable {
             audioWorker.setOnSucceeded(event1 -> {
 
                 getAudioFileList();
+                methodHelper.setNext(true);
+
+                if (methodHelper.getBooleanImages()) {
+                    nextButton.setDisable(false);
+                }
             });
 
 
@@ -310,6 +306,9 @@ public class AudioController implements  Initializable {
     public void initialize(URL location, ResourceBundle resources) {
         //----------------------------SET UP DISABLE BINDINGS------------------------------//
         setUpBindings();
+
+        // disable the next button
+        nextButton.setDisable(true);
 
     }
 

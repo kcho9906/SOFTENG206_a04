@@ -26,6 +26,8 @@ public class MethodHelper {
     private int _scorePercentage = 0;
     private ObservableList<Creation> _answeredCreations = FXCollections.observableArrayList();
     private Scene previousScene;
+    private boolean _next = false;
+    private boolean _imagesDownloaded = false;
 
     public void changeScene(ActionEvent event, String scene) throws Exception {
         Parent newSceneParent = FXMLLoader.load(getClass().getResource(scene));
@@ -174,5 +176,21 @@ public class MethodHelper {
             window.setScene(previousScene);
             window.show();
         }
+    }
+
+    public void setNext(boolean next) {
+        _next = next;
+    }
+
+    public boolean getNext() {
+        return _next;
+    }
+
+    public void setImagesDownloaded(boolean imagedDownloaded) {
+        _imagesDownloaded = imagedDownloaded;
+    }
+
+    public boolean getBooleanImages() {
+        return _imagesDownloaded;
     }
 }

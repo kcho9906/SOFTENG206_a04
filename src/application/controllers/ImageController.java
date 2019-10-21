@@ -153,8 +153,15 @@ public class ImageController implements Initializable {
                     if (imagesRetrieved[0] != number) {
                         methodHelper.createAlertBox("Did not get " + number + " images\nOnly retrieved " + imagesRetrieved[0] + " images");
                     }
-                    nextButton.setDisable(false);
+
+                    methodHelper.setImagesDownloaded(true);
                     nextButton.setText("Next");
+
+                    if (methodHelper.getNext()) {
+                        nextButton.setDisable(false);
+                    }
+//                    nextButton.setDisable(false);
+//                    nextButton.setText("Next");
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 } catch (ExecutionException e) {
