@@ -2,6 +2,8 @@ package application;
 
 
 import application.controllers.MediaController;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Node;
@@ -22,6 +24,7 @@ public class MethodHelper {
     private int _correctAnswers = 0;
     private int _totalAnswers = 0;
     private int _scorePercentage = 0;
+    private ObservableList<Creation> _answeredCreations = FXCollections.observableArrayList();
 
     public void changeScene(ActionEvent event, String scene) throws Exception {
         Parent newSceneParent = FXMLLoader.load(getClass().getResource(scene));
@@ -148,5 +151,13 @@ public class MethodHelper {
         if (percentage > _scorePercentage) {
             _scorePercentage = percentage;
         }
+    }
+
+    public void setAnsweredCreations(ObservableList<Creation> creations) {
+        _answeredCreations = creations;
+    }
+
+    public ObservableList<Creation> getAnsweredCreations() {
+        return _answeredCreations;
     }
 }

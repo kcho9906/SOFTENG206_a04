@@ -1,7 +1,10 @@
 package application.controllers;
 
+import application.Creation;
 import application.Main;
 import application.MethodHelper;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -57,6 +60,7 @@ public class QuizController implements Initializable {
     private int _attemptedAnswers = 0;
     private Image tick = new Image(new File("componentImage/greenTick.png").toURI().toString());
     private Image cross = new Image(new File("componentImage/redCross.png").toURI().toString());
+    private ObservableList<Creation> _answeredCreations = FXCollections.observableArrayList();
 
     private void setUpProperties() {
 
@@ -64,6 +68,8 @@ public class QuizController implements Initializable {
 
     @FXML
     void checkAnswer(ActionEvent event) {
+
+        boolean correct = false;
         // compares the input to the textField with the current creation
         String input = answerTextField.getText().trim().toLowerCase();
         System.out.println(input);
@@ -74,14 +80,21 @@ public class QuizController implements Initializable {
             resultImage.setImage(tick);
             checkAnswerButton.setDisable(true);
             _correctAnswers++;
+            correct = true;
         } else {
 
             // set image to a cross and disable check answer button
             resultImage.setImage(cross);
             checkAnswerButton.setDisable(true);
+            correct = false;
         }
 
         _attemptedAnswers++;
+
+        // save the creation in a list to be displayed later.
+        Creation creation = new Creation(_currentCreationName, correct);
+        _answeredCreations.add(creation);
+
     }
 
 
@@ -93,6 +106,9 @@ public class QuizController implements Initializable {
 
     @FXML
     void toResultScene (ActionEvent event) throws Exception {
+
+        // send the creation list to the methodHelper to be displayed
+        methodHelper.setAnsweredCreations(_answeredCreations);
 
         // set the answers
         methodHelper.setBestScore(_correctAnswers,_attemptedAnswers);
@@ -149,8 +165,6 @@ public class QuizController implements Initializable {
     public void initialize(URL location, ResourceBundle resources) {
 
         playRandomVideo();
-
-        System.out.println(methodHelper.command("pwd"));
 
         // prepare the video
         _player.setOnReady(new Runnable() {
