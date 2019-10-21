@@ -311,6 +311,9 @@ public class AudioController implements  Initializable {
         //----------------------------SET UP DISABLE BINDINGS------------------------------//
         setUpBindings();
 
+        // disable next button
+        nextButton.setDisable(true);
+
     }
 
     private void setUpBindings() {
