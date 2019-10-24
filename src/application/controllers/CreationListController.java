@@ -31,42 +31,37 @@ import java.nio.file.attribute.BasicFileAttributes;
 import java.nio.file.attribute.FileTime;
 import java.text.SimpleDateFormat;
 
+/**
+ * This is a controller class for the scene "CreationList.fxml" and is
+ * responsible for everything relating to the CreationList scene.
+ */
 public class CreationListController implements Initializable{
 
     private static MethodHelper methodHelper = Main.getMethodHelper();
 
-    @FXML
-    private TableColumn<Creation, String> nameColumn;
+    // all FXML component fields
+    @FXML private TableColumn<Creation, String> nameColumn;
+    @FXML private TableColumn<Creation, String> searchTermColumn;
+    @FXML private TableColumn<Creation, String> durationColumn;
+    @FXML private TableColumn<Creation, String> timeColumn;
+    @FXML private TableView<Creation> creationTableView;
+    @FXML private Button playButton;
+    @FXML private Button deleteButton;
+    @FXML private Button quizButton;
+    @FXML private Button menuButton;
 
-    @FXML
-    private TableColumn<Creation, String> searchTermColumn;
-
-    @FXML
-    private TableColumn<Creation, String> durationColumn;
-
-    @FXML
-    private TableColumn<Creation, String> timeColumn;
-
-    @FXML
-    private TableView<Creation> creationTableView;
-
-    @FXML
-    private Button playButton;
-
-    @FXML
-    private Button deleteButton;
-
-    @FXML
-    private Button quizButton;
-
-    @FXML
-    private Button menuButton;
-
+    /**
+     * Method to delete an already created creation
+     * @param event
+     */
     @FXML
     void deleteCreation(ActionEvent event) {
+
         ObservableList<Creation> allCreations = creationTableView.getItems();
         Object creationSelected = creationTableView.getSelectionModel().getSelectedItem();
         String creationName = ((Creation) creationSelected).get_creationName();
+
+        // add confirmation alert to confirm whether they want to delete the creation.
         Boolean answer = methodHelper.addConfirmationAlert("Deleting Creation", "Are you sure you want to delete \"" + creationName + "\"?");
         if (answer) {
 
@@ -76,6 +71,12 @@ public class CreationListController implements Initializable{
         }
     }
 
+    /**
+     * Method to play the selected creation in the list. Changes to the media scene
+     * with the chosen video.
+     * @param event
+     * @throws Exception
+     */
     @FXML
     void playCreation(ActionEvent event) throws Exception {
 
@@ -91,12 +92,21 @@ public class CreationListController implements Initializable{
         window.show();
     }
 
-
+    /**
+     * Method to change to the quiz scene
+     * @param event
+     * @throws Exception
+     */
     @FXML
     void quizCreation(ActionEvent event) throws Exception {
         methodHelper.changeScene(event, "scenes/Quiz.fxml");
     }
 
+    /**
+     * Method to change back to main menu
+     * @param event
+     * @throws Exception
+     */
     @FXML
     void returnToMenu(ActionEvent event) throws Exception {
         methodHelper.changeScene(event, "scenes/MainMenu.fxml");
@@ -111,11 +121,13 @@ public class CreationListController implements Initializable{
         ObservableList<Creation> creations = FXCollections.observableArrayList();
         String path = System.getProperty("user.dir") + "/src/creations";
         File[] directories = new File(path).listFiles(File::isDirectory);
+
         for (File directory: directories) {
 
             Creation creation = new Creation(directory);
             creations.add(creation);
         }
+
         return creations;
     }
 
@@ -127,9 +139,17 @@ public class CreationListController implements Initializable{
         creationTableView.setItems(getCreations());
     }
 
+    /**
+     * Method to initialise the scene with necessary values and appropriate bindings.
+     * @param location
+     * @param resources
+     */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+
+        // updates the table
         updateTable();
+
         nameColumn.setCellValueFactory(new PropertyValueFactory<>("_creationName"));
         searchTermColumn.setCellValueFactory(new PropertyValueFactory<>("_searchTerm"));
         timeColumn.setCellValueFactory(new PropertyValueFactory<>("_timeCreated"));

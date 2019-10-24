@@ -2,6 +2,9 @@ package application;
 
 import javafx.concurrent.Task;
 
+/**
+ * Worker which runs bash commands in the background thread.
+ */
 public class TerminalWorker extends Task<String> {
 
     private String _command;

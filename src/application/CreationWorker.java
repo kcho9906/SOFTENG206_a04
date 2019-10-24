@@ -50,14 +50,11 @@ public class CreationWorker extends Task<Boolean> {
         // if create is true, then we create the creation
         if (create) {
             methodHelper.command(command);
-            System.out.println("creating creation");
             copyImages();
 
             duration = methodHelper.getDuration();
             imagesFound = _selectedList.size();
             storeInfo();
-            System.out.println(duration);
-            System.out.println(imagesFound);
             if (duration > 0) {
 
                 //create the video
@@ -73,43 +70,45 @@ public class CreationWorker extends Task<Boolean> {
         return false;
     }
 
+    /**
+     * Stores any of the necessary creation information in a text file
+     * name info.txt
+     */
     private void storeInfo() {
         String command = "echo \"" + _query + "\n" + duration + "\" > " + _creationPath + "/info.txt";
         methodHelper.command(command);
-        System.out.println(command);
     }
 
-
+    /**
+     * Method to create the video using ffmpeg bash line commands
+     * @param creationName
+     * @param path
+     */
     private void createVideo(String creationName, String path) {
 
         // merge the images
         command = "cat " + _creationPath + "/*.jpg | ffmpeg -f image2pipe -framerate " + imagesFound/duration + " -i - -vcodec libx264 -pix_fmt yuv420p -vf \"scale=w=1920:h=1080:force_original_aspect_ratio=1,pad=1920:1080:(ow-iw)/2:(oh-ih)/2\" -r 25 " + path + "/" + creationName + "_imageOnly.mp4";
-        System.out.println(command);
         methodHelper.command(command);
 
         // add the name onto the video
         command = "ffmpeg -i " + path + "/" + creationName + "_imageOnly.mp4 -vf drawtext=\"fontfile=/Library/Fonts/Verdana.ttf: text='" + _query + "': fontcolor=white: fontsize=100: box=1: boxcolor=black@0.5: boxborderw=5: x=(w-text_w)/2: y=(h-text_h)/2\" -r 25 -codec:a copy " + path + "/noAudio.mp4";
-        System.out.println(command);
         methodHelper.command(command);
 
         // merge the video and images
         String audio = "src/audio/" + _query + "/" + "output.mp3";
         command = "ffmpeg -i " + path + "/noAudio.mp4 -i " + audio + " -c:v copy -c:a aac -strict experimental " + path + "/" + creationName + ".mp4";
-        System.out.println(command);
         methodHelper.command(command);
 
         methodHelper.command("rm " + audio + "; rm " + _creationPath + "/*.jpg");
-        System.out.println("removed audio");
-
-
     }
 
+    /**
+     * Method which copies all the images from the tempImages directory to the creation name folder.
+     */
     private void copyImages() {
         for (File file: _selectedList) {
-            System.out.println(file.getName());
             command = "cp src/tempImages/" + _query + "/" + file.getName() + " " + _creationPath + "/" + file.getName();
             methodHelper.command(command);
-            System.out.println(command);
         }
     }
 }

@@ -28,17 +28,18 @@ import java.net.URL;
 import java.util.ResourceBundle;
 import java.util.concurrent.ExecutionException;
 
+/**
+ * This is a controller class for the scene "Image.fxml" and is
+ * responsible for everything relating to the Image scene.
+ */
 public class ImageController implements Initializable {
 
+    // all FXML components
+    @FXML private Button createButton;
+    @FXML private TilePane imagePane;
+    @FXML private ProgressIndicator loadingCircle;
+    @FXML private TextField creationNameInput;
 
-
-    @FXML
-    private Button createButton;
-    @FXML
-    private TilePane imagePane;
-
-    @FXML
-    private ProgressIndicator loadingCircle;
     private static MethodHelper methodHelper = Main.getMethodHelper();
     private ObservableList<File> imageList = FXCollections.observableArrayList();
     private ObservableList<File> selectedList = FXCollections.observableArrayList();
@@ -46,21 +47,24 @@ public class ImageController implements Initializable {
     private String creationName = "";
     private final static int[] imagesRetrieved = {0};
 
-    @FXML
-    private TextField creationNameInput;
+    /**
+     * This method is responsible for creating the creation and uses
+     * a javafx Task to run it in the background.
+     * @param event
+     * @throws Exception
+     */
+    @FXML void createCreation(ActionEvent event) throws Exception {
 
-    @FXML
-    void createCreation(ActionEvent event) throws Exception {
-
+        // gets the creation name from the text field.
         creationName = creationNameInput.getText().trim();
-
 
         File creationDir = new File("src/creations/" + creationName);
         String action = getAction(creationDir);
 
-
-        System.out.println(selectedList.size() + " selected images");
+        // set the loading circle to be visible.
         loadingCircle.setVisible(true);
+
+        // create the creation using a worker to be done in a background thread.
         CreationWorker creationWorker = new CreationWorker(selectedList, query, action, creationDir);
         Thread th = new Thread(creationWorker);
         th.start();
@@ -68,10 +72,16 @@ public class ImageController implements Initializable {
         creationWorker.setOnSucceeded(complete  -> {
 
             loadingCircle.setVisible(false);
+
+            // create an alert to see if the user wants to watch the creation made or go back to menu.
             boolean answer = methodHelper.addConfirmationAlert("Success!", creationName + " was created successfully!\nPlay creation?");
             if (answer) {
+
+                // get the video file to be played
                 File videoFile = new File (creationDir.getPath() + "/" + creationDir.getName() + ".mp4");
+
                 try {
+
                     FXMLLoader loader = new FXMLLoader(getClass().getResource("../scenes/Media.fxml"));
                     MediaController controller = new MediaController(videoFile);
                     loader.setController(controller);
@@ -81,18 +91,28 @@ public class ImageController implements Initializable {
                     window.setScene(newScene);
                     window.show();
                 } catch (IOException e) {
+
                     e.printStackTrace();
                 }
             } else {
+
+                // try/catch to change back to main menu scene
                 try {
+
                     methodHelper.changeScene(event, "scenes/MainMenu.fxml");
                 } catch (Exception e) {
+
                     e.printStackTrace();
                 }
             }
         });
     }
 
+    /**
+     * Method to return back to the audio scene, maintaining the previous scene.
+     * @param event
+     * @throws Exception
+     */
     @FXML
     void returnToAudio(ActionEvent event) throws Exception {
 
@@ -101,11 +121,12 @@ public class ImageController implements Initializable {
         methodHelper.setPreviousScene(createButton.getScene());
     }
 
+    /**
+     * Method to update the image grid.
+     */
     public void updateGrid() {
 
-        System.out.println(); // just for debug spacing
-
-        // initialise the grid with actions for each of the imags.
+        // initialise the grid with actions for each of the images.
         for (int i = 0; i < imagesRetrieved[0]; i++) {
 
             ToggleButton imageButton = (ToggleButton) imagePane.getChildren().get(i);
@@ -113,41 +134,49 @@ public class ImageController implements Initializable {
             File imageFile = imageList.get(i);
             Image image = new Image(imageFile.toURI().toString());
             imageView.setImage(image);
+
+            // set up the 'setOnAction' for all the images.
             imageButton.setOnAction(event -> {
 
+                // if the list is less than size 10, then continue to allow adding images
                 if (selectedList.size() <= 10) {
 
+                    // if image is selected, deselect from GUI
                     if (selectedList.contains(imageFile)) {
+
                         imageButton.setStyle(null);
                         selectedList.remove(imageFile);
-                        System.out.println(imageFile + " was removed from the list of selected images");
 
+                    // if the size is less than 10, add an image.
                     } else if (selectedList.size() < 10) {
 
                         selectedList.add(imageFile);
                         imageButton.setStyle("-fx-background-color: Yellow");
-                        System.out.println(imageFile + " was added to the list of selected images");
-
                     }
 
+                    // changes the status of the method helper is list is empty
                     if (selectedList.isEmpty()) {
                         methodHelper.setImagesSelected(false);
                     } else {
                         methodHelper.setImagesSelected(true);
                     }
 
+                    // if both conditions are met, the button will appropriately enable and disable.
                     if (methodHelper.getImagesSelected() && methodHelper.getHasText()) {
                         createButton.setDisable(false);
                     } else {
                         createButton.setDisable(true);
                     }
-
                 }
-
             });
         }
     }
 
+    /**
+     * Method which will get the images from the flickr API
+     * @param searchTerm
+     * @param nextButton
+     */
     public static void getImages(String searchTerm, Button nextButton) {
 
         query = searchTerm;
@@ -156,21 +185,27 @@ public class ImageController implements Initializable {
 
         // checks if the directory already exists
         if (searchTermImagesDir.isDirectory()) {
-            System.out.println("exists");
+
             imagesRetrieved[0] = 12;
             exists = true;
 
         }
 
+        // If the images don't already exist, then download the images from flickr.
         if (!exists) {
+
             nextButton.setDisable(true);
-            nextButton.setText("downloading images");
             int number = 12;
             AudioWorker audioWorker = new AudioWorker(number, query);
+
             audioWorker.setOnSucceeded(event -> {
+
                 try {
+
                     imagesRetrieved[0] = audioWorker.get();
                     if (imagesRetrieved[0] != number) {
+
+                        // create an alert to tell the user that 12 images could not be found
                         methodHelper.createAlertBox("Did not get " + number + " images\nOnly retrieved " + imagesRetrieved[0] + " images");
                     }
 
@@ -179,21 +214,28 @@ public class ImageController implements Initializable {
 
                     // checks if the images have downloaded
                     if (methodHelper.getContainsAudio()) {
+
                         nextButton.setDisable(false);
                         nextButton.setText("Next");
                     }
 
                 } catch (InterruptedException e) {
+
                     e.printStackTrace();
                 } catch (ExecutionException e) {
+
                     e.printStackTrace();
                 }
             });
+
             Thread th = new Thread(audioWorker);
             th.start();
         }
     }
 
+    /**
+     * Method to upload the images to the grid
+     */
     public void uploadImages() {
 
         String path = System.getProperty("user.dir") + "/src/tempImages/" + query;
@@ -201,73 +243,108 @@ public class ImageController implements Initializable {
 
         for (File image: imageFiles) {
 
-            System.out.println(image.getName());
             imageList.add(image);
         }
-        System.out.println("image list has " + imageList.size() + " pictures");
+
+        // update the grid with the new images
         updateGrid();
     }
 
+    /**
+     * Method to initialise the scene with necessary components.
+     * @param location
+     * @param resources
+     */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
         // disable create button
         createButton.setDisable(true);
 
-        System.out.println(methodHelper.getDuration());
+        // uploads the images
         uploadImages();
+
+        // sets the binding properties of the components of the class
         bindProperties();
     }
 
+    /**
+     * Method to set up the bind properties of the components of the class.
+     */
     public void bindProperties() {
 
+        /**
+         * Listener to make sure there are no spaces in the creation name
+         */
         creationNameInput.textProperty().addListener(
+
                 (observable, old_value, new_value) -> {
-                    if(new_value.contains(" "))
-                    {
+
+                    if(new_value.contains(" ")) {
+
                         //prevents from the new space char
                         creationNameInput.setText(old_value);
                     }
                 }
         );
 
+        /**
+         * Listener to check whether a value in the text field has been changed.
+         */
         creationNameInput.textProperty().addListener(new ChangeListener<String>() {
+
             @Override
             public void changed(ObservableValue<? extends String> observable,
                                 String oldValue, String newValue) {
 
-                System.out.println(" Text Changed to  " + newValue + "\n");
+                // changes the status of the method helper is list is empty
                 if (newValue.isEmpty()) {
+
                     methodHelper.setHasText(false);
                 } else {
+
                     methodHelper.setHasText(true);
                 }
 
+                // if both conditions are met, the button will appropriately enable and disable.
                 if (methodHelper.getImagesSelected() && methodHelper.getHasText()) {
+
                     createButton.setDisable(false);
                 } else {
+
                     createButton.setDisable(true);
                 }
-
             }
         });
-
     }
 
+    /**
+     * Method to get the action for creation creation
+     * @param file
+     * @return
+     */
     private String getAction(File file) {
 
         if (file.exists()) {
+
+            // create an alert to ask whether they would like to overwrite or rename the current creation
             Boolean overwrite = methodHelper.addConfirmationAlert("ERROR", "\"" + creationName + "\" exists. \nRename or overwrite?");
             if (overwrite) {
+
                 return "overwrite";
             } else {
+
                 creationNameInput.clear();
                 return "rename";
             }
         }
+
         return "create";
     }
 
+    /**
+     * Worker which will download images in the background thread
+     */
     public static class AudioWorker extends Task<Integer> {
 
         private int _numImages;
@@ -281,6 +358,7 @@ public class ImageController implements Initializable {
 
         @Override
         protected Integer call() throws Exception {
+
             return FlickrImageExtractor.downloadImages(_query, _numImages);
         }
     }

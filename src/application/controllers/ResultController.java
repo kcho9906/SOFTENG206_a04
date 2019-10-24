@@ -14,38 +14,40 @@ import javafx.scene.control.cell.PropertyValueFactory;
 import java.net.URL;
 import java.util.ResourceBundle;
 
+/**
+ * This is a controller class for the scene "Result.fxml" and is
+ * responsible for everything relating to the Result scene.
+ */
 public class ResultController implements Initializable {
 
     private MethodHelper methodHelper = Main.getMethodHelper();
 
-    @FXML
-    private Label correctAnswers;
-
-    @FXML
-    private Label totalAnswers;
-
-    @FXML
-    private Label bestPercentage;
-
-    @FXML
-    private TableView<Creation> correctTableView;
-
-    @FXML
-    private TableColumn<Creation, String> creationNameColumn;
-
-    @FXML
-    private TableColumn<Creation, String> correctColumn;
-
-    @FXML
-    private Button mainMenuButton;
+    // all FXML component fields
+    @FXML private Label correctAnswers;
+    @FXML private Label totalAnswers;
+    @FXML private Label bestPercentage;
+    @FXML private TableView<Creation> correctTableView;
+    @FXML private TableColumn<Creation, String> creationNameColumn;
+    @FXML private TableColumn<Creation, String> correctColumn;
+    @FXML private Button mainMenuButton;
 
     private ObservableList<Creation> _answeredCreations = FXCollections.observableArrayList();
 
+    /**
+     * Method to return back to the main menu.
+     * @param event
+     * @throws Exception
+     */
     @FXML
     void returnToMainMenu(ActionEvent event) throws Exception {
         methodHelper.changeScene(event, "scenes/MainMenu.fxml");
     }
 
+    /**
+     * Method to initialise the scene
+     * @param location
+     * @param resources
+     */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 

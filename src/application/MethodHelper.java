@@ -1,7 +1,5 @@
 package application;
 
-
-import application.controllers.MediaController;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -14,18 +12,26 @@ import javafx.scene.control.ButtonType;
 import javafx.stage.Stage;
 import java.io.BufferedReader;
 import java.io.File;
-import java.io.IOException;
 import java.io.InputStreamReader;
 import java.util.Optional;
 
+/**
+ * This class acts as a 'Hub' for all information that is transferred
+ * between controllers and also reduces code duplication by having
+ * methods which are used many times throughout the application.
+ * There is ever only one instance of this class as we declare a static
+ * MethodHelper in the main which is reused.
+ */
 public class MethodHelper {
 
     private double _duration;
+    private ObservableList<Creation> _answeredCreations = FXCollections.observableArrayList();
+    private Scene previousScene;
+
+    // fields which contain the information to the past correct answers to the quiz
     private int _correctAnswers = 0;
     private int _totalAnswers = 0;
     private int _scorePercentage = 0;
-    private ObservableList<Creation> _answeredCreations = FXCollections.observableArrayList();
-    private Scene previousScene;
 
     // fields which tell whether the images have been downloaded and audio list contains something
     private boolean _hasDownloaded = false;
@@ -35,6 +41,13 @@ public class MethodHelper {
     private boolean _hasText = false;
     private boolean _imagesSelected = false;
 
+    /**
+     * Method changes the current scene to the input string scene.
+     * use of this will make a new instance of the FXML scene.
+     * @param event
+     * @param scene
+     * @throws Exception
+     */
     public void changeScene(ActionEvent event, String scene) throws Exception {
         Parent newSceneParent = FXMLLoader.load(getClass().getResource(scene));
         Scene newScene = new Scene(newSceneParent);
@@ -43,6 +56,30 @@ public class MethodHelper {
         window.show();
     }
 
+    /**
+     * A separate method for the change creation scene as we can use this to
+     * maintain the information from the previous scene.
+     * @param event
+     * @param scene
+     * @throws Exception
+     */
+    public void changeCreationScene(ActionEvent event, String scene) throws Exception {
+        if (previousScene == null) {
+            changeScene(event, scene);
+        } else {
+            Stage window = (Stage) (((Node) event.getSource()).getScene().getWindow());
+            window.setScene(previousScene);
+            window.show();
+        }
+    }
+
+    /**
+     * Method creates a confirmation alert where action is determined by
+     * the user.
+     * @param title
+     * @param contentText
+     * @return
+     */
     public boolean addConfirmationAlert(String title, String contentText) {
         Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
         alert.setTitle(title);
@@ -110,6 +147,10 @@ public class MethodHelper {
         return "Error";
     }
 
+    /**
+     * Method creates an alert box with a given message.
+     * @param message
+     */
     public void createAlertBox(String message) {
 
         Alert alert = new Alert(Alert.AlertType.WARNING);
@@ -132,6 +173,7 @@ public class MethodHelper {
         }
     }
 
+    //-------------------------------Getters and Setters--------------------------------//
     public void setDuration(double duration) {
 
         _duration = duration;
@@ -169,19 +211,9 @@ public class MethodHelper {
     public ObservableList<Creation> getAnsweredCreations() {
         return _answeredCreations;
     }
+
     public void setPreviousScene(Scene scene) {
         previousScene = scene;
-    }
-
-    public void changeCreationScene(ActionEvent event, String scene) throws Exception {
-        System.out.println(previousScene);
-        if (previousScene == null) {
-            changeScene(event, scene);
-        } else {
-            Stage window = (Stage) (((Node) event.getSource()).getScene().getWindow());
-            window.setScene(previousScene);
-            window.show();
-        }
     }
 
     public void setHasDownloaded(boolean hasDownloaded) {
