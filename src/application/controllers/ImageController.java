@@ -28,8 +28,8 @@ import java.util.concurrent.ExecutionException;
 
 public class ImageController implements Initializable {
 
-
-
+    @FXML
+    private Label selectImagesLabel;
     @FXML
     private Button createButton;
     @FXML
@@ -42,7 +42,9 @@ public class ImageController implements Initializable {
     private ObservableList<File> selectedList = FXCollections.observableArrayList();
     private static String query = "";
     private String creationName = "";
-    private final static int[] imagesRetrieved = {0};
+    private final static int[] imagesRetrieved = {0};private Thread thread = new Thread();
+    private CreationWorker creationWorker;
+
 
     @FXML
     private TextField creationNameInput;
@@ -59,7 +61,7 @@ public class ImageController implements Initializable {
 
         System.out.println(selectedList.size() + " selected images");
         loadingCircle.setVisible(true);
-        CreationWorker creationWorker = new CreationWorker(selectedList, query, action, creationDir);
+        creationWorker = new CreationWorker(selectedList, query, action, creationDir);
         Thread th = new Thread(creationWorker);
         th.start();
 
@@ -94,6 +96,10 @@ public class ImageController implements Initializable {
     @FXML
     void returnToAudio(ActionEvent event) throws Exception {
 
+        if (creationWorker != null) {
+            creationWorker.cancel();
+            loadingCircle.setVisible(false);
+        }
         methodHelper.command("rm src/audio/" + query + "/output.mp3"); //delete merged audio
         methodHelper.changeCreationScene(event, "scenes/Audio.fxml");
         methodHelper.setPreviousScene(createButton.getScene());
@@ -120,7 +126,6 @@ public class ImageController implements Initializable {
                     } else if (selectedList.size() < 10) {
 
                         selectedList.add(imageFile);
-                        imageButton.setStyle("-fx-background-color: Yellow");
                         System.out.println(imageFile + " was added to the list of selected images");
                     }
 
@@ -194,7 +199,7 @@ public class ImageController implements Initializable {
                     if(new_value.contains(" "))
                     {
                         //prevents from the new space char
-                        creationNameInput.setText(old_value);
+                        creationNameInput.setText(old_value + "_");
                     }
                 });
 
@@ -214,6 +219,15 @@ public class ImageController implements Initializable {
         return "create";
     }
 
+    @FXML
+    void returnToMenu(ActionEvent event) throws Exception {
+        boolean returnToMenu = methodHelper.addConfirmationAlert("Return to Menu", "All progress with be lost. Are you sure?");
+        if ( returnToMenu ) {
+
+            methodHelper.resetDirs();
+            methodHelper.changeScene(event, "scenes/MainMenu.fxml");
+        }
+    }
     public static class AudioWorker extends Task<Integer> {
 
         private int _numImages;

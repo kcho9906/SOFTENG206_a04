@@ -10,13 +10,13 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane stylesheets="@../../cyanBlueGreyPalette.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.controllers.MainMenuController">
+<AnchorPane prefHeight="600.0" prefWidth="800.0" stylesheets="@../../cyanBlueGreyPalette.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.controllers.MainMenuController">
    <children>
       <VBox alignment="CENTER" prefHeight="400.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
             <VBox fx:id="topVBox" alignment="CENTER" VBox.vgrow="ALWAYS">
                <children>
-                  <Label fx:id="title" text="VARpedia">
+                  <Label fx:id="title" text="VARPEDIA">
                      <font>
                         <Font size="40.0" />
                      </font>
@@ -24,7 +24,7 @@
                         <Insets />
                      </VBox.margin>
                      <graphic>
-                        <ImageView fitHeight="143.0" fitWidth="129.0" pickOnBounds="true" preserveRatio="true">
+                        <ImageView fitHeight="180" fitWidth="155" pickOnBounds="true" preserveRatio="true">
                            <image>
                               <Image url="@../../componentImages/gradHat.png" />
                            </image>
@@ -38,7 +38,7 @@
                   </Label>
                </children>
             </VBox>
-            <HBox fx:id="bottomVBox" alignment="CENTER" prefHeight="232.0" prefWidth="600.0" spacing="20.0" VBox.vgrow="ALWAYS">
+            <HBox fx:id="bottomVBox" alignment="CENTER" prefHeight="232.0" prefWidth="600.0" spacing="100.0" VBox.vgrow="ALWAYS">
                <VBox.margin>
                   <Insets />
                </VBox.margin>

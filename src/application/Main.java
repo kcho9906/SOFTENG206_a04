@@ -21,7 +21,7 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
 
-        createDirs();
+        methodHelper.resetDirs();
         Parent root = FXMLLoader.load(getClass().getResource("scenes/MainMenu.fxml"));
         primaryStage.setTitle("VARpedia");
         primaryStage.setScene(new Scene(root));
@@ -32,27 +32,16 @@ public class Main extends Application {
             event.consume();
             boolean exit = methodHelper.addConfirmationAlert("Quit Application", "Are you sure?");
             if (exit) {
-                deleteDirs();
+                methodHelper.resetDirs();
                 Platform.exit();
                 System.exit(0);
             }
         });
     }
 
-    private void deleteDirs() {
-        methodHelper.command("rm -rf src/audio/*; rm -rf src/tempImages/*;");
-    }
-
-
     public static void main(String[] args) {
 
         launch(args);
     }
 
-    public void createDirs() {
-
-        methodHelper.createFileDirectory("src/creations");
-        methodHelper.createFileDirectory("src/tempImages");
-        methodHelper.createFileDirectory("src/audio");
-    }
 }

@@ -76,11 +76,11 @@ public class MediaController implements Initializable {
 
                 }
 
-                if (newValue.equals(0.0)) {
-                    muteButton.setText("Unmute");
-                } else {
-                    muteButton.setText("Mute");
-                }
+//                if (newValue.equals(0.0)) {
+//                    muteButton.setText("Unmute");
+//                } else {
+//                    muteButton.setText("Mute");
+//                }
             }
         });
 

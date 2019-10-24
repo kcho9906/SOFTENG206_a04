@@ -13,6 +13,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import java.io.File;
 import java.net.URL;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.ResourceBundle;
 
@@ -109,12 +110,12 @@ public class AudioController implements  Initializable {
 
         cancelPlayingAudio();
         String selectedText = wikiSearchTextArea.getSelectedText();
+        selectedText = selectedText.replace("\"","\\\"");
         boolean speak = countMaxWords(selectedText);
         if (speak) {
             getSliderValues();
 
             String command = "espeak -v " + gender + " -s " + speed + " \"" + selectedText + "\"";
-            System.out.println(command);
             previewAudioWorker = new TerminalWorker(command);
 
             thread = new Thread(previewAudioWorker);
@@ -136,7 +137,6 @@ public class AudioController implements  Initializable {
 
             methodHelper.setPreviousScene(null);
             searchTextField.setDisable(false);
-            deleteAudioFiles();
             searchTextField.clear();
             maleAudioFiles = 0;
             femaleAudioFiles = 0;
@@ -145,18 +145,18 @@ public class AudioController implements  Initializable {
             searchTerm = "";
             loadingCircle.setVisible(false);
             bgMusicChoiceBox.setValue("None");
+            methodHelper.resetDirs();
+            getAudioFileList();
         }
-    }
-
-    private void deleteAudioFiles() {
-
-        methodHelper.command("rm -rf src/audio/*");
-        getAudioFileList();
     }
 
     @FXML
     void returnToMenu(ActionEvent event) throws Exception {
-        methodHelper.changeScene(event, "scenes/MainMenu.fxml");
+        boolean returnToMenu = methodHelper.addConfirmationAlert("Return to Menu", "All progress with be lost. Are you sure?");
+        if ( returnToMenu ) {
+            methodHelper.resetDirs();
+            methodHelper.changeScene(event, "scenes/MainMenu.fxml");
+        }
     }
 
     @FXML
@@ -164,6 +164,7 @@ public class AudioController implements  Initializable {
 
         methodHelper.createFileDirectory("src/audio/" + searchTerm);
         String selectedText = wikiSearchTextArea.getSelectedText();
+        selectedText = selectedText.replace("\"","\\\"");
         boolean validRange = countMaxWords(selectedText);
         if (validRange) {
 
@@ -197,6 +198,8 @@ public class AudioController implements  Initializable {
         loadingCircle.setVisible(true);
         // searches if the search term is not empty
         searchTerm = (searchTextField.getText().trim());
+        currentKeywordLabel.setText(searchTerm);
+        searchTerm = searchTerm.replace(" ", "_");
         // use the terminal to wikit the term with a worker / task
         //currentKeyWord.setText("Current Keyword: " + keyword);
         TerminalWorker wikitWorker = new TerminalWorker("wikit " + searchTerm);
@@ -211,7 +214,6 @@ public class AudioController implements  Initializable {
                 searchTextField.clear();
                 searchTextField.setDisable(true);
                 ImageController.getImages(searchTerm, nextButton);
-                currentKeywordLabel.setText(searchTerm);
                 loadingCircle.setVisible(false);
                 getAudioFileList();
                 String result = "\"" + wikitWorker.getValue().trim() + "\"";
@@ -240,7 +242,6 @@ public class AudioController implements  Initializable {
 
         mergeAudioWorker.setOnSucceeded(finished -> {
             String getLengthCommand = "mp3info -p \"%S\" " + "src/audio/" + searchTerm + "/" + "output.mp3";
-            System.out.println(getLengthCommand);
             double duration = Double.parseDouble(methodHelper.command(getLengthCommand));
             methodHelper.setDuration(duration);
             try {
@@ -283,7 +284,6 @@ public class AudioController implements  Initializable {
             }
 
         }
-        System.out.println(command);
         return command;
     }
 
@@ -296,6 +296,7 @@ public class AudioController implements  Initializable {
         if (folder.exists()) {
 
             File[] listOfFiles = folder.listFiles();
+            Arrays.sort(listOfFiles, (f1, f2) -> f1.compareTo(f2));
             for (File file : listOfFiles) {
 
                 if (file.isFile()) {

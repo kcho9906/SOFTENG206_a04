@@ -140,4 +140,11 @@ public class MethodHelper {
             window.show();
         }
     }
+
+    public void resetDirs() {
+        command("rm -rf src/audio/*; rm -rf src/tempImages/*;");
+        createFileDirectory("src/creations");
+        createFileDirectory("src/tempImages");
+        createFileDirectory("src/audio");
+    }
 }
