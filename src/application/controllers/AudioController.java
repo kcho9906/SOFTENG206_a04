@@ -94,7 +94,8 @@ public class AudioController implements  Initializable {
                 if (result.contains("not found :^(")) {
 
                     // ask the user to try again because search term is not valid.
-                    statusLabel.setText(searchTerm + " not found. Please try again.  ⃠");
+                    String alertMessage = searchTerm + " not found. Please try again.  ⃠";
+                    methodHelper.createAlertBox(alertMessage);
                 } else {
 
                     // Display the sentences in the display area
