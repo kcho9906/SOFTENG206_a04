@@ -31,6 +31,10 @@ public class MethodHelper {
     private boolean _hasDownloaded = false;
     private boolean _containsAudio = false;
 
+    // fields for whether the images are selecte and there is input in creation name
+    private boolean _hasText = false;
+    private boolean _imagesSelected = false;
+
     public void changeScene(ActionEvent event, String scene) throws Exception {
         Parent newSceneParent = FXMLLoader.load(getClass().getResource(scene));
         Scene newScene = new Scene(newSceneParent);
@@ -194,5 +198,21 @@ public class MethodHelper {
 
     public boolean getContainsAudio() {
         return _containsAudio;
+    }
+
+    public void setImagesSelected(boolean imagesSelected) {
+        _imagesSelected = imagesSelected;
+    }
+
+    public void setHasText(boolean hasText) {
+        _hasText = hasText;
+    }
+
+    public boolean getImagesSelected() {
+        return _imagesSelected;
+    }
+
+    public boolean getHasText() {
+        return _hasText;
     }
 }

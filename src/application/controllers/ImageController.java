@@ -4,6 +4,8 @@ import application.CreationWorker;
 import application.FlickrImageExtractor;
 import application.Main;
 import application.MethodHelper;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
@@ -101,7 +103,9 @@ public class ImageController implements Initializable {
 
     public void updateGrid() {
 
-        System.out.println();
+        System.out.println(); // just for debug spacing
+
+        // initialise the grid with actions for each of the imags.
         for (int i = 0; i < imagesRetrieved[0]; i++) {
 
             ToggleButton imageButton = (ToggleButton) imagePane.getChildren().get(i);
@@ -117,18 +121,31 @@ public class ImageController implements Initializable {
                         imageButton.setStyle(null);
                         selectedList.remove(imageFile);
                         System.out.println(imageFile + " was removed from the list of selected images");
+
                     } else if (selectedList.size() < 10) {
 
                         selectedList.add(imageFile);
                         imageButton.setStyle("-fx-background-color: Yellow");
                         System.out.println(imageFile + " was added to the list of selected images");
+
+                    }
+
+                    if (selectedList.isEmpty()) {
+                        methodHelper.setImagesSelected(false);
+                    } else {
+                        methodHelper.setImagesSelected(true);
+                    }
+
+                    if (methodHelper.getImagesSelected() && methodHelper.getHasText()) {
+                        createButton.setDisable(false);
+                    } else {
+                        createButton.setDisable(true);
                     }
 
                 }
 
             });
         }
-
     }
 
     public static void getImages(String searchTerm, Button nextButton) {
@@ -193,6 +210,10 @@ public class ImageController implements Initializable {
 
     @Override
     public void initialize(URL location, ResourceBundle resources) {
+
+        // disable create button
+        createButton.setDisable(true);
+
         System.out.println(methodHelper.getDuration());
         uploadImages();
         bindProperties();
@@ -207,7 +228,29 @@ public class ImageController implements Initializable {
                         //prevents from the new space char
                         creationNameInput.setText(old_value);
                     }
-                });
+                }
+        );
+
+        creationNameInput.textProperty().addListener(new ChangeListener<String>() {
+            @Override
+            public void changed(ObservableValue<? extends String> observable,
+                                String oldValue, String newValue) {
+
+                System.out.println(" Text Changed to  " + newValue + "\n");
+                if (newValue.isEmpty()) {
+                    methodHelper.setHasText(false);
+                } else {
+                    methodHelper.setHasText(true);
+                }
+
+                if (methodHelper.getImagesSelected() && methodHelper.getHasText()) {
+                    createButton.setDisable(false);
+                } else {
+                    createButton.setDisable(true);
+                }
+
+            }
+        });
 
     }
 
