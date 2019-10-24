@@ -176,7 +176,6 @@ public class AudioController implements  Initializable {
             }
 
             String command = "espeak -v " + gender + " -s " + speed + " \"" + selectedText + "\" -w " + path + fileName + "; lame -b 320 -h " + path + fileName + "; rm " + path + "*.wav";
-            System.out.println(command);
             TerminalWorker audioWorker = new TerminalWorker(command);
             Thread th = new Thread(audioWorker);
             th.start();
