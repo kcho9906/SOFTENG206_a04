@@ -77,6 +77,8 @@ public class AudioController implements  Initializable {
 
                 searchTextField.clear();
                 searchTextField.setDisable(true);
+                methodHelper.setContainsAudio(false);
+                methodHelper.setHasDownloaded(false);
 
                 // get the images by using the ImageController
                 ImageController.getImages(searchTerm, nextButton, loadingImagesCircle, waitingFor);
