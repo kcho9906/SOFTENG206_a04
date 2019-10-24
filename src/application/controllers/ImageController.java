@@ -45,7 +45,9 @@ public class ImageController implements Initializable {
     private ObservableList<File> selectedList = FXCollections.observableArrayList();
     private static String query = "";
     private String creationName = "";
-    private final static int[] imagesRetrieved = {0};
+    private final static int[] imagesRetrieved = {0};private Thread thread = new Thread();
+    private CreationWorker creationWorker;
+
 
     /**
      * This method is responsible for creating the creation and uses
@@ -65,7 +67,8 @@ public class ImageController implements Initializable {
         loadingCircle.setVisible(true);
 
         // create the creation using a worker to be done in a background thread.
-        CreationWorker creationWorker = new CreationWorker(selectedList, query, action, creationDir);
+        creationWorker = new CreationWorker(selectedList, query, action, creationDir);
+
         Thread th = new Thread(creationWorker);
         th.start();
 
@@ -116,7 +119,11 @@ public class ImageController implements Initializable {
     @FXML
     void returnToAudio(ActionEvent event) throws Exception {
 
-        methodHelper.command("rm src/audio/" + query + "/output.mp3"); //delete merged audio
+        if (creationWorker != null) {
+            creationWorker.cancel();
+            loadingCircle.setVisible(false);
+        }
+        methodHelper.command("rm src/audio/" + query + "/output.*"); //delete merged audio
         methodHelper.changeCreationScene(event, "scenes/Audio.fxml");
         methodHelper.setPreviousScene(createButton.getScene());
     }
@@ -151,7 +158,6 @@ public class ImageController implements Initializable {
                     } else if (selectedList.size() < 10) {
 
                         selectedList.add(imageFile);
-                        imageButton.setStyle("-fx-background-color: Yellow");
                     }
 
                     // changes the status of the method helper is list is empty
@@ -177,7 +183,7 @@ public class ImageController implements Initializable {
      * @param searchTerm
      * @param nextButton
      */
-    public static void getImages(String searchTerm, Button nextButton) {
+    public static void getImages(String searchTerm, Button nextButton, ProgressIndicator loadingCircle, Label waitingFor) {
 
         query = searchTerm;
         boolean exists = false;
@@ -194,14 +200,19 @@ public class ImageController implements Initializable {
         // If the images don't already exist, then download the images from flickr.
         if (!exists) {
 
+            // notifies user images are downloading
             nextButton.setDisable(true);
+            waitingFor.setVisible(true);
+            loadingCircle.setVisible(true);
+
             int number = 12;
             AudioWorker audioWorker = new AudioWorker(number, query);
 
             audioWorker.setOnSucceeded(event -> {
 
                 try {
-
+                    loadingCircle.setVisible(false);
+                    waitingFor.setVisible(false);
                     imagesRetrieved[0] = audioWorker.get();
                     if (imagesRetrieved[0] != number) {
 
@@ -212,11 +223,10 @@ public class ImageController implements Initializable {
                     // change status of the text if the audio list is not empty
                     methodHelper.setHasDownloaded(true);
 
-                    // checks if the images have downloaded
+                    // notify user images are ready to be downloaded
                     if (methodHelper.getContainsAudio()) {
 
                         nextButton.setDisable(false);
-                        nextButton.setText("Next");
                     }
 
                 } catch (InterruptedException e) {
@@ -283,7 +293,7 @@ public class ImageController implements Initializable {
                     if(new_value.contains(" ")) {
 
                         //prevents from the new space char
-                        creationNameInput.setText(old_value);
+                        creationNameInput.setText(old_value + "_");
                     }
                 }
         );
@@ -345,6 +355,16 @@ public class ImageController implements Initializable {
     /**
      * Worker which will download images in the background thread
      */
+    @FXML
+    void returnToMenu(ActionEvent event) throws Exception {
+        boolean returnToMenu = methodHelper.addConfirmationAlert("Return to Menu", "All progress with be lost. Are you sure?");
+        if ( returnToMenu ) {
+
+            methodHelper.resetDirs();
+            methodHelper.changeScene(event, "scenes/MainMenu.fxml");
+        }
+    }
+
     public static class AudioWorker extends Task<Integer> {
 
         private int _numImages;

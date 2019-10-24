@@ -13,6 +13,7 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import java.io.File;
 import java.net.URL;
+import java.util.Arrays;
 import java.util.Collections;
 import java.util.ResourceBundle;
 
@@ -26,9 +27,9 @@ public class AudioController implements  Initializable {
     @FXML private ChoiceBox<String> bgMusicChoiceBox;
     @FXML private TextField searchTextField;
     @FXML private Button searchButton;
-    @FXML private Label statusLabel;
+    @FXML private Label waitingFor;
     @FXML private Label currentKeywordLabel;
-    @FXML private ProgressIndicator loadingCircle;
+    @FXML private ProgressIndicator loadingCircle, loadingImagesCircle;
     @FXML private TextArea wikiSearchTextArea;
     @FXML private Slider speedSlider;
     @FXML private Slider genderSlider;
@@ -64,9 +65,6 @@ public class AudioController implements  Initializable {
         // show the loading circle
         loadingCircle.setVisible(true);
 
-        // change the name of the button to downloading images...
-        nextButton.setText("Downloading Images...");
-
         // searches if the search term is not empty
         searchTerm = (searchTextField.getText().trim());
 
@@ -81,7 +79,7 @@ public class AudioController implements  Initializable {
                 searchTextField.setDisable(true);
 
                 // get the images by using the ImageController
-                ImageController.getImages(searchTerm, nextButton);
+                ImageController.getImages(searchTerm, nextButton, loadingImagesCircle, waitingFor);
 
                 // set the current keyword for user to see
                 currentKeywordLabel.setText(searchTerm);
@@ -175,6 +173,7 @@ public class AudioController implements  Initializable {
             }
 
             String command = "espeak -v " + gender + " -s " + speed + " \"" + selectedText + "\" -w " + path + fileName + "; lame -b 320 -h " + path + fileName + "; rm " + path + "*.wav";
+            System.out.println(command);
             TerminalWorker audioWorker = new TerminalWorker(command);
             Thread th = new Thread(audioWorker);
             th.start();
@@ -261,7 +260,6 @@ public class AudioController implements  Initializable {
 
         String selectedAudio = audioListView.getSelectionModel().getSelectedItem();
         int originalPos = listForCreation.indexOf(selectedAudio);
-
         if (originalPos != listForCreation.size() - 1) {
 
             // swaps the adjacent audio file
@@ -294,10 +292,14 @@ public class AudioController implements  Initializable {
         // if yes, then set all fields to default
         if (reset) {
 
-            // delete all audio files which had just been created.
-            deleteAudioFiles();
+            //deletes all temporary images and audio files.
+            methodHelper.resetDirs();
+            getAudioFileList();
 
             // set default settings
+            methodHelper.setPreviousScene(null);
+            methodHelper.setHasDownloaded(false);
+            methodHelper.setContainsAudio(false);
             searchTextField.setDisable(false);
             searchTextField.clear();
             maleAudioFiles = 0;
@@ -308,18 +310,18 @@ public class AudioController implements  Initializable {
             loadingCircle.setVisible(false);
             bgMusicChoiceBox.setValue("None");
             nextButton.setDisable(true);
+            waitingFor.setVisible(false);
+            loadingImagesCircle.setVisible(false);
         }
     }
 
-    /**
-     * Method to delete all the audio files
-     */
-    private void deleteAudioFiles() {
-
-        methodHelper.command("rm -rf src/audio/*");
-
-        // resets the audio files list
-        getAudioFileList();
+    @FXML
+    void returnToMenu(ActionEvent event) throws Exception {
+        boolean returnToMenu = methodHelper.addConfirmationAlert("Return to Menu", "All progress with be lost. Are you sure?");
+        if ( returnToMenu ) {
+            methodHelper.resetDirs();
+            methodHelper.changeScene(event, "scenes/MainMenu.fxml");
+        }
     }
 
     /**
@@ -334,10 +336,8 @@ public class AudioController implements  Initializable {
 
             // creates an alert if the chunk if more than 30 words
             methodHelper.createAlertBox("Chunk cannot be more than 30 words, try a smaller chunk");
-
             return false;
         }
-
         return true;
     }
 
@@ -366,10 +366,6 @@ public class AudioController implements  Initializable {
      * @param event
      * @throws Exception
      */
-    @FXML
-    void returnToMenu(ActionEvent event) throws Exception {
-        methodHelper.changeScene(event, "scenes/MainMenu.fxml");
-    }
 
     /**
      * Method to switch to the next scene which is the image scene.
@@ -433,7 +429,7 @@ public class AudioController implements  Initializable {
             // gets the background music value
             bgMusic = bgMusicChoiceBox.getValue();
             if (!bgMusic.equals("None")) {
-                String bgMusicPath = System.getProperty("user.dir") + "/backgroundMusic/" + bgMusic + ".mp3";
+                String bgMusicPath = System.getProperty("user.dir") + "/src/backgroundMusic/" + bgMusic + ".mp3";
                 command += "ffmpeg -y -i " + mergedPath + " -i " + bgMusicPath + " -filter_complex amix=inputs=2:duration=shortest " + path + "output.mp3";
             }
         }
@@ -454,6 +450,7 @@ public class AudioController implements  Initializable {
         if (folder.exists()) {
 
             File[] listOfFiles = folder.listFiles();
+            Arrays.sort(listOfFiles, (f1, f2) -> f1.compareTo(f2));
             for (File file : listOfFiles) {
 
                 if (file.isFile()) {

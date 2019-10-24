@@ -228,9 +228,7 @@ public class MethodHelper {
         return _hasDownloaded;
     }
 
-    public boolean getContainsAudio() {
-        return _containsAudio;
-    }
+    public boolean getContainsAudio() { return _containsAudio; }
 
     public void setImagesSelected(boolean imagesSelected) {
         _imagesSelected = imagesSelected;
@@ -246,5 +244,15 @@ public class MethodHelper {
 
     public boolean getHasText() {
         return _hasText;
+    }
+
+    /**
+     * Method which clears and create all necessary files to be used for creations
+     */
+    public void resetDirs() {
+        command("rm -rf src/audio/*; rm -rf src/tempImages/*;");
+        createFileDirectory("src/creations");
+        createFileDirectory("src/tempImages");
+        createFileDirectory("src/audio");
     }
 }

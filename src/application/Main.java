@@ -5,7 +5,9 @@ import javafx.application.Platform;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
+import javafx.scene.text.Font;
 import javafx.stage.Stage;
+import javafx.stage.StageStyle;
 
 /**
  *                              VARpedia
@@ -31,12 +33,13 @@ public class Main extends Application {
     @Override
     public void start(Stage primaryStage) throws Exception {
 
-        // create all necessary temporary files
-        createDirs();
+        // clear and create all necessary files to be used for creations
+        methodHelper.resetDirs();
 
         Parent root = FXMLLoader.load(getClass().getResource("scenes/MainMenu.fxml"));
         primaryStage.setTitle("VARpedia");
-        primaryStage.setScene(new Scene(root, 600, 600));
+        primaryStage.setScene(new Scene(root));
+        primaryStage.setResizable(false);
         primaryStage.show();
 
         // on closing the application, deletes all direectories and safely exits.
@@ -44,32 +47,15 @@ public class Main extends Application {
             event.consume();
             boolean exit = methodHelper.addConfirmationAlert("Quit Application", "Are you sure?");
             if (exit) {
-                deleteDirs();
+                methodHelper.resetDirs();
                 Platform.exit();
                 System.exit(0);
             }
         });
     }
 
-    /**
-     * Method which deletes all directories which are not necessary.
-     */
-    private void deleteDirs() {
-        methodHelper.command("rm -rf src/audio; rm -rf src/tempImages;");
-    }
-
     public static void main(String[] args) {
 
         launch(args);
-    }
-
-    /**
-     * Method which creates all necessary files to be used for creations
-     */
-    public void createDirs() {
-
-        methodHelper.createFileDirectory("src/creations");
-        methodHelper.createFileDirectory("src/tempImages");
-        methodHelper.createFileDirectory("src/audio");
     }
 }

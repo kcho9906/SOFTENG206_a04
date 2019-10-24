@@ -43,7 +43,7 @@ public class MediaController implements Initializable {
     private MediaPlayer _player;
     private Duration duration;
     private File _videoFile;
-    private double[] volumeBeforeMute = {1};
+    private double[] volumeBeforeMute = {100};
     private FXMLLoader loader;
 
     public MediaController(File videoFile) {
@@ -68,6 +68,12 @@ public class MediaController implements Initializable {
 
                     _player.setVolume(volumeSlider.getValue()/100);
                 }
+
+//                if (newValue.equals(0.0)) {
+//                    muteButton.setText("Unmute");
+//                } else {
+//                    muteButton.setText("Mute");
+//                }
             }
         });
 
@@ -130,10 +136,8 @@ public class MediaController implements Initializable {
 
             volumeBeforeMute[0] = volumeSlider.getValue();
             volumeSlider.setValue(0);
-            muteButton.setText("Unmute");
         } else {
 
-            muteButton.setText("Mute");
             volumeSlider.setValue(volumeBeforeMute[0]);
         }
     }
@@ -197,6 +201,7 @@ public class MediaController implements Initializable {
      * @param location
      * @param resources
      */
+
     @Override
     public void initialize(URL location, ResourceBundle resources) {
 
@@ -217,7 +222,7 @@ public class MediaController implements Initializable {
                 mediaView.setMediaPlayer(_player);
                 setUpProperties();
                 _player.play();
-                volumeBeforeMute[0] = _player.getVolume()*100;
+                volumeBeforeMute[0] = 100;
             }
         });
 
@@ -226,7 +231,7 @@ public class MediaController implements Initializable {
             @Override
             public void run() {
 
-                volumeSlider.setValue(1.0);
+                volumeSlider.setValue(100);
                 muteButton.setText("Mute");
                 _player.stop();
                 _player.seek(Duration.minutes(0));

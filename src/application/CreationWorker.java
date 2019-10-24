@@ -30,6 +30,10 @@ public class CreationWorker extends Task<Boolean> {
     @Override
     protected Boolean call() throws Exception {
 
+
+        if (isCancelled()) {
+            return false;
+        }
         // depending on the input, will create or overwrite the file
         boolean create = false;
         switch (_action) {
@@ -66,6 +70,7 @@ public class CreationWorker extends Task<Boolean> {
                 String command = "rm -r -f " + _creationDir.getPath();
                 methodHelper.command(command);
             }
+            return true;
         }
         return false;
     }
@@ -87,7 +92,7 @@ public class CreationWorker extends Task<Boolean> {
     private void createVideo(String creationName, String path) {
 
         // merge the images
-        command = "cat " + _creationPath + "/*.jpg | ffmpeg -f image2pipe -framerate " + imagesFound/duration + " -i - -vcodec libx264 -pix_fmt yuv420p -vf \"scale=w=1920:h=1080:force_original_aspect_ratio=1,pad=1920:1080:(ow-iw)/2:(oh-ih)/2\" -r 25 " + path + "/" + creationName + "_imageOnly.mp4";
+        command = "cat " + _creationPath + "/*.jpg | ffmpeg -f image2pipe -framerate " + imagesFound/duration + " -i - -vcodec libx264 -pix_fmt yuv420p -vf \"scale=w=1920:h=1080:force_original_aspect_ratio=1,pad=1920:1080:(ow-iw)/2:(oh-ih)/2:color=#FFECB3\" -r 25 " + path + "/" + creationName + "_imageOnly.mp4";
         methodHelper.command(command);
 
         // add the name onto the video
@@ -95,11 +100,13 @@ public class CreationWorker extends Task<Boolean> {
         methodHelper.command(command);
 
         // merge the video and images
-        String audio = "src/audio/" + _query + "/" + "output.mp3";
-        command = "ffmpeg -i " + path + "/noAudio.mp4 -i " + audio + " -c:v copy -c:a aac -strict experimental " + path + "/" + creationName + ".mp4";
+        String audioPath = "src/audio/" + _query + "/";
+        command = "ffmpeg -i " + path + "/noAudio.mp4 -i " + audioPath + "output.mp3 -c:v copy -c:a aac -strict experimental " + path + "/" + creationName + ".mp4";
         methodHelper.command(command);
 
-        methodHelper.command("rm " + audio + "; rm " + _creationPath + "/*.jpg");
+        // remove temporary files used in creating the creation
+        command = "rm " + audioPath + "output.mp3; rm " + audioPath + "output.wav; rm " + _creationPath + "/*.jpg";
+        methodHelper.command(command);
     }
 
     /**

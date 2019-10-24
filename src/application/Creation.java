@@ -64,7 +64,7 @@ public class Creation {
         try {
 
             view = Files.getFileAttributeView(p, BasicFileAttributeView.class).readAttributes();
-            SimpleDateFormat df = new SimpleDateFormat("MM/dd/yyyy-hh:mm a");
+            SimpleDateFormat df = new SimpleDateFormat("dd/MM/YY hh:mma");
             FileTime date = view.creationTime();
             dateCreated = df.format(date.toMillis());
         } catch (IOException e) {

@@ -23,7 +23,7 @@ import java.net.URL;
 import java.util.ResourceBundle;
 
 /**
- * This is a controller class for the scene "Quiz.fxml" and is
+ * This is a controller class for the scene "oldQuiz.fxml" and is
  * responsible for everything relating to the Quiz scene.
  */
 public class QuizController implements Initializable {
@@ -43,8 +43,6 @@ public class QuizController implements Initializable {
     private String _currentCreationName = "";
     private int _correctAnswers = 0;
     private int _attemptedAnswers = 0;
-    private Image tick = new Image(new File("componentImage/greenTick.png").toURI().toString());
-    private Image cross = new Image(new File("componentImage/redCross.png").toURI().toString());
     private ObservableList<Creation> _answeredCreations = FXCollections.observableArrayList();
 
     /**
@@ -61,18 +59,19 @@ public class QuizController implements Initializable {
 
         if (input.equals(_currentCreationName)) {
 
-            // set image view to tick and disable check answers button
-            resultImage.setImage(tick);
-            checkAnswerButton.setDisable(true);
+            // make the text field green to indicate correct answer
+            answerTextField.setStyle("-fx-control-inner-background: #4CAF50");
             _correctAnswers++;
             correct = true;
         } else {
 
-            // set image to a cross and disable check answer button
-            resultImage.setImage(cross);
-            checkAnswerButton.setDisable(true);
+            // make the text field red to indicate incorrect answer
+            answerTextField.setStyle("-fx-control-inner-background: #FF5252");
             correct = false;
         }
+
+        //disable the answer button until next round
+        checkAnswerButton.setDisable(true);
 
         // add to the attempted answers
         _attemptedAnswers++;
@@ -122,9 +121,7 @@ public class QuizController implements Initializable {
 
         // enables the check answer button
         checkAnswerButton.setDisable(false);
-
-        // reset the image to blank
-        resultImage.setImage(null);
+        answerTextField.setStyle(null);
 
         // reset the text field
         answerTextField.setText("");
@@ -194,5 +191,4 @@ public class QuizController implements Initializable {
             }
         });
     }
-
 }

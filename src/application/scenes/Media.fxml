@@ -7,60 +7,69 @@
 <?import javafx.scene.control.Slider?>
 <?import javafx.scene.image.Image?>
 <?import javafx.scene.image.ImageView?>
+<?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.media.MediaView?>
 
-<BorderPane fx:id="mediaPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="534.0" prefWidth="820.0" xmlns="http://javafx.com/javafx/" xmlns:fx="http://javafx.com/fxml/" >
+<BorderPane fx:id="mediaPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <bottom>
       <VBox alignment="CENTER" prefHeight="86.0" prefWidth="889.0" BorderPane.alignment="CENTER">
          <children>
-            <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" spacing="10.0">
-               <children>
-                  <Label fx:id="timeLabel" text="00:00 / 00:00" />
-                  <Slider fx:id="timeSlider" HBox.hgrow="ALWAYS" />
-               </children>
-               <padding>
-                  <Insets bottom="10.0" left="10.0" right="10.0" top="30.0" />
-               </padding>
-            </HBox>
-            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="600.0" spacing="10.0">
+            <HBox alignment="CENTER" prefHeight="100.0" prefWidth="600.0">
                <padding>
                   <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
                </padding>
                <children>
-                  <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="10.0">
+                  <HBox alignment="CENTER" prefHeight="100.0" prefWidth="219.0" spacing="10.0">
                      <children>
-                        <Button fx:id="muteButton" minWidth="70.0" mnemonicParsing="false" onAction="#muteMedia" text="Mute" />
+                        <Button fx:id="muteButton" minHeight="50.0" minWidth="50.0" mnemonicParsing="false" onAction="#muteMedia">
+                           <graphic>
+                              <ImageView fx:id="muteImage" fitHeight="26.0" fitWidth="31.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../../componentImages/volumeOn.png" />
+                                 </image>
+                              </ImageView>
+                           </graphic></Button>
                         <Slider fx:id="volumeSlider" blockIncrement="1.0" majorTickUnit="10.0" max="100" minorTickCount="1" value="100.0" />
                      </children>
                   </HBox>
-                  <ButtonBar prefHeight="40.0" prefWidth="200.0">
+                  <HBox alignment="CENTER_LEFT" prefHeight="66.0" prefWidth="482.0" spacing="10.0">
+                     <children>
+                        <Label fx:id="timeLabel" text="00:00 / 00:00" />
+                        <Slider fx:id="timeSlider" HBox.hgrow="ALWAYS" />
+                     </children>
+                     <padding>
+                        <Insets bottom="10.0" left="10.0" top="10.0" />
+                     </padding>
+                  </HBox>
+                  <ButtonBar buttonMinWidth="50.0" maxHeight="50.0" minHeight="50.0" prefHeight="50.0" prefWidth="200.0" HBox.hgrow="NEVER">
                     <buttons>
-                        <Button fx:id="rewindButton" mnemonicParsing="false" onAction="#rewindMedia">
+                        <Button fx:id="rewindButton" minHeight="50.0" mnemonicParsing="false" onAction="#rewindMedia">
                            <graphic>
-                              <ImageView fitHeight="20.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true" rotate="180.0">
+                              <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
-                                    <Image url="@../../../../componentImages/fastForward.png" />
+                                    <Image url="@../../componentImages/rewind5.png" />
                                  </image>
                               </ImageView>
                            </graphic></Button>
-                      <Button fx:id="playPauseButton" mnemonicParsing="false" onAction="#playPauseMedia" text="Pause" />
-                        <Button fx:id="fastForwardButton" mnemonicParsing="false" onAction="#fastForwardMedia">
+                      <Button fx:id="playPauseButton" minHeight="50.0" mnemonicParsing="false" onAction="#playPauseMedia">
                            <graphic>
-                              <ImageView fitHeight="20.0" fitWidth="25.0" pickOnBounds="true" preserveRatio="true">
+                              <ImageView fitHeight="35.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
-                                    <Image url="@../../../../componentImages/fastForward.png" />
+                                    <Image url="@../../componentImages/pause.png" />
                                  </image>
                               </ImageView>
                            </graphic></Button>
-                    </buttons>
-                  </ButtonBar>
-                  <ButtonBar prefHeight="26.0" prefWidth="260.0">
-                    <buttons>
-                      <Button fx:id="menuButton" mnemonicParsing="false" onAction="#returnToMenu" text="Main Menu" />
-                        <Button fx:id="creationListButton" mnemonicParsing="false" onAction="#returnToCreationList" prefWidth="163.0" text="Creations List" />
+                        <Button fx:id="fastForwardButton" minHeight="50.0" mnemonicParsing="false" onAction="#fastForwardMedia">
+                           <graphic>
+                              <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../../componentImages/fastForward5.png" />
+                                 </image>
+                              </ImageView>
+                           </graphic></Button>
                     </buttons>
                   </ButtonBar>
                </children>
@@ -71,10 +80,51 @@
    <opaqueInsets>
       <Insets />
    </opaqueInsets>
-   <padding>
-      <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-   </padding>
    <center>
-      <MediaView fx:id="mediaView" fitHeight="${mediaPane.height}" fitWidth="${mediaPane.width}" BorderPane.alignment="CENTER" />
+      <AnchorPane BorderPane.alignment="CENTER">
+         <children>
+            <MediaView fx:id="mediaView" fitHeight="${mediaPane.height}" fitWidth="${mediaPane.width}" nodeOrientation="INHERIT" />
+         </children>
+         <BorderPane.margin>
+            <Insets bottom="10.0" />
+         </BorderPane.margin>
+         <padding>
+            <Insets bottom="10.0" />
+         </padding>
+      </AnchorPane>
    </center>
+   <top>
+      <HBox alignment="TOP_RIGHT" prefHeight="39.0" prefWidth="828.0" style="-fx-background-color: #FFC107;" BorderPane.alignment="CENTER">
+         <children>
+            <ButtonBar minHeight="50.0" prefHeight="50.0" prefWidth="350.0" HBox.hgrow="NEVER">
+              <buttons>
+                  <Button fx:id="creationListButton" contentDisplay="RIGHT" minHeight="50.0" mnemonicParsing="false" onAction="#returnToCreationList" prefWidth="190.0" text="Creations List">
+                     <graphic>
+                        <ImageView fitHeight="35.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../../componentImages/creationList.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </Button>
+                <Button fx:id="menuButton" contentDisplay="RIGHT" minHeight="50.0" mnemonicParsing="false" onAction="#returnToMenu" text="Main Menu">
+                     <graphic>
+                        <ImageView fitHeight="35.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                           <image>
+                              <Image url="@../../componentImages/menu.png" />
+                           </image>
+                        </ImageView>
+                     </graphic>
+                  </Button>
+              </buttons>
+            </ButtonBar>
+         </children>
+         <opaqueInsets>
+            <Insets />
+         </opaqueInsets>
+         <padding>
+            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+         </padding>
+      </HBox>
+   </top>
 </BorderPane>

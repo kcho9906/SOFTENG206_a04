@@ -1,5 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import java.lang.String?>
+<?import javafx.collections.FXCollections?>
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ButtonBar?>
@@ -10,87 +12,160 @@
 <?import javafx.scene.control.Slider?>
 <?import javafx.scene.control.TextArea?>
 <?import javafx.scene.control.TextField?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<?import javafx.collections.FXCollections?>
-<?import java.lang.String?>
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="556.0" prefWidth="716.0" xmlns="http://javafx.com/javafx/" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.controllers.AudioController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" stylesheets="@../../cyanBlueGreyPalette.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.controllers.AudioController">
    <children>
-      <VBox alignment="CENTER" layoutX="93.0" layoutY="160.0" prefHeight="508.0" prefWidth="623.0" spacing="10.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
+      <VBox alignment="CENTER_RIGHT" layoutX="93.0" layoutY="160.0" prefHeight="508.0" prefWidth="623.0" spacing="10.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
-            <HBox alignment="CENTER" prefHeight="28.0" prefWidth="600.0">
+            <VBox maxHeight="150.0" minHeight="150.0" prefHeight="150.0" prefWidth="800.0" style="-fx-background-color: #FFC107;">
                <children>
-                  <TextField fx:id="searchTextField">
-                     <HBox.margin>
-                        <Insets right="20.0" />
-                     </HBox.margin>
-                  </TextField>
-                  <Button fx:id="searchButton" mnemonicParsing="false" onAction="#searchAction" prefHeight="25.0" prefWidth="66.0" text="Search">
-                     <font>
-                        <Font name="Times New Roman" size="13.0" />
-                     </font>
-                  </Button>
-                  <ProgressIndicator fx:id="loadingCircle" prefHeight="43.0" prefWidth="30.0" visible="false" />
+                  <HBox alignment="CENTER" prefHeight="100.0" prefWidth="600.0" spacing="10.0">
+                     <children>
+                        <HBox alignment="CENTER_LEFT" prefHeight="100.0" prefWidth="200.0" spacing="10.0" HBox.hgrow="ALWAYS">
+                           <children>
+                              <TextField fx:id="searchTextField" prefHeight="50.0" prefWidth="371.0" HBox.hgrow="ALWAYS">
+                                 <HBox.margin>
+                                    <Insets />
+                                 </HBox.margin>
+                              </TextField>
+                              <Button fx:id="searchButton" contentDisplay="RIGHT" maxHeight="50.0" minHeight="50.0" mnemonicParsing="false" onAction="#searchAction" prefWidth="156.0" text="Search">
+                                 <font>
+                                    <Font name="Times New Roman" size="13.0" />
+                                 </font>
+                                 <graphic>
+                                    <ImageView fitHeight="92.0" fitWidth="38.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@../../componentImages/search.png" />
+                                       </image>
+                                    </ImageView>
+                                 </graphic>
+                              </Button>
+                           </children>
+                        </HBox>
+                        <ProgressIndicator fx:id="loadingCircle" minHeight="60.0" minWidth="60.0" prefHeight="98.0" prefWidth="92.0" visible="false" />
+                        <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0" HBox.hgrow="SOMETIMES">
+                           <children>
+                              <Button fx:id="MenuButton" mnemonicParsing="false" onAction="#returnToMenu" HBox.hgrow="ALWAYS">
+                                 <graphic>
+                                    <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@../../componentImages/menu.png" />
+                                       </image>
+                                    </ImageView>
+                                 </graphic>
+                              </Button>
+                           </children>
+                        </HBox>
+                     </children>
+                     <VBox.margin>
+                        <Insets />
+                     </VBox.margin>
+                     <padding>
+                        <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                     </padding>
+                  </HBox>
+                  <HBox prefHeight="100.0" prefWidth="716.0">
+                     <children>
+                        <HBox alignment="BOTTOM_CENTER" prefHeight="75.0" prefWidth="600.0" spacing="10.0">
+                           <children>
+                              <Label fx:id="currentText" text="Current keyword:">
+                                 <graphic>
+                                    <ImageView fitHeight="150.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@../../componentImages/write.png" />
+                                       </image>
+                                    </ImageView>
+                                 </graphic></Label>
+                              <Label fx:id="currentKeywordLabel" text="N/A" />
+                           </children>
+                           <padding>
+                              <Insets bottom="10.0" />
+                           </padding>
+                        </HBox>
+                        <HBox alignment="BOTTOM_CENTER" HBox.hgrow="SOMETIMES">
+                           <children>
+                              <Label fx:id="existingAudioLabel" prefHeight="34.0" prefWidth="281.0" text="Audio files ">
+                                 <graphic>
+                                    <ImageView fitHeight="150.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@../../componentImages/audioList.png" />
+                                       </image>
+                                    </ImageView>
+                                 </graphic>
+                                 <HBox.margin>
+                                    <Insets />
+                                 </HBox.margin></Label>
+                           </children>
+                           <padding>
+                              <Insets bottom="10.0" />
+                           </padding>
+                        </HBox>
+                     </children>
+                  </HBox>
                </children>
-               <VBox.margin>
-                  <Insets />
-               </VBox.margin>
-            </HBox>
+            </VBox>
             <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" spacing="10.0" VBox.vgrow="ALWAYS">
                <children>
                   <VBox alignment="CENTER" prefHeight="200.0" prefWidth="100.0" spacing="10.0" HBox.hgrow="ALWAYS">
                      <children>
-                        <HBox alignment="CENTER" prefHeight="27.0" prefWidth="448.0" spacing="10.0" VBox.vgrow="NEVER">
-                           <children>
-                              <Label text="Current keyword:" />
-                              <Label fx:id="currentKeywordLabel" text="N/A" />
-                           </children>
-                        </HBox>
                         <TextArea fx:id="wikiSearchTextArea" VBox.vgrow="ALWAYS" />
                         <HBox alignment="CENTER" prefHeight="61.0" prefWidth="436.0" spacing="10.0">
                            <children>
-                              <VBox prefHeight="79.0" prefWidth="41.0">
+                              <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" HBox.hgrow="ALWAYS">
                                  <children>
-                                    <Label alignment="TOP_CENTER" prefHeight="90.0" prefWidth="41.0" text="Speed" />
-                                    <Label alignment="CENTER_RIGHT" prefHeight="20.0" prefWidth="41.0" text="♂" textFill="#58a2f2">
+                                    <Label fx:id="speedLabel" alignment="TOP_LEFT" prefHeight="30.0" prefWidth="85.0" text="Speed" />
+                                    <Slider fx:id="speedSlider" blockIncrement="1.0" majorTickUnit="0.5" max="2.0" min="0.5" minorTickCount="0" prefHeight="58.0" prefWidth="222.0" showTickLabels="true" showTickMarks="true" snapToTicks="true" value="1.0">
+                                       <padding>
+                                          <Insets top="20.0" />
+                                       </padding>
+                                    </Slider>
+                                 </children>
+                              </HBox>
+                              <HBox alignment="CENTER" prefHeight="61.0" prefWidth="125.0">
+                                 <children>
+                                    <Label alignment="CENTER" prefHeight="39.0" prefWidth="37.0" text="♂" textFill="#58a2f2">
                                        <font>
-                                          <Font size="24.0" />
+                                          <Font size="28.0" />
+                                       </font>
+                                    </Label>
+                                    <Slider fx:id="genderSlider" blockIncrement="1.0" majorTickUnit="1.0" max="1.0" minorTickCount="0" prefHeight="20.0" prefWidth="53.0" snapToTicks="true" />
+                                    <Label alignment="CENTER" prefHeight="39.0" prefWidth="36.0" text="♀" textFill="#f58787">
+                                       <font>
+                                          <Font size="28.0" />
                                        </font>
                                     </Label>
                                  </children>
-                              </VBox>
-                              <VBox prefHeight="200.0" prefWidth="100.0">
+                              </HBox>
+                              <HBox alignment="CENTER_RIGHT" prefHeight="61.0" prefWidth="82.0" spacing="10.0" HBox.hgrow="ALWAYS">
                                  <children>
-                                    <Slider fx:id="speedSlider" blockIncrement="1.0" majorTickUnit="0.5" max="2.0" min="0.5" minorTickCount="0" prefHeight="20.0" prefWidth="100.0" showTickLabels="true" showTickMarks="true" snapToTicks="true" value="1.0" />
-                                    <Slider fx:id="genderSlider" blockIncrement="1.0" majorTickUnit="1.0" max="1.0" minorTickCount="0" prefHeight="20.0" prefWidth="100.0" snapToTicks="true" />
-                                 </children>
-                              </VBox>
-                              <VBox prefHeight="58.0" prefWidth="20.0">
-                                 <children>
-                                    <HBox alignment="CENTER" prefHeight="28.0" prefWidth="20.0" spacing="5.0" />
-                                    <Label alignment="BOTTOM_LEFT" prefHeight="20.0" prefWidth="20.0" text="♀" textFill="#f58787">
-                                       <font>
-                                          <Font size="24.0" />
-                                       </font>
-                                    </Label>
-                                 </children>
-                              </VBox>
-                              <HBox alignment="CENTER" prefHeight="57.0" prefWidth="160.0" spacing="10.0" HBox.hgrow="NEVER">
-                                 <children>
-                                    <Button fx:id="previewTextButton" alignment="CENTER" mnemonicParsing="false" onAction="#previewTextAction" prefHeight="50.0" prefWidth="50.0" text="▶" HBox.hgrow="ALWAYS">
+                                    <Button fx:id="previewTextButton" alignment="CENTER" mnemonicParsing="false" onAction="#previewTextAction" prefHeight="50.0" prefWidth="50.0" HBox.hgrow="ALWAYS">
                                        <padding>
                                           <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-                                       </padding></Button>
-                                    <Button fx:id="saveTextButton" maxHeight="50.0" maxWidth="50.0" minHeight="50.0" minWidth="50.0" mnemonicParsing="false" onAction="#saveTextAction" prefHeight="50.0" prefWidth="50.0" text="Save" />
+                                       </padding>
+                                       <graphic>
+                                          <ImageView fitHeight="67.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                                             <image>
+                                                <Image url="@../../componentImages/listen.png" />
+                                             </image>
+                                          </ImageView>
+                                       </graphic></Button>
+                                    <Button fx:id="saveTextButton" maxHeight="50.0" maxWidth="50.0" minHeight="50.0" minWidth="50.0" mnemonicParsing="false" onAction="#saveTextAction" prefHeight="50.0" prefWidth="50.0">
+                                       <graphic>
+                                          <ImageView fitHeight="107.0" fitWidth="43.0" pickOnBounds="true" preserveRatio="true">
+                                             <image>
+                                                <Image url="@../../componentImages/saveAudio.png" />
+                                             </image>
+                                          </ImageView>
+                                       </graphic></Button>
                                  </children>
                               </HBox>
                            </children>
-                           <padding>
-                              <Insets left="10.0" right="10.0" />
-                           </padding>
                         </HBox>
                      </children>
                   </VBox>
@@ -98,17 +173,12 @@
                      <children>
                         <VBox alignment="CENTER" spacing="10.0">
                            <children>
-                              <HBox alignment="CENTER" VBox.vgrow="NEVER">
-                                 <children>
-                                    <Label text="Existing audio files" />
-                                 </children>
-                              </HBox>
-                              <ListView fx:id="audioListView" prefHeight="305.0" prefWidth="211.0" VBox.vgrow="ALWAYS">
+                              <ListView fx:id="audioListView" prefHeight="277.0" prefWidth="237.0" VBox.vgrow="ALWAYS">
                                  <VBox.margin>
-                                    <Insets top="10.0" />
+                                    <Insets />
                                  </VBox.margin>
                               </ListView>
-                              <ChoiceBox fx:id="bgMusicChoiceBox" value="None">
+                              <ChoiceBox fx:id="bgMusicChoiceBox" minHeight="50.0" prefWidth="200.0" value="None">
                                  <items>
                                     <FXCollections fx:factory="observableArrayList">
                                        <String fx:value="None" />
@@ -117,49 +187,128 @@
                                     </FXCollections>
                                  </items>
                               </ChoiceBox>
-                              <HBox alignment="CENTER">
+                              <HBox alignment="CENTER_RIGHT" spacing="10.0">
                                  <children>
-                                    <Button fx:id="playAudioButton" minHeight="50.0" minWidth="50.0" mnemonicParsing="false" onAction="#playAudioAction" prefHeight="50.0" prefWidth="50.0" text="▶">
-                                       <HBox.margin>
-                                          <Insets right="10.0" />
-                                       </HBox.margin>
+                                    <Button fx:id="playAudioButton" alignment="CENTER" mnemonicParsing="false" onAction="#playAudioAction" prefHeight="50.0" prefWidth="50.0">
+                                       <padding>
+                                          <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
+                                       </padding>
+                                       <graphic>
+                                          <ImageView fitHeight="67.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                                             <image>
+                                                <Image url="@../../componentImages/listen.png" />
+                                             </image>
+                                          </ImageView>
+                                       </graphic>
                                     </Button>
-                                    <Button fx:id="deleteAudioButton" maxHeight="50.0" maxWidth="50.0" minHeight="50.0" minWidth="50.0" mnemonicParsing="false" onAction="#deleteAudioAction" prefHeight="50.0" prefWidth="50.0" text="␡">
+                                    <Button fx:id="deleteAudioButton" maxHeight="50.0" maxWidth="50.0" minHeight="50.0" minWidth="50.0" mnemonicParsing="false" onAction="#deleteAudioAction" prefHeight="50.0" prefWidth="50.0">
                                        <HBox.margin>
-                                          <Insets right="10.0" />
+                                          <Insets />
                                        </HBox.margin>
                                        <font>
                                           <Font size="20.0" />
                                        </font>
+                                       <graphic>
+                                          <ImageView fitHeight="62.0" fitWidth="29.0" pickOnBounds="true" preserveRatio="true">
+                                             <image>
+                                                <Image url="@../../componentImages/delete.png" />
+                                             </image>
+                                          </ImageView>
+                                       </graphic>
                                     </Button>
                                  </children>
                                  <VBox.margin>
-                                    <Insets top="10.0" />
+                                    <Insets />
                                  </VBox.margin>
+                                 <padding>
+                                    <Insets bottom="10.0" />
+                                 </padding>
                               </HBox>
                            </children>
                         </VBox>
-                        <VBox alignment="CENTER" prefHeight="409.0" prefWidth="30.0" spacing="10.0">
+                        <VBox alignment="CENTER" prefHeight="384.0" prefWidth="65.0" spacing="10.0" HBox.hgrow="ALWAYS">
                            <children>
-                              <Button fx:id="moveUpButton" mnemonicParsing="false" onAction="#moveAudioUp" text="⌃" />
-                              <Button fx:id="moveDownButton" mnemonicParsing="false" onAction="#moveAudioDown" text="⌄" />
+                              <Button fx:id="moveUpButton" maxHeight="50.0" maxWidth="50.0" minHeight="50.0" minWidth="50.0" mnemonicParsing="false" onAction="#moveAudioUp" prefHeight="50.0" prefWidth="50.0">
+                                 <graphic>
+                                    <ImageView fitHeight="150.0" fitWidth="29.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@../../componentImages/up.png" />
+                                       </image>
+                                    </ImageView>
+                                 </graphic></Button>
+                              <Button fx:id="moveDownButton" maxHeight="50.0" maxWidth="50.0" minHeight="50.0" minWidth="50.0" mnemonicParsing="false" onAction="#moveAudioDown" prefHeight="50.0" prefWidth="50.0">
+                                 <graphic>
+                                    <ImageView fitHeight="81.0" fitWidth="34.0" pickOnBounds="true" preserveRatio="true">
+                                       <image>
+                                          <Image url="@../../componentImages/down.png" />
+                                       </image>
+                                    </ImageView>
+                                 </graphic></Button>
                            </children>
+                           <padding>
+                              <Insets bottom="30.0" right="10.0" />
+                           </padding>
                         </VBox>
                      </children>
                   </HBox>
                </children>
+               <padding>
+                  <Insets left="10.0" />
+               </padding>
             </HBox>
-            <ButtonBar maxWidth="420.0" nodeOrientation="LEFT_TO_RIGHT" prefHeight="26.0" prefWidth="417.0">
-               <buttons>
-                  <Button fx:id="resetButton" mnemonicParsing="false" onAction="#resetAction" prefHeight="27.0" prefWidth="233.0" text="Reset to default" />
-                  <Button fx:id="MenuButton" mnemonicParsing="false" onAction="#returnToMenu" text="Main Menu" />
-                  <Button fx:id="nextButton" mnemonicParsing="false" onAction="#toNextStageButton" text="Next" />
-               </buttons>
-            </ButtonBar>
+            <HBox prefHeight="0.0" prefWidth="800.0">
+               <children>
+                  <HBox alignment="CENTER_LEFT" prefHeight="60.0" prefWidth="302.0" HBox.hgrow="SOMETIMES">
+                     <children>
+                        <Button fx:id="resetButton" contentDisplay="RIGHT" mnemonicParsing="false" onAction="#resetAction" prefHeight="50.0" prefWidth="116.0" text="Reset">
+                           <graphic>
+                              <ImageView fitHeight="150.0" fitWidth="30.0" nodeOrientation="RIGHT_TO_LEFT" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../../componentImages/replay.png" />
+                                 </image>
+                              </ImageView>
+                           </graphic>
+                        </Button>
+                     </children>
+                     <padding>
+                        <Insets bottom="10.0" left="10.0" />
+                     </padding>
+                  </HBox>
+                  <HBox alignment="CENTER_RIGHT" prefHeight="100.0" prefWidth="200.0" spacing="10.0" HBox.hgrow="ALWAYS">
+                     <children>
+                        <ProgressIndicator fx:id="loadingImagesCircle" minHeight="60.0" minWidth="60.0" visible="false" />
+                        <Label fx:id="waitingFor" prefHeight="34.0" prefWidth="202.0" text="Downloading images" visible="false" HBox.hgrow="ALWAYS">
+                           <font>
+                              <Font size="25.0" />
+                           </font>
+                        </Label>
+                     </children>
+                  </HBox>
+                  <ButtonBar maxWidth="420.0" nodeOrientation="LEFT_TO_RIGHT" prefHeight="60.0" prefWidth="73.0">
+                     <buttons>
+                        <Button fx:id="nextButton" minWidth="0.0" mnemonicParsing="false" onAction="#toNextStageButton" prefHeight="50.0">
+                           <graphic>
+                              <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../../componentImages/next.png" />
+                                 </image>
+                              </ImageView>
+                           </graphic>
+                        </Button>
+                     </buttons>
+                     <opaqueInsets>
+                        <Insets />
+                     </opaqueInsets>
+                     <padding>
+                        <Insets bottom="10.0" right="10.0" />
+                     </padding>
+                  </ButtonBar>
+               </children>
+            </HBox>
          </children>
-         <padding>
-            <Insets bottom="10.0" left="10.0" right="10.0" top="10.0" />
-         </padding>
+         <opaqueInsets>
+            <Insets />
+         </opaqueInsets>
       </VBox>
    </children>
 </AnchorPane>
