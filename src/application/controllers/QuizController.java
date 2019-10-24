@@ -18,7 +18,7 @@ import javafx.scene.media.MediaPlayer;
 import javafx.scene.media.MediaView;
 import javafx.util.Duration;
 
-import java.io.File;
+import java.io.*;
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -41,6 +41,7 @@ public class QuizController implements Initializable {
     private MediaPlayer _player;
     private double[] volumeBeforeMute = {1};
     private String _currentCreationName = "";
+    private String _searchTerm = "";
     private int _correctAnswers = 0;
     private int _attemptedAnswers = 0;
     private ObservableList<Creation> _answeredCreations = FXCollections.observableArrayList();
@@ -57,7 +58,7 @@ public class QuizController implements Initializable {
         // compares the input to the textField with the current creation
         String input = answerTextField.getText().trim().toLowerCase();
 
-        if (input.equals(_currentCreationName)) {
+        if (input.equals(_searchTerm)) {
 
             // make the text field green to indicate correct answer
             answerTextField.setStyle("-fx-control-inner-background: #4CAF50");
@@ -77,7 +78,7 @@ public class QuizController implements Initializable {
         _attemptedAnswers++;
 
         // save the creation in a list to be displayed later.
-        Creation creation = new Creation(_currentCreationName, correct);
+        Creation creation = new Creation(_currentCreationName, _searchTerm, input, correct);
         _answeredCreations.add(creation);
     }
 
@@ -147,6 +148,23 @@ public class QuizController implements Initializable {
         // select the random file
         File selectedFile = files[videoFileNumber];
         _currentCreationName = selectedFile.getName().toLowerCase();
+
+        // get the search term for comparing
+        try {
+
+            String path = "src/creations/" + _currentCreationName + "/info.txt";
+
+            BufferedReader Buff = new BufferedReader(new FileReader(path));
+            _searchTerm = Buff.readLine();
+        } catch (FileNotFoundException e) {
+
+            e.printStackTrace();
+        } catch (IOException e) {
+
+            e.printStackTrace();
+        }
+
+        // get path for the no audio file
         String path = selectedFile.getPath();
         File videoFile = new File(path + "/" + "noAudio.mp4");
 

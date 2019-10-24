@@ -24,6 +24,7 @@ public class Creation {
     private String _timeCreated;
     private String _duration;
     private String _correct;
+    private String _attempt;
 
     /**
      * Creation constructor for creations in the table view
@@ -41,8 +42,10 @@ public class Creation {
      * @param creationName
      * @param correct
      */
-    public Creation(String creationName, boolean correct) {
+    public Creation(String creationName, String searchTerm, String attempt, boolean correct) {
         _creationName = creationName;
+        _searchTerm = searchTerm;
+        _attempt = attempt;
 
         if (correct) {
             _correct = "Correct";
@@ -159,5 +162,13 @@ public class Creation {
     public String get_searchTerm() {
 
         return _searchTerm;
+    }
+
+    public void set_attempt(String attempt) {
+        _attempt = attempt;
+    }
+
+    public String get_attempt() {
+        return _attempt;
     }
 }

@@ -43,7 +43,7 @@ public class ImageController implements Initializable {
     private static MethodHelper methodHelper = Main.getMethodHelper();
     private ObservableList<File> imageList = FXCollections.observableArrayList();
     private ObservableList<File> selectedList = FXCollections.observableArrayList();
-    private static String query = "";
+    private static String searchTerm = "";
     private String creationName = "";
     private final static int[] imagesRetrieved = {0};private Thread thread = new Thread();
     private CreationWorker creationWorker;
@@ -67,7 +67,7 @@ public class ImageController implements Initializable {
         loadingCircle.setVisible(true);
 
         // create the creation using a worker to be done in a background thread.
-        creationWorker = new CreationWorker(selectedList, query, action, creationDir);
+        creationWorker = new CreationWorker(selectedList, searchTerm, action, creationDir);
 
         Thread th = new Thread(creationWorker);
         th.start();
@@ -123,7 +123,7 @@ public class ImageController implements Initializable {
             creationWorker.cancel();
             loadingCircle.setVisible(false);
         }
-        methodHelper.command("rm src/audio/" + query + "/output.*"); //delete merged audio
+        methodHelper.command("rm src/audio/" + searchTerm + "/output.*"); //delete merged audio
         methodHelper.changeCreationScene(event, "scenes/Audio.fxml");
         methodHelper.setPreviousScene(createButton.getScene());
     }
@@ -185,7 +185,7 @@ public class ImageController implements Initializable {
      */
     public static void getImages(String searchTerm, Button nextButton, ProgressIndicator loadingCircle, Label waitingFor) {
 
-        query = searchTerm;
+        ImageController.searchTerm = searchTerm;
         boolean exists = false;
         File searchTermImagesDir = new File("src/tempImages/" + searchTerm);
 
@@ -207,7 +207,7 @@ public class ImageController implements Initializable {
             loadingCircle.setVisible(true);
 
             int number = 12;
-            AudioWorker audioWorker = new AudioWorker(number, query);
+            AudioWorker audioWorker = new AudioWorker(number, ImageController.searchTerm);
 
             audioWorker.setOnSucceeded(event -> {
 
@@ -249,7 +249,7 @@ public class ImageController implements Initializable {
      */
     public void uploadImages() {
 
-        String path = System.getProperty("user.dir") + "/src/tempImages/" + query;
+        String path = System.getProperty("user.dir") + "/src/tempImages/" + searchTerm;
         File[] imageFiles = new File(path).listFiles(File::isFile);
 
         for (File image: imageFiles) {
@@ -371,10 +371,10 @@ public class ImageController implements Initializable {
         private int _numImages;
         private String _query;
 
-        public AudioWorker(int numImages, String query) {
+        public AudioWorker(int numImages, String searchTerm) {
 
             _numImages = numImages;
-            _query = query;
+            _query = searchTerm;
         }
 
         @Override

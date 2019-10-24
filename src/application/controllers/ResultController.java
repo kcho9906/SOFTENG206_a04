@@ -28,6 +28,8 @@ public class ResultController implements Initializable {
     @FXML private Label bestPercentage;
     @FXML private TableView<Creation> correctTableView;
     @FXML private TableColumn<Creation, String> creationNameColumn;
+    @FXML private TableColumn<Creation, String> searchTermColumn;
+    @FXML private TableColumn<Creation, String> attemptColumn;
     @FXML private TableColumn<Creation, String> correctColumn;
     @FXML private Button mainMenuButton;
 
@@ -55,6 +57,8 @@ public class ResultController implements Initializable {
         _answeredCreations = methodHelper.getAnsweredCreations();
 
         creationNameColumn.setCellValueFactory(new PropertyValueFactory<>("_creationName"));
+        searchTermColumn.setCellValueFactory(new PropertyValueFactory<>("_searchTerm"));
+        attemptColumn.setCellValueFactory(new PropertyValueFactory<>("_attempt"));
         correctColumn.setCellValueFactory(new PropertyValueFactory<>("_correct"));
 
         // set the items to the table view

@@ -41,6 +41,9 @@ public class MethodHelper {
     private boolean _hasText = false;
     private boolean _imagesSelected = false;
 
+    // contains the current search term
+    private String _searchTerm = "";
+
     /**
      * Method changes the current scene to the input string scene.
      * use of this will make a new instance of the FXML scene.
@@ -173,6 +176,17 @@ public class MethodHelper {
         }
     }
 
+    /**
+     * Method which clears and create all necessary files to be used for creations
+     */
+    public void resetDirs() {
+
+        command("rm -rf src/audio/*; rm -rf src/tempImages/*;");
+        createFileDirectory("src/creations");
+        createFileDirectory("src/tempImages");
+        createFileDirectory("src/audio");
+    }
+
     //-------------------------------Getters and Setters--------------------------------//
     public void setDuration(double duration) {
 
@@ -246,13 +260,8 @@ public class MethodHelper {
         return _hasText;
     }
 
-    /**
-     * Method which clears and create all necessary files to be used for creations
-     */
-    public void resetDirs() {
-        command("rm -rf src/audio/*; rm -rf src/tempImages/*;");
-        createFileDirectory("src/creations");
-        createFileDirectory("src/tempImages");
-        createFileDirectory("src/audio");
-    }
+    public void setSearchTerm(String searchTerm) { _searchTerm = searchTerm; }
+
+    public String getSearchTerm() { return _searchTerm; }
+
 }
