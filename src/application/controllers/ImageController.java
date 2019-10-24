@@ -193,6 +193,7 @@ public class ImageController implements Initializable {
         if (searchTermImagesDir.isDirectory()) {
 
             imagesRetrieved[0] = 12;
+            methodHelper.setHasDownloaded(true);
             exists = true;
 
         }
