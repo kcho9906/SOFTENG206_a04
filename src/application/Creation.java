@@ -115,6 +115,7 @@ public class Creation {
         String durationString = methodHelper.command(command);
         command = "eval \"echo $(date -ud \"@" + durationString + "\" +'%M mins %S secs')\"";
         durationString = methodHelper.command(command);
+
         return durationString.trim();
     }
 

@@ -27,6 +27,10 @@ public class MethodHelper {
     private ObservableList<Creation> _answeredCreations = FXCollections.observableArrayList();
     private Scene previousScene;
 
+    // fields which tell whether the images have been downloaded and audio list contains something
+    private boolean _hasDownloaded = false;
+    private boolean _containsAudio = false;
+
     public void changeScene(ActionEvent event, String scene) throws Exception {
         Parent newSceneParent = FXMLLoader.load(getClass().getResource(scene));
         Scene newScene = new Scene(newSceneParent);
@@ -174,5 +178,21 @@ public class MethodHelper {
             window.setScene(previousScene);
             window.show();
         }
+    }
+
+    public void setHasDownloaded(boolean hasDownloaded) {
+        _hasDownloaded = hasDownloaded;
+    }
+
+    public void setContainsAudio(boolean containsAudio) {
+        _containsAudio = containsAudio;
+    }
+
+    public boolean getHasDownloaded() {
+        return _hasDownloaded;
+    }
+
+    public boolean getContainsAudio() {
+        return _containsAudio;
     }
 }

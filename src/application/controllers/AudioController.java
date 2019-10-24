@@ -91,6 +91,9 @@ public class AudioController implements  Initializable {
         methodHelper.command(command);
         getAudioFileList();
 
+        // check if audio list is empty then set next button
+        nextButton.setDisable(audioListView.getItems().isEmpty());
+
     }
 
     @FXML
@@ -150,6 +153,10 @@ public class AudioController implements  Initializable {
 
         methodHelper.command("rm -rf src/audio/*");
         getAudioFileList();
+
+        // do this
+        // disable next button
+        nextButton.setDisable(true);
     }
 
     @FXML
@@ -181,10 +188,18 @@ public class AudioController implements  Initializable {
             audioWorker.setOnSucceeded(event1 -> {
 
                 getAudioFileList();
+
+                // change status of the text if the audio list is not empty
+                if (!audioListView.getItems().isEmpty()) {
+                    methodHelper.setContainsAudio(true);
+                }
+
+                // checks if the images have downloaded
+                if (methodHelper.getHasDownloaded()) {
+                    System.out.println("has downloaded");
+                    nextButton.setDisable(false);
+                }
             });
-
-
-
         }
 
     }
@@ -221,6 +236,10 @@ public class AudioController implements  Initializable {
                     wikiSearchTextArea.setWrapText(true);
                     wikiSearchTextArea.setDisable(false);
                     // need to reset stuff
+                }
+
+                if (!audioListView.getItems().isEmpty()) {
+                    nextButton.setDisable(false);
                 }
             }
         });

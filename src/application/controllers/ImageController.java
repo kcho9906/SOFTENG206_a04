@@ -136,10 +136,13 @@ public class ImageController implements Initializable {
         query = searchTerm;
         boolean exists = false;
         File searchTermImagesDir = new File("src/tempImages/" + searchTerm);
+
+        // checks if the directory already exists
         if (searchTermImagesDir.isDirectory()) {
             System.out.println("exists");
             imagesRetrieved[0] = 12;
             exists = true;
+
         }
 
         if (!exists) {
@@ -153,8 +156,16 @@ public class ImageController implements Initializable {
                     if (imagesRetrieved[0] != number) {
                         methodHelper.createAlertBox("Did not get " + number + " images\nOnly retrieved " + imagesRetrieved[0] + " images");
                     }
-                    nextButton.setDisable(false);
-                    nextButton.setText("Next");
+
+                    // change status of the text if the audio list is not empty
+                    methodHelper.setHasDownloaded(true);
+
+                    // checks if the images have downloaded
+                    if (methodHelper.getContainsAudio()) {
+                        nextButton.setDisable(false);
+                        nextButton.setText("Next");
+                    }
+
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 } catch (ExecutionException e) {
