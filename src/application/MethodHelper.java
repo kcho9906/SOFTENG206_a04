@@ -8,8 +8,12 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
+import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
+import javafx.scene.control.DialogPane;
 import javafx.stage.Stage;
+import javafx.stage.Window;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.InputStreamReader;
@@ -83,17 +87,32 @@ public class MethodHelper {
      * @param contentText
      * @return
      */
-    public boolean addConfirmationAlert(String title, String contentText) {
-        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+    public boolean addConfirmationAlert(String title, String contentText, String confirm, String cancel) {
+
+        ButtonType confirmButton = new ButtonType(confirm);
+        ButtonType cancelButton = new ButtonType(cancel);
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION, "", cancelButton, confirmButton);
         alert.setTitle(title);
         alert.setHeaderText(contentText);
-
+        DialogPane dialogPane = alert.getDialogPane();
+        dialogPane.getStylesheets().add(
+                getClass().getResource("../cyanBlueGreyPalette.css").toExternalForm());
+        dialogPane.getStyleClass().add("myDialog");
+        Window window = alert.getDialogPane().getScene().getWindow();
+        window.setOnCloseRequest(e -> {
+            alert.hide();
+        });
         Optional<ButtonType> result = alert.showAndWait();
-        if (result.get() == ButtonType.OK){
-            return true;
-        } else {
-            return false;
-        }
+        boolean[] answer = {false};
+        result.ifPresent(res->{
+            if (res.equals(confirmButton)) {
+                answer[0] = true;
+            } else if (res.equals(cancelButton)) {
+                answer[0] = false;
+            }
+        });
+
+        return answer[0];
     }
 
     /**
@@ -158,6 +177,10 @@ public class MethodHelper {
 
         Alert alert = new Alert(Alert.AlertType.WARNING);
         alert.setHeaderText(message);
+        DialogPane dialogPane = alert.getDialogPane();
+        dialogPane.getStylesheets().add(
+                getClass().getResource("../cyanBlueGreyPalette.css").toExternalForm());
+        dialogPane.getStyleClass().add("myDialog");
         alert.show();
     }
 

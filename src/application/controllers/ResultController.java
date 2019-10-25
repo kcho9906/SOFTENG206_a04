@@ -65,9 +65,13 @@ public class ResultController implements Initializable {
         correctTableView.setItems(_answeredCreations);
 
         int[] answers = methodHelper.getAnswers();
+        // calculate percentage
+        double decimal = ((double) answers[0]) / answers[1];
+        int percentage = (int) (decimal * 100);
+
         correctAnswers.setText("" + answers[0]);
         totalAnswers.setText("" + answers[1]);
-        bestPercentage.setText("Best Score Percentage: " + answers[2] + "%");
+        bestPercentage.setText("Round Score: " + percentage + "% \tBest Score Percentage: " + answers[2] + "%");
 
     }
 }

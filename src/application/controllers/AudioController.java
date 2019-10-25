@@ -289,7 +289,7 @@ public class AudioController implements  Initializable {
     void resetAction(ActionEvent event) {
 
         // add an alert to confirm whether the user is sure to reset the scene.
-        boolean reset = methodHelper.addConfirmationAlert("Reset search", "All progress will be lost. Continue?");
+        boolean reset = methodHelper.addConfirmationAlert("Reset search", "All progress will be lost. Continue?", "Continue", "Cancel");
 
         // if yes, then set all fields to default
         if (reset) {
@@ -319,7 +319,7 @@ public class AudioController implements  Initializable {
 
     @FXML
     void returnToMenu(ActionEvent event) throws Exception {
-        boolean returnToMenu = methodHelper.addConfirmationAlert("Return to Menu", "All progress with be lost. Are you sure?");
+        boolean returnToMenu = methodHelper.addConfirmationAlert("Return to Menu", "All progress with be lost. Are you sure?", "Continue", "Cancel");
         if ( returnToMenu ) {
             methodHelper.resetDirs();
             methodHelper.changeScene(event, "scenes/MainMenu.fxml");
@@ -337,7 +337,7 @@ public class AudioController implements  Initializable {
         if (words.length > 30) {
 
             // creates an alert if the chunk if more than 30 words
-            methodHelper.createAlertBox("Chunk cannot be more than 30 words, try a smaller chunk");
+            methodHelper.createAlertBox("Cannot select more than 30 words.\nTry a smaller chunk.");
             return false;
         }
         return true;

@@ -77,7 +77,7 @@ public class ImageController implements Initializable {
             loadingCircle.setVisible(false);
 
             // create an alert to see if the user wants to watch the creation made or go back to menu.
-            boolean answer = methodHelper.addConfirmationAlert("Success!", creationName + " was created successfully!\nPlay creation?");
+            boolean answer = methodHelper.addConfirmationAlert("Success!", creationName + " was created successfully!\nPlay creation?", "Play Creation", "Return to Menu");
             if (answer) {
 
                 // get the video file to be played
@@ -339,7 +339,7 @@ public class ImageController implements Initializable {
         if (file.exists()) {
 
             // create an alert to ask whether they would like to overwrite or rename the current creation
-            Boolean overwrite = methodHelper.addConfirmationAlert("ERROR", "\"" + creationName + "\" exists. \nRename or overwrite?");
+            Boolean overwrite = methodHelper.addConfirmationAlert("ERROR", "\"" + creationName + "\" exists. \nRename or overwrite?", "Overwrite", "Rename");
             if (overwrite) {
 
                 return "overwrite";
@@ -358,7 +358,7 @@ public class ImageController implements Initializable {
      */
     @FXML
     void returnToMenu(ActionEvent event) throws Exception {
-        boolean returnToMenu = methodHelper.addConfirmationAlert("Return to Menu", "All progress with be lost. Are you sure?");
+        boolean returnToMenu = methodHelper.addConfirmationAlert("Return to Menu", "All progress with be lost. Are you sure?", "Return To Menu", "Cancel");
         if ( returnToMenu ) {
 
             methodHelper.resetDirs();

@@ -130,5 +130,16 @@ divider-color: #BDBDBD;
     -fx-background-color: divider-color;
 }
 
+/*--------------------ALERT AND CONFIRMATION BOX CONFIGS-----------------------*/
+
+.myDialog:header *.header-panel{
+    -fx-background-color: default-primary-color;
+}
+
+.myDialog:header *.header-panel *.label{
+    -fx-font-size: 25px;
+    -fx-fill: #292929;
+}
+
 
 

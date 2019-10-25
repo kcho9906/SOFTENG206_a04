@@ -70,7 +70,7 @@ public class CreationListController implements Initializable {
         String creationName = ((Creation) creationSelected).get_creationName();
 
         // add confirmation alert to confirm whether they want to delete the creation.
-        Boolean answer = methodHelper.addConfirmationAlert("Deleting Creation", "Are you sure you want to delete \"" + creationName + "\"?");
+        Boolean answer = methodHelper.addConfirmationAlert("Deleting Creation", "Are you sure you want to delete \"" + creationName + "\"?", "Delete Creation", "Cancel");
         if (answer) {
 
             allCreations.remove(creationSelected);

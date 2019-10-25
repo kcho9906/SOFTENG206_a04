@@ -39,7 +39,6 @@ public class QuizController implements Initializable {
 
     private static MethodHelper methodHelper = Main.getMethodHelper();
     private MediaPlayer _player;
-    private double[] volumeBeforeMute = {1};
     private String _currentCreationName = "";
     private String _searchTerm = "";
     private int _correctAnswers = 0;
@@ -70,6 +69,7 @@ public class QuizController implements Initializable {
             answerTextField.setStyle("-fx-control-inner-background: #FF5252");
             correct = false;
         }
+        nextButton.setDisable(false);
 
         //disable the answer button until next round
         checkAnswerButton.setDisable(true);
@@ -120,12 +120,13 @@ public class QuizController implements Initializable {
     @FXML
     void toNextVideo (ActionEvent event) throws Exception {
 
-        // enables the check answer button
+        // enables the check answer button and disable the next button
         checkAnswerButton.setDisable(false);
-        answerTextField.setStyle(null);
+        nextButton.setDisable(true);
 
         // reset the text field
         answerTextField.setText("");
+        answerTextField.setStyle(null);
 
         // plays the next video
         playRandomVideo();
@@ -192,7 +193,8 @@ public class QuizController implements Initializable {
 
                 mediaView.setMediaPlayer(_player);
                 _player.play();
-                volumeBeforeMute[0] = _player.getVolume()*100;
+                nextButton.setDisable(true);
+
             }
         });
 

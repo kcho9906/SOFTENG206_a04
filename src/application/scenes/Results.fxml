@@ -5,49 +5,74 @@
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.TableColumn?>
 <?import javafx.scene.control.TableView?>
+<?import javafx.scene.image.Image?>
+<?import javafx.scene.image.ImageView?>
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.controllers.ResultController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" stylesheets="@../../cyanBlueGreyPalette.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.controllers.ResultController">
    <children>
       <VBox layoutX="188.0" layoutY="65.0" prefHeight="400.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
             <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0">
                <children>
-                  <Label text="Your Score:">
-                     <font>
-                        <Font name="Times New Roman" size="35.0" />
-                     </font>
+                  <HBox alignment="CENTER" prefHeight="100.0" prefWidth="200.0" HBox.hgrow="ALWAYS">
+                     <children>
+                        <Label text="Your Score:">
+                           <font>
+                              <Font name="Times New Roman" size="35.0" />
+                           </font>
+                           <HBox.margin>
+                              <Insets right="20.0" />
+                           </HBox.margin>
+                        </Label>
+                        <Label fx:id="correctAnswers" text="1" textFill="RED">
+                           <font>
+                              <Font name="Times New Roman" size="35.0" />
+                           </font>
+                           <HBox.margin>
+                              <Insets right="20.0" />
+                           </HBox.margin>
+                        </Label>
+                        <Label text="out of">
+                           <font>
+                              <Font name="Times New Roman" size="35.0" />
+                           </font>
+                           <HBox.margin>
+                              <Insets right="20.0" />
+                           </HBox.margin>
+                        </Label>
+                        <Label fx:id="totalAnswers" text="1">
+                           <font>
+                              <Font name="Times New Roman" size="35.0" />
+                           </font>
+                        </Label>
+                     </children>
                      <HBox.margin>
-                        <Insets right="20.0" />
+                        <Insets left="40.0" />
                      </HBox.margin>
-                  </Label>
-                  <Label fx:id="correctAnswers" text="1" textFill="RED">
-                     <font>
-                        <Font name="Times New Roman" size="35.0" />
-                     </font>
-                     <HBox.margin>
-                        <Insets right="20.0" />
-                     </HBox.margin>
-                  </Label>
-                  <Label text="out of">
-                     <font>
-                        <Font name="Times New Roman" size="35.0" />
-                     </font>
-                     <HBox.margin>
-                        <Insets right="20.0" />
-                     </HBox.margin>
-                  </Label>
-                  <Label fx:id="totalAnswers" layoutX="181.0" layoutY="10.0" text="1">
-                     <font>
-                        <Font name="Times New Roman" size="35.0" />
-                     </font>
-                  </Label>
+                  </HBox>
+                  <HBox alignment="TOP_RIGHT" prefHeight="100.0" prefWidth="0.0" HBox.hgrow="NEVER">
+                     <children>
+                        <Button fx:id="mainMenuButton" mnemonicParsing="false" onAction="#returnToMainMenu" HBox.hgrow="ALWAYS">
+                           <graphic>
+                              <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                                 <image>
+                                    <Image url="@../../componentImages/menu.png" />
+                                 </image>
+                              </ImageView>
+                           </graphic>
+                        </Button>
+                     </children>
+                     <padding>
+                        <Insets right="10.0" top="10.0" />
+                     </padding>
+                  </HBox>
                </children>
             </HBox>
-            <TableView fx:id="correctTableView" prefHeight="200.0" prefWidth="200.0">
+            <TableView fx:id="correctTableView" prefHeight="200.0" prefWidth="200.0" VBox.vgrow="ALWAYS">
               <columns>
                 <TableColumn fx:id="creationNameColumn" prefWidth="75.0" text="Creation Name" />
                   <TableColumn fx:id="searchTermColumn" prefWidth="75.0" text="Answer" />
@@ -68,7 +93,6 @@
                         <Insets right="20.0" />
                      </HBox.margin>
                   </Label>
-                  <Button fx:id="mainMenuButton" mnemonicParsing="false" onAction="#returnToMainMenu" text="Return to Main Menu" />
                </children>
             </HBox>
          </children>

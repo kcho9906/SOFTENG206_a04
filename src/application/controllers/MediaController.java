@@ -13,6 +13,8 @@ import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.Label;
 import javafx.scene.control.Slider;
+import javafx.scene.image.Image;
+import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
@@ -38,6 +40,7 @@ public class MediaController implements Initializable {
     @FXML private Button rewindButton;
     @FXML private Button playPauseButton;
     @FXML private Button fastForwardButton;
+    @FXML private ImageView muteImage, playPauseImage;
 
     private static MethodHelper methodHelper = Main.getMethodHelper();
     private MediaPlayer _player;
@@ -45,6 +48,10 @@ public class MediaController implements Initializable {
     private File _videoFile;
     private double[] volumeBeforeMute = {100};
     private FXMLLoader loader;
+    File muteImageFile = new File("src/componentImages/volumeOn.png");
+    File unmuteImageFile = new File("src/componentImages/volumeOff.png");
+    File playImageFile = new File("src/componentImages/play.png");
+    File pauseImageFile = new File("src/componentImages/pause.png");
 
     public MediaController(File videoFile) {
 
@@ -69,11 +76,14 @@ public class MediaController implements Initializable {
                     _player.setVolume(volumeSlider.getValue()/100);
                 }
 
-//                if (newValue.equals(0.0)) {
-//                    muteButton.setText("Unmute");
-//                } else {
-//                    muteButton.setText("Mute");
-//                }
+                if (newValue.equals(0.0)) {
+
+                    changeImage(muteImage, unmuteImageFile);
+                } else {
+
+                    changeImage(muteImage, muteImageFile);
+                }
+
             }
         });
 
@@ -152,11 +162,11 @@ public class MediaController implements Initializable {
         if (_player.getStatus() == MediaPlayer.Status.PLAYING) {
 
             _player.pause();
-            playPauseButton.setText("Play");
+            changeImage(playPauseImage, playImageFile);
         } else {
 
-            playPauseButton.setText("Pause");
             _player.play();
+            changeImage(playPauseImage, pauseImageFile);
         }
     }
 
@@ -232,12 +242,17 @@ public class MediaController implements Initializable {
             public void run() {
 
                 volumeSlider.setValue(100);
-                muteButton.setText("Mute");
+                changeImage(muteImage, unmuteImageFile);
                 _player.stop();
                 _player.seek(Duration.minutes(0));
-                playPauseButton.setText("Play");
+                changeImage(playPauseImage, playImageFile);
             }
         });
+    }
+
+    public void changeImage(ImageView imageView, File imageFile) {
+        Image image = new Image(imageFile.toURI().toString());
+        imageView.setImage(image);
     }
 }
 

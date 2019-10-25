@@ -45,7 +45,7 @@ public class Main extends Application {
         // on closing the application, deletes all direectories and safely exits.
         primaryStage.setOnCloseRequest(event -> {
             event.consume();
-            boolean exit = methodHelper.addConfirmationAlert("Quit Application", "Are you sure?");
+            boolean exit = methodHelper.addConfirmationAlert("Quit Application", "Are you sure?", "Quit", "Cancel");
             if (exit) {
                 methodHelper.resetDirs();
                 Platform.exit();

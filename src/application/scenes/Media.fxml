@@ -12,8 +12,9 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.media.MediaView?>
+<?import javafx.scene.text.Font?>
 
-<BorderPane fx:id="mediaPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane fx:id="mediaPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" stylesheets="@../../cyanBlueGreyPalette.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
    <bottom>
       <VBox alignment="CENTER" prefHeight="86.0" prefWidth="889.0" BorderPane.alignment="CENTER">
          <children>
@@ -37,7 +38,10 @@
                   </HBox>
                   <HBox alignment="CENTER_LEFT" prefHeight="66.0" prefWidth="482.0" spacing="10.0">
                      <children>
-                        <Label fx:id="timeLabel" text="00:00 / 00:00" />
+                        <Label fx:id="timeLabel" text="00:00 / 00:00">
+                           <font>
+                              <Font size="20.0" />
+                           </font></Label>
                         <Slider fx:id="timeSlider" HBox.hgrow="ALWAYS" />
                      </children>
                      <padding>
@@ -56,7 +60,7 @@
                            </graphic></Button>
                       <Button fx:id="playPauseButton" minHeight="50.0" mnemonicParsing="false" onAction="#playPauseMedia">
                            <graphic>
-                              <ImageView fitHeight="35.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
+                              <ImageView fx:id="playPauseImage" fitHeight="35.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
                                     <Image url="@../../componentImages/pause.png" />
                                  </image>
@@ -96,9 +100,9 @@
    <top>
       <HBox alignment="TOP_RIGHT" prefHeight="39.0" prefWidth="828.0" style="-fx-background-color: #FFC107;" BorderPane.alignment="CENTER">
          <children>
-            <ButtonBar minHeight="50.0" prefHeight="50.0" prefWidth="350.0" HBox.hgrow="NEVER">
+            <ButtonBar minHeight="50.0" prefHeight="50.0" prefWidth="352.0" HBox.hgrow="NEVER">
               <buttons>
-                  <Button fx:id="creationListButton" contentDisplay="RIGHT" minHeight="50.0" mnemonicParsing="false" onAction="#returnToCreationList" prefWidth="190.0" text="Creations List">
+                  <Button fx:id="creationListButton" contentDisplay="RIGHT" minHeight="50.0" mnemonicParsing="false" onAction="#returnToCreationList" prefWidth="204.0" text="Creations List">
                      <graphic>
                         <ImageView fitHeight="35.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
                            <image>
