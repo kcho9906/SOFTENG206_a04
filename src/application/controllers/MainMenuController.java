@@ -4,6 +4,8 @@ import application.helpers.MethodHelper;
 import application.*;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import java.awt.*;
+import java.io.File;
 
 /**
  * This is a controller class for the scene "MainMenu.fxml" and is
@@ -35,5 +37,26 @@ public class MainMenuController {
         methodHelper.changeScene(event, "CreationList.fxml");
     }
 
+    /**
+     * Method to open user manual for user
+     * @param actionEvent
+     */
+    public void openUserManual(ActionEvent actionEvent) {
 
+        File file = new File("UserManual.docx");
+        if (Desktop.isDesktopSupported()) {
+
+            new Thread(() -> {
+
+                try {
+                    Desktop.getDesktop().open(file);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
+
+            }).start();
+        }
+
+    }
 }
