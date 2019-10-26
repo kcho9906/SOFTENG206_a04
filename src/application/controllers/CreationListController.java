@@ -1,8 +1,8 @@
 package application.controllers;
 
-import application.Creation;
+import application.helpers.Creation;
 import application.Main;
-import application.MethodHelper;
+import application.helpers.MethodHelper;
 import javafx.beans.binding.Bindings;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -18,18 +18,10 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
-
 import java.io.File;
 import java.net.URL;
 import java.util.ResourceBundle;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Path;
-import java.nio.file.Paths;
-import java.nio.file.attribute.BasicFileAttributeView;
-import java.nio.file.attribute.BasicFileAttributes;
-import java.nio.file.attribute.FileTime;
-import java.text.SimpleDateFormat;
+
 
 /**
  * This is a controller class for the scene "CreationList.fxml" and is
@@ -109,7 +101,7 @@ public class CreationListController implements Initializable {
      */
     @FXML
     void quizCreation(ActionEvent event) throws Exception {
-        methodHelper.changeScene(event, "scenes/Quiz.fxml");
+        methodHelper.changeScene(event, "Quiz.fxml");
     }
 
     /**
@@ -120,7 +112,7 @@ public class CreationListController implements Initializable {
      */
     @FXML
     void returnToMenu(ActionEvent event) throws Exception {
-        methodHelper.changeScene(event, "scenes/MainMenu.fxml");
+        methodHelper.changeScene(event, "MainMenu.fxml");
     }
 
     /**

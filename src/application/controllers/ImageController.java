@@ -1,9 +1,9 @@
 package application.controllers;
 
-import application.CreationWorker;
-import application.FlickrImageExtractor;
+import application.helpers.CreationWorker;
+import application.helpers.FlickrImageExtractor;
 import application.Main;
-import application.MethodHelper;
+import application.helpers.MethodHelper;
 import javafx.beans.value.ChangeListener;
 import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
@@ -102,7 +102,7 @@ public class ImageController implements Initializable {
                 // try/catch to change back to main menu scene
                 try {
 
-                    methodHelper.changeScene(event, "scenes/MainMenu.fxml");
+                    methodHelper.changeScene(event, "MainMenu.fxml");
                 } catch (Exception e) {
 
                     e.printStackTrace();
@@ -124,7 +124,7 @@ public class ImageController implements Initializable {
             loadingCircle.setVisible(false);
         }
         methodHelper.command("rm src/audio/" + searchTerm + "/output.*"); //delete merged audio
-        methodHelper.changeCreationScene(event, "scenes/Audio.fxml");
+        methodHelper.changeCreationScene(event, "Audio.fxml");
         methodHelper.setPreviousScene(createButton.getScene());
     }
 
@@ -362,7 +362,7 @@ public class ImageController implements Initializable {
         if ( returnToMenu ) {
 
             methodHelper.resetDirs();
-            methodHelper.changeScene(event, "scenes/MainMenu.fxml");
+            methodHelper.changeScene(event, "MainMenu.fxml");
         }
     }
 

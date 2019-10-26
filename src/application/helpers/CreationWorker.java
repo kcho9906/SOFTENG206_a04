@@ -1,5 +1,6 @@
-package application;
+package application.helpers;
 
+import application.Main;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;
 import java.io.File;
@@ -92,11 +93,11 @@ public class CreationWorker extends Task<Boolean> {
     private void createVideo(String creationName, String path) {
 
         // merge the images
-        command = "cat " + _creationPath + "/*.jpg | ffmpeg -f image2pipe -framerate " + imagesFound/duration + " -i - -vcodec libx264 -pix_fmt yuv420p -vf \"scale=w=1920:h=1080:force_original_aspect_ratio=1,pad=1920:1080:(ow-iw)/2:(oh-ih)/2:color=#FFECB3\" -r 25 " + path + "/" + creationName + "_imageOnly.mp4";
+        command = "cat " + _creationPath + "/*.jpg | ffmpeg -f image2pipe -framerate " + imagesFound/duration + " -i - -vcodec libx264 -pix_fmt yuv420p -vf \"scale=w=1920:h=1080:force_original_aspect_ratio=1,pad=1920:1080:(ow-iw)/2:(oh-ih)/2:color=#FFECB3\" -r 25 " + path + "/imageOnly.mp4";
         methodHelper.command(command);
 
         // add the name onto the video
-        command = "ffmpeg -i " + path + "/" + creationName + "_imageOnly.mp4 -vf drawtext=\"fontfile=/Library/Fonts/Verdana.ttf: text='" + _searchTerm + "': fontcolor=white: fontsize=100: box=1: boxcolor=black@0.5: boxborderw=5: x=(w-text_w)/2: y=(h-text_h)/2\" -r 25 -codec:a copy " + path + "/noAudio.mp4";
+        command = "ffmpeg -i " + path + "/imageOnly.mp4 -vf drawtext=\"fontfile=/Library/Fonts/Verdana.ttf: text='" + _searchTerm + "': fontcolor=white: fontsize=100: box=1: boxcolor=black@0.5: boxborderw=5: x=(w-text_w)/2: y=(h-text_h)/2\" -r 25 -codec:a copy " + path + "/noAudio.mp4";
         methodHelper.command(command);
 
         // merge the video and images

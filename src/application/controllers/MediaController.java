@@ -1,7 +1,7 @@
 package application.controllers;
 
 import application.Main;
-import application.MethodHelper;
+import application.helpers.MethodHelper;
 import javafx.beans.InvalidationListener;
 import javafx.beans.Observable;
 import javafx.beans.value.ChangeListener;
@@ -48,10 +48,10 @@ public class MediaController implements Initializable {
     private File _videoFile;
     private double[] volumeBeforeMute = {100};
     private FXMLLoader loader;
-    File muteImageFile = new File("src/componentImages/volumeOn.png");
-    File unmuteImageFile = new File("src/componentImages/volumeOff.png");
-    File playImageFile = new File("src/componentImages/play.png");
-    File pauseImageFile = new File("src/componentImages/pause.png");
+    File muteImageFile = new File("src/setupFiles/componentImages/volumeOn.png");
+    File unmuteImageFile = new File("src/setupFiles/componentImages/volumeOff.png");
+    File playImageFile = new File("src/setupFiles/componentImages/play.png");
+    File pauseImageFile = new File("src/setupFiles/componentImages/pause.png");
 
     public MediaController(File videoFile) {
 
@@ -180,7 +180,7 @@ public class MediaController implements Initializable {
 
         _player.stop();
         _player.dispose();
-        methodHelper.changeScene(event, "scenes/CreationList.fxml");
+        methodHelper.changeScene(event, "CreationList.fxml");
     }
 
     /**
@@ -193,7 +193,7 @@ public class MediaController implements Initializable {
 
         _player.stop();
         _player.dispose();
-        methodHelper.changeScene(event, "scenes/MainMenu.fxml");
+        methodHelper.changeScene(event, "MainMenu.fxml");
     }
 
     /**
@@ -242,7 +242,7 @@ public class MediaController implements Initializable {
             public void run() {
 
                 volumeSlider.setValue(100);
-                changeImage(muteImage, unmuteImageFile);
+                changeImage(muteImage, muteImageFile);
                 _player.stop();
                 _player.seek(Duration.minutes(0));
                 changeImage(playPauseImage, playImageFile);

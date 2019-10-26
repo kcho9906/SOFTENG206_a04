@@ -12,7 +12,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.media.MediaView?>
 
-<BorderPane fx:id="mediaPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" stylesheets="@../../cyanBlueGreyPalette.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.controllers.QuizController">
+<BorderPane fx:id="mediaPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" stylesheets="@../../setupFiles/stylesheet.css" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="application.controllers.QuizController">
    <bottom>
       <VBox alignment="CENTER" prefHeight="86.0" prefWidth="889.0" BorderPane.alignment="CENTER">
          <children>
@@ -58,7 +58,7 @@
                      <graphic>
                         <ImageView fitHeight="38.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
                            <image>
-                              <Image url="@../../componentImages/replay.png" />
+                              <Image url="@../../setupFiles/componentImages/replay.png" />
                            </image>
                         </ImageView>
                      </graphic>

@@ -1,5 +1,6 @@
-package application;
+package application.helpers;
 
+import application.Main;
 import javafx.concurrent.Task;
 
 /**

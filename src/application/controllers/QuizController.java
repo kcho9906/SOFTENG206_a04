@@ -1,8 +1,8 @@
 package application.controllers;
 
-import application.Creation;
+import application.helpers.Creation;
 import application.Main;
-import application.MethodHelper;
+import application.helpers.MethodHelper;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -10,20 +10,18 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextField;
-import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.media.Media;
 import javafx.scene.media.MediaPlayer;
 import javafx.scene.media.MediaView;
 import javafx.util.Duration;
-
 import java.io.*;
 import java.net.URL;
 import java.util.ResourceBundle;
 
 /**
- * This is a controller class for the scene "oldQuiz.fxml" and is
+ * This is a controller class for the scene "Quiz.fxml" and is
  * responsible for everything relating to the Quiz scene.
  */
 public class QuizController implements Initializable {
@@ -109,7 +107,7 @@ public class QuizController implements Initializable {
         methodHelper.setAnswers(_correctAnswers, _attemptedAnswers);
 
         // change the scene
-        methodHelper.changeScene(event, "scenes/Results.fxml");
+        methodHelper.changeScene(event, "Results.fxml");
     }
 
     /**
@@ -120,9 +118,10 @@ public class QuizController implements Initializable {
     @FXML
     void toNextVideo (ActionEvent event) throws Exception {
 
-        // enables the check answer button and disable the next button
+        // enables the check answer button and disable the next and replay buttons
         checkAnswerButton.setDisable(false);
         nextButton.setDisable(true);
+        replayButton.setDisable(true);
 
         // reset the text field
         answerTextField.setText("");
@@ -165,9 +164,9 @@ public class QuizController implements Initializable {
             e.printStackTrace();
         }
 
-        // get path for the no audio file
+        // get path for the image only file
         String path = selectedFile.getPath();
-        File videoFile = new File(path + "/" + "noAudio.mp4");
+        File videoFile = new File(path + "/imageOnly.mp4");
 
         // play the video straight away
         Media video = new Media(videoFile.toURI().toString());
@@ -194,6 +193,7 @@ public class QuizController implements Initializable {
                 mediaView.setMediaPlayer(_player);
                 _player.play();
                 nextButton.setDisable(true);
+                replayButton.setDisable(true);
 
             }
         });

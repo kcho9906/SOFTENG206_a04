@@ -13,7 +13,7 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.TilePane?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" stylesheets="@../../cyanBlueGreyPalette.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.controllers.ImageController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" stylesheets="@../../setupFiles/stylesheet.css" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="application.controllers.ImageController">
    <center>
       <ScrollPane hbarPolicy="NEVER" vbarPolicy="ALWAYS">
          <content>
@@ -96,7 +96,7 @@
                      <graphic>
                         <ImageView fitHeight="150.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
                            <image>
-                              <Image url="@../../componentImages/return.png" />
+                              <Image url="@../../setupFiles/componentImages/return.png" />
                            </image>
                         </ImageView>
                      </graphic>
@@ -107,7 +107,7 @@
                <children>
                   <ImageView fitHeight="96.0" fitWidth="50.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@../../componentImages/createCreation.png" />
+                        <Image url="@../../setupFiles/componentImages/createCreation.png" />
                      </image>
                   </ImageView>
                   <Label fx:id="creationNameLabel" text="File Name:" HBox.hgrow="ALWAYS" />
@@ -116,7 +116,7 @@
                      <graphic>
                         <ImageView fitHeight="150.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
                            <image>
-                              <Image url="@../../componentImages/next.png" />
+                              <Image url="@../../setupFiles/componentImages/next.png" />
                            </image>
                         </ImageView>
                      </graphic>
@@ -139,7 +139,7 @@
                <children>
                   <ImageView fitHeight="130.0" fitWidth="124.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@../../componentImages/photo.png" />
+                        <Image url="@../../setupFiles/componentImages/photo.png" />
                      </image>
                   </ImageView>
                </children>
@@ -159,7 +159,7 @@
                      <graphic>
                         <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
                            <image>
-                              <Image url="@../../componentImages/menu.png" />
+                              <Image url="@../../setupFiles/componentImages/menu.png" />
                            </image>
                         </ImageView>
                      </graphic>

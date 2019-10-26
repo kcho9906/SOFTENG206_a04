@@ -1,8 +1,8 @@
 package application.controllers;
 
-import application.Creation;
+import application.helpers.Creation;
 import application.Main;
-import application.MethodHelper;
+import application.helpers.MethodHelper;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -10,7 +10,6 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
-
 import java.net.URL;
 import java.util.ResourceBundle;
 
@@ -42,7 +41,7 @@ public class ResultController implements Initializable {
      */
     @FXML
     void returnToMainMenu(ActionEvent event) throws Exception {
-        methodHelper.changeScene(event, "scenes/MainMenu.fxml");
+        methodHelper.changeScene(event, "MainMenu.fxml");
     }
 
     /**

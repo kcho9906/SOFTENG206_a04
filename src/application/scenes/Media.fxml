@@ -14,7 +14,7 @@
 <?import javafx.scene.media.MediaView?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane fx:id="mediaPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" stylesheets="@../../cyanBlueGreyPalette.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane fx:id="mediaPane" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" stylesheets="@../../setupFiles/stylesheet.css" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml">
    <bottom>
       <VBox alignment="CENTER" prefHeight="86.0" prefWidth="889.0" BorderPane.alignment="CENTER">
          <children>
@@ -29,7 +29,7 @@
                            <graphic>
                               <ImageView fx:id="muteImage" fitHeight="26.0" fitWidth="31.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
-                                    <Image url="@../../componentImages/volumeOn.png" />
+                                    <Image url="@../../setupFiles/componentImages/volumeOn.png" />
                                  </image>
                               </ImageView>
                            </graphic></Button>
@@ -54,7 +54,7 @@
                            <graphic>
                               <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
-                                    <Image url="@../../componentImages/rewind5.png" />
+                                    <Image url="@../../setupFiles/componentImages/rewind5.png" />
                                  </image>
                               </ImageView>
                            </graphic></Button>
@@ -62,7 +62,7 @@
                            <graphic>
                               <ImageView fx:id="playPauseImage" fitHeight="35.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
-                                    <Image url="@../../componentImages/pause.png" />
+                                    <Image url="@../../setupFiles/componentImages/pause.png" />
                                  </image>
                               </ImageView>
                            </graphic></Button>
@@ -70,7 +70,7 @@
                            <graphic>
                               <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
-                                    <Image url="@../../componentImages/fastForward5.png" />
+                                    <Image url="@../../setupFiles/componentImages/fastForward5.png" />
                                  </image>
                               </ImageView>
                            </graphic></Button>
@@ -106,7 +106,7 @@
                      <graphic>
                         <ImageView fitHeight="35.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
                            <image>
-                              <Image url="@../../componentImages/creationList.png" />
+                              <Image url="@../../setupFiles/componentImages/creationList.png" />
                            </image>
                         </ImageView>
                      </graphic>
@@ -115,7 +115,7 @@
                      <graphic>
                         <ImageView fitHeight="35.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
                            <image>
-                              <Image url="@../../componentImages/menu.png" />
+                              <Image url="@../../setupFiles/componentImages/menu.png" />
                            </image>
                         </ImageView>
                      </graphic>

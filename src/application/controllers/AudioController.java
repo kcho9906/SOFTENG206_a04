@@ -1,8 +1,8 @@
 package application.controllers;
 
 import application.Main;
-import application.MethodHelper;
-import application.TerminalWorker;
+import application.helpers.MethodHelper;
+import application.helpers.TerminalWorker;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.concurrent.WorkerStateEvent;
@@ -167,7 +167,11 @@ public class AudioController implements  Initializable {
 
             // get slider values for gender and speed.
             getSliderValues();
-
+            if (gender.contains("female")) {
+                femaleAudioFiles++;
+            } else {
+                maleAudioFiles++;
+            }
             String path = "src/audio/" + searchTerm + "/";
             String fileName = searchTerm + "_male_" + maleAudioFiles + ".wav";
             if (gender.contains("female")) {
@@ -322,7 +326,7 @@ public class AudioController implements  Initializable {
         boolean returnToMenu = methodHelper.addConfirmationAlert("Return to Menu", "All progress with be lost. Are you sure?", "Continue", "Cancel");
         if ( returnToMenu ) {
             methodHelper.resetDirs();
-            methodHelper.changeScene(event, "scenes/MainMenu.fxml");
+            methodHelper.changeScene(event, "MainMenu.fxml");
         }
     }
 
@@ -353,13 +357,9 @@ public class AudioController implements  Initializable {
 
         // get the gender slider value
         if ( genderSlider.getValue() == 0 ) {
-
             gender = "male3";
-            maleAudioFiles++;
         } else {
-
             gender = "female5";
-            femaleAudioFiles++;
         }
     }
 
@@ -391,7 +391,7 @@ public class AudioController implements  Initializable {
 
             // try/catch to swap scenes to the image scene if everything is all good.
             try {
-                methodHelper.changeCreationScene(event, "scenes/Image.fxml");
+                methodHelper.changeCreationScene(event, "Image.fxml");
                 methodHelper.setPreviousScene(nextButton.getScene());
             } catch (Exception e) {
                 e.printStackTrace();

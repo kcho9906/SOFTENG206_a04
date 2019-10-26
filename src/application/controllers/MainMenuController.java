@@ -1,13 +1,9 @@
 package application.controllers;
 
-import application.MethodHelper;
+import application.helpers.MethodHelper;
 import application.*;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
-import javafx.scene.control.Button;
-
-import javax.print.attribute.standard.Media;
-import java.io.File;
 
 /**
  * This is a controller class for the scene "MainMenu.fxml" and is
@@ -25,7 +21,7 @@ public class MainMenuController {
     @FXML
     void toCreationScene(ActionEvent event) throws Exception {
 
-        methodHelper.changeScene(event, "scenes/Audio.fxml");
+        methodHelper.changeScene(event, "Audio.fxml");
     }
 
     /**
@@ -36,7 +32,7 @@ public class MainMenuController {
     @FXML
     void toViewCreationScene(ActionEvent event) throws Exception {
 
-        methodHelper.changeScene(event, "scenes/CreationList.fxml");
+        methodHelper.changeScene(event, "CreationList.fxml");
     }
 
 

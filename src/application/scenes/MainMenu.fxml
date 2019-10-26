@@ -9,7 +9,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" stylesheets="@../../cyanBlueGreyPalette.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.controllers.MainMenuController">
+<VBox maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" stylesheets="@../../setupFiles/stylesheet.css" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="application.controllers.MainMenuController">
    <children>
       <VBox fx:id="topVBox" alignment="CENTER" maxHeight="150.0" minWidth="150.0" prefHeight="150.0" prefWidth="800.0" style="-fx-background-color: #FFC107;">
          <children>
@@ -23,7 +23,7 @@
                <graphic>
                   <ImageView fitHeight="115.0" fitWidth="120.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@../../componentImages/gradHat.png" />
+                        <Image url="@../../setupFiles/componentImages/gradHat.png" />
                      </image>
                   </ImageView>
                </graphic>
@@ -47,7 +47,7 @@
                <graphic>
                   <ImageView fitHeight="63.0" fitWidth="44.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@../../componentImages/createCreation.png" />
+                        <Image url="@../../setupFiles/componentImages/createCreation.png" />
                      </image>
                   </ImageView>
                </graphic>
@@ -59,7 +59,7 @@
                <graphic>
                   <ImageView fitHeight="78.0" fitWidth="51.0" pickOnBounds="true" preserveRatio="true">
                      <image>
-                        <Image url="@../../componentImages/creationList.png" />
+                        <Image url="@../../setupFiles/componentImages/creationList.png" />
                      </image>
                   </ImageView>
                </graphic>

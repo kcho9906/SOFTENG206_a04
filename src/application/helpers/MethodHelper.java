@@ -1,4 +1,4 @@
-package application;
+package application.helpers;
 
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
@@ -8,12 +8,10 @@ import javafx.scene.Node;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.Alert;
-import javafx.scene.control.Button;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.DialogPane;
 import javafx.stage.Stage;
 import javafx.stage.Window;
-
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.InputStreamReader;
@@ -56,6 +54,7 @@ public class MethodHelper {
      * @throws Exception
      */
     public void changeScene(ActionEvent event, String scene) throws Exception {
+        scene = "../scenes/" + scene;
         Parent newSceneParent = FXMLLoader.load(getClass().getResource(scene));
         Scene newScene = new Scene(newSceneParent);
         Stage window = (Stage) (((Node)event.getSource()).getScene().getWindow());
@@ -96,7 +95,7 @@ public class MethodHelper {
         alert.setHeaderText(contentText);
         DialogPane dialogPane = alert.getDialogPane();
         dialogPane.getStylesheets().add(
-                getClass().getResource("../cyanBlueGreyPalette.css").toExternalForm());
+                getClass().getResource("../../setupFiles/stylesheet.css").toExternalForm());
         dialogPane.getStyleClass().add("myDialog");
         Window window = alert.getDialogPane().getScene().getWindow();
         window.setOnCloseRequest(e -> {
@@ -179,7 +178,7 @@ public class MethodHelper {
         alert.setHeaderText(message);
         DialogPane dialogPane = alert.getDialogPane();
         dialogPane.getStylesheets().add(
-                getClass().getResource("../cyanBlueGreyPalette.css").toExternalForm());
+                getClass().getResource("../../setupFiles/stylesheet.css").toExternalForm());
         dialogPane.getStyleClass().add("myDialog");
         alert.show();
     }

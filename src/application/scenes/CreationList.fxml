@@ -13,7 +13,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane prefHeight="600.0" prefWidth="800.0" stylesheets="@../../cyanBlueGreyPalette.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.controllers.CreationListController">
+<AnchorPane prefHeight="600.0" prefWidth="800.0" stylesheets="@../../setupFiles/stylesheet.css" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="application.controllers.CreationListController">
    <children>
       <VBox prefHeight="400.0" prefWidth="600.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
@@ -23,7 +23,7 @@
                      <children>
                         <ImageView fitHeight="120.0" fitWidth="115.0" pickOnBounds="true" preserveRatio="true">
                            <image>
-                              <Image url="@../../componentImages/gradHat.png" />
+                              <Image url="@../../setupFiles/componentImages/gradHat.png" />
                            </image>
                         </ImageView>
                         <Label fx:id="viewCreationTitle" prefHeight="109.0" prefWidth="501.0" text="Existing Creations">
@@ -37,7 +37,7 @@
                      <graphic>
                         <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
                            <image>
-                              <Image url="@../../componentImages/menu.png" />
+                              <Image url="@../../setupFiles/componentImages/menu.png" />
                            </image>
                         </ImageView>
                      </graphic>
@@ -69,7 +69,7 @@
                            <graphic>
                               <ImageView fitHeight="71.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
-                                    <Image url="@../../componentImages/play.png" />
+                                    <Image url="@../../setupFiles/componentImages/play.png" />
                                  </image>
                               </ImageView>
                            </graphic></Button>
@@ -77,7 +77,7 @@
                            <graphic>
                               <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
-                                    <Image url="@../../componentImages/delete.png" />
+                                    <Image url="@../../setupFiles/componentImages/delete.png" />
                                  </image>
                               </ImageView>
                            </graphic></Button>
@@ -85,7 +85,7 @@
                            <graphic>
                               <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
-                                    <Image url="@../../componentImages/gradHat.png" />
+                                    <Image url="@../../setupFiles/componentImages/gradHat.png" />
                                  </image>
                               </ImageView>
                            </graphic></Button>

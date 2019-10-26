@@ -19,7 +19,7 @@
 <?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 
-<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" stylesheets="@../../cyanBlueGreyPalette.css" xmlns="http://javafx.com/javafx/11.0.1" xmlns:fx="http://javafx.com/fxml/1" fx:controller="application.controllers.AudioController">
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="600.0" prefWidth="800.0" stylesheets="@../../setupFiles/stylesheet.css" xmlns="http://javafx.com/javafx" xmlns:fx="http://javafx.com/fxml" fx:controller="application.controllers.AudioController">
    <children>
       <VBox alignment="CENTER_RIGHT" layoutX="93.0" layoutY="160.0" prefHeight="508.0" prefWidth="623.0" spacing="10.0" AnchorPane.bottomAnchor="0.0" AnchorPane.leftAnchor="0.0" AnchorPane.rightAnchor="0.0" AnchorPane.topAnchor="0.0">
          <children>
@@ -41,7 +41,7 @@
                                  <graphic>
                                     <ImageView fitHeight="92.0" fitWidth="38.0" pickOnBounds="true" preserveRatio="true">
                                        <image>
-                                          <Image url="@../../componentImages/search.png" />
+                                          <Image url="@../../setupFiles/componentImages/search.png" />
                                        </image>
                                     </ImageView>
                                  </graphic>
@@ -55,7 +55,7 @@
                                  <graphic>
                                     <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
                                        <image>
-                                          <Image url="@../../componentImages/menu.png" />
+                                          <Image url="@../../setupFiles/componentImages/menu.png" />
                                        </image>
                                     </ImageView>
                                  </graphic>
@@ -78,7 +78,7 @@
                                  <graphic>
                                     <ImageView fitHeight="150.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
                                        <image>
-                                          <Image url="@../../componentImages/write.png" />
+                                          <Image url="@../../setupFiles/componentImages/write.png" />
                                        </image>
                                     </ImageView>
                                  </graphic></Label>
@@ -94,7 +94,7 @@
                                  <graphic>
                                     <ImageView fitHeight="150.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
                                        <image>
-                                          <Image url="@../../componentImages/audioList.png" />
+                                          <Image url="@../../setupFiles/componentImages/audioList.png" />
                                        </image>
                                     </ImageView>
                                  </graphic>
@@ -151,7 +151,7 @@
                                        <graphic>
                                           <ImageView fitHeight="67.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
                                              <image>
-                                                <Image url="@../../componentImages/listen.png" />
+                                                <Image url="@../../setupFiles/componentImages/listen.png" />
                                              </image>
                                           </ImageView>
                                        </graphic></Button>
@@ -159,7 +159,7 @@
                                        <graphic>
                                           <ImageView fitHeight="107.0" fitWidth="43.0" pickOnBounds="true" preserveRatio="true">
                                              <image>
-                                                <Image url="@../../componentImages/saveAudio.png" />
+                                                <Image url="@../../setupFiles/componentImages/saveAudio.png" />
                                              </image>
                                           </ImageView>
                                        </graphic></Button>
@@ -196,7 +196,7 @@
                                        <graphic>
                                           <ImageView fitHeight="67.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
                                              <image>
-                                                <Image url="@../../componentImages/listen.png" />
+                                                <Image url="@../../setupFiles/componentImages/listen.png" />
                                              </image>
                                           </ImageView>
                                        </graphic>
@@ -211,7 +211,7 @@
                                        <graphic>
                                           <ImageView fitHeight="62.0" fitWidth="29.0" pickOnBounds="true" preserveRatio="true">
                                              <image>
-                                                <Image url="@../../componentImages/delete.png" />
+                                                <Image url="@../../setupFiles/componentImages/delete.png" />
                                              </image>
                                           </ImageView>
                                        </graphic>
@@ -232,7 +232,7 @@
                                  <graphic>
                                     <ImageView fitHeight="150.0" fitWidth="29.0" pickOnBounds="true" preserveRatio="true">
                                        <image>
-                                          <Image url="@../../componentImages/up.png" />
+                                          <Image url="@../../setupFiles/componentImages/up.png" />
                                        </image>
                                     </ImageView>
                                  </graphic></Button>
@@ -240,7 +240,7 @@
                                  <graphic>
                                     <ImageView fitHeight="81.0" fitWidth="34.0" pickOnBounds="true" preserveRatio="true">
                                        <image>
-                                          <Image url="@../../componentImages/down.png" />
+                                          <Image url="@../../setupFiles/componentImages/down.png" />
                                        </image>
                                     </ImageView>
                                  </graphic></Button>
@@ -264,7 +264,7 @@
                            <graphic>
                               <ImageView fitHeight="150.0" fitWidth="30.0" nodeOrientation="RIGHT_TO_LEFT" pickOnBounds="true" preserveRatio="true">
                                  <image>
-                                    <Image url="@../../componentImages/replay.png" />
+                                    <Image url="@../../setupFiles/componentImages/replay.png" />
                                  </image>
                               </ImageView>
                            </graphic>
@@ -290,7 +290,7 @@
                            <graphic>
                               <ImageView fitHeight="30.0" fitWidth="30.0" pickOnBounds="true" preserveRatio="true">
                                  <image>
-                                    <Image url="@../../componentImages/next.png" />
+                                    <Image url="@../../setupFiles/componentImages/next.png" />
                                  </image>
                               </ImageView>
                            </graphic>
