@@ -49,12 +49,12 @@ public class MainMenuController {
             new Thread(() -> {
 
                 try {
+
                     Desktop.getDesktop().open(file);
                 } catch (Exception e) {
+
                     e.printStackTrace();
                 }
-
-
             }).start();
         }
 

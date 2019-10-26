@@ -431,7 +431,7 @@ public class AudioController implements  Initializable {
             // gets the background music value
             bgMusic = bgMusicChoiceBox.getValue();
             if (!bgMusic.equals("None")) {
-                String bgMusicPath = System.getProperty("user.dir") + "/src/backgroundMusic/" + bgMusic + ".mp3";
+                String bgMusicPath = System.getProperty("user.dir") + "/src/setupFiles/backgroundMusic/" + bgMusic + ".mp3";
                 command += "ffmpeg -y -i " + mergedPath + " -i " + bgMusicPath + " -filter_complex amix=inputs=2:duration=shortest " + path + "output.mp3";
             }
         }

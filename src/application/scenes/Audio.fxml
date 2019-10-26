@@ -182,8 +182,9 @@
                                  <items>
                                     <FXCollections fx:factory="observableArrayList">
                                        <String fx:value="None" />
-                                       <String fx:value="on_fire" />
-                                       <String fx:value="upbeat" />
+                                       <String fx:value="Guitar" />
+                                       <String fx:value="Piano" />
+                                       <String fx:value="Orchestral" />
                                     </FXCollections>
                                  </items>
                               </ChoiceBox>
