@@ -108,6 +108,9 @@ public class QuizController implements Initializable {
 
         // change the scene
         methodHelper.changeScene(event, "Results.fxml");
+
+        _player.stop();
+        _player.dispose();
     }
 
     /**

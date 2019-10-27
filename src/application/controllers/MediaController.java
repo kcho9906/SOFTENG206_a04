@@ -191,6 +191,8 @@ public class MediaController implements Initializable {
     @FXML
     void returnToMenu(ActionEvent event) throws Exception {
 
+        System.out.println(duration);
+        _player.seek(duration);
         _player.stop();
         _player.dispose();
         methodHelper.changeScene(event, "MainMenu.fxml");

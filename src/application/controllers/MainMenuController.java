@@ -43,20 +43,6 @@ public class MainMenuController {
      */
     public void openUserManual(ActionEvent actionEvent) {
 
-        File file = new File("UserManual.docx");
-        if (Desktop.isDesktopSupported()) {
-
-            new Thread(() -> {
-
-                try {
-
-                    Desktop.getDesktop().open(file);
-                } catch (Exception e) {
-
-                    e.printStackTrace();
-                }
-            }).start();
-        }
-
+        methodHelper.command("xdg-open UserManual.pdf");
     }
 }

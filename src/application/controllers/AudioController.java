@@ -286,8 +286,7 @@ public class AudioController implements  Initializable {
     }
 
     /**
-     * Method to reset the scene so the user can start from scratch
-     * @param event
+     * Method to confirm with user to reset back to default.
      */
     @FXML
     void resetAction(ActionEvent event) {
@@ -298,27 +297,35 @@ public class AudioController implements  Initializable {
         // if yes, then set all fields to default
         if (reset) {
 
-            //deletes all temporary images and audio files.
-            methodHelper.resetDirs();
-            getAudioFileList();
-
-            // set default settings
-            methodHelper.setPreviousScene(null);
-            methodHelper.setHasDownloaded(false);
-            methodHelper.setContainsAudio(false);
-            searchTextField.setDisable(false);
-            searchTextField.clear();
-            maleAudioFiles = 0;
-            femaleAudioFiles = 0;
-            currentKeywordLabel.setText("N/A");
-            wikiSearchTextArea.clear();
-            searchTerm = "";
-            loadingCircle.setVisible(false);
-            bgMusicChoiceBox.setValue("None");
-            nextButton.setDisable(true);
-            waitingFor.setVisible(false);
-            loadingImagesCircle.setVisible(false);
+            resetAll();
         }
+    }
+
+    /**
+     * Method to reset the scene so the user can start from scratch
+     */
+    private void resetAll() {
+
+        //deletes all temporary images and audio files.
+        methodHelper.resetDirs();
+        getAudioFileList();
+
+        // set default settings
+        methodHelper.setPreviousScene(null);
+        methodHelper.setHasDownloaded(false);
+        methodHelper.setContainsAudio(false);
+        searchTextField.setDisable(false);
+        searchTextField.clear();
+        maleAudioFiles = 0;
+        femaleAudioFiles = 0;
+        currentKeywordLabel.setText("N/A");
+        wikiSearchTextArea.clear();
+        searchTerm = "";
+        loadingCircle.setVisible(false);
+        bgMusicChoiceBox.setValue("None");
+        nextButton.setDisable(true);
+        waitingFor.setVisible(false);
+        loadingImagesCircle.setVisible(false);
     }
 
     @FXML
@@ -478,8 +485,8 @@ public class AudioController implements  Initializable {
         // set up disable bindings
         setUpBindings();
 
-        // disable next button
-        nextButton.setDisable(true);
+        // reset to default
+        resetAll();
     }
 
     /**

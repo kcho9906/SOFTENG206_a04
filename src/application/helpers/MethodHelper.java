@@ -70,6 +70,7 @@ public class MethodHelper {
      * @throws Exception
      */
     public void changeCreationScene(ActionEvent event, String scene) throws Exception {
+        scene = "../scenes/" + scene;
         if (previousScene == null) {
             changeScene(event, scene);
         } else {
