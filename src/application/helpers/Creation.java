@@ -123,8 +123,7 @@ public class Creation {
 		return _creationName;
 	}
 
-	// -------------------------------Getters and
-	// Setters--------------------------------//
+	// -------------------------------Getters and Setters--------------------------------//
 	public String get_creationName() {
 
 		return _creationName;

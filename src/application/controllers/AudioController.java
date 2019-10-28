@@ -5,10 +5,14 @@ import java.net.URL;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.ResourceBundle;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import application.Main;
 import application.helpers.MethodHelper;
 import application.helpers.TerminalWorker;
+import javafx.beans.value.ChangeListener;
+import javafx.beans.value.ObservableValue;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.concurrent.WorkerStateEvent;
@@ -107,9 +111,6 @@ public class AudioController implements Initializable {
 				methodHelper.setHasDownloaded(false);
 				methodHelper.setSearchTerm(searchTerm);
 
-				// get the images by using the ImageController
-				ImageController.getImages(searchTerm, nextButton, loadingImagesCircle, waitingFor);
-
 				// set the current keyword for user to see
 				currentKeywordLabel.setText(searchTerm);
 				loadingCircle.setVisible(false);
@@ -121,9 +122,13 @@ public class AudioController implements Initializable {
 				if (result.contains("not found :^(")) {
 
 					// ask the user to try again because search term is not valid.
-					String alertMessage = searchTerm + " not found. Please try again.  ⃠";
+					String alertMessage = searchTerm + " not found. Please try again.";
 					methodHelper.createAlertBox(alertMessage);
+					resetAll();
 				} else {
+
+					// get the images by using the ImageController
+					ImageController.getImages(searchTerm, nextButton, loadingImagesCircle, waitingFor);
 
 					// Display the sentences in the display area
 					wikiSearchTextArea.setText(wikitWorker.getValue().trim());
@@ -546,5 +551,19 @@ public class AudioController implements Initializable {
 		deleteAudioButton.disableProperty().bind(audioListView.getSelectionModel().selectedItemProperty().isNull());
 		previewTextButton.disableProperty().bind(wikiSearchTextArea.selectedTextProperty().isEmpty());
 		saveTextButton.disableProperty().bind(wikiSearchTextArea.selectedTextProperty().isEmpty());
+
+		// Blocks special characters from being entered as a search term
+		searchTextField.textProperty().addListener(new ChangeListener<String>() {
+			@Override
+			public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
+				Pattern pattern = Pattern.compile("[^a-z0-9 ]", Pattern.CASE_INSENSITIVE);
+				Matcher matcher = pattern.matcher(newValue);
+				boolean hasSpecialCharacter = matcher.find();
+				if (hasSpecialCharacter) {
+					methodHelper.createAlertBox("Cannot contain special characters.\nPlease only include alphabet characters.");
+					searchTextField.setText(oldValue);
+				}
+			}
+		});
 	}
 }

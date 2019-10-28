@@ -14,20 +14,13 @@ java SDK used: 1.8.0
 
 Open terminal in folder that contains VARpedia.jar 
 
-```
-![alt text](input.jpg)
-```
+![alt text](/src/setupFiles/readmeImages/openInTerminal.png)
+
 Enter the following command in the terminal: ``java -jar VARpedia-jar``
 
 Application should now be running as below:
 
-````
-![alt text](input.jpg)
-````
-
-## Running from Intellij
-
-HOW TO RUN FROM INTELLIJ
+![alt text](/src/setupFiles/readmeImages/mainMenu.png)
 
 ## Authors
 
@@ -36,10 +29,19 @@ HOW TO RUN FROM INTELLIJ
 
 ## Attributions
 
+### Music attributions
+
 Butterflies by KhalafNasirs (c) copyright 2019 Licensed under a Creative Commons Attribution Noncommercial  (3.0) license. http://dig.ccmixter.org/files/khalafnasirs/60404 
 
 The Christmas Waltz by Lena Orsa (c) copyright 2017 Licensed under a Creative Commons Attribution (3.0) license. http://dig.ccmixter.org/files/lena_orsa/57003 
 
 Throb_On instrumental by Stefan Kartenberg (c) copyright 2018 Licensed under a Creative Commons Attribution Noncommercial  (3.0) license. http://dig.ccmixter.org/files/JeffSpeed68/57698 
+
+### Flickr API 
+
+This API is license by SmugMug, Inc.
+ 
+This was provided to the developing team by Nasser Giacaman 
+
 
 

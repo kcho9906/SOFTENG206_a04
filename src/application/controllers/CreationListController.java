@@ -84,7 +84,7 @@ public class CreationListController implements Initializable {
 
 		String creationName = creationTableView.getSelectionModel().getSelectedItem().toString();
 		File videoFile = new File("src/creations/" + creationName + "/" + creationName + ".mp4");
-		FXMLLoader loader = new FXMLLoader(getClass().getResource("../scenes/Media.fxml"));
+		FXMLLoader loader = new FXMLLoader(getClass().getResource("/applications/scenes/Media.fxml"));
 		MediaController controller = new MediaController(videoFile);
 		loader.setController(controller);
 		Parent newSceneParent = loader.load();

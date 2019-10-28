@@ -41,7 +41,7 @@ public class MethodHelper {
 	private boolean _hasDownloaded = false;
 	private boolean _containsAudio = false;
 
-	// fields for whether the images are selecte and there is input in creation name
+	// fields for whether the images are selected and there is input in creation name
 	private boolean _hasText = false;
 	private boolean _imagesSelected = false;
 
@@ -57,7 +57,7 @@ public class MethodHelper {
 	 * @throws Exception
 	 */
 	public void changeScene(ActionEvent event, String scene) throws Exception {
-		scene = "../scenes/" + scene;
+		scene = "/application/scenes/" + scene;
 		Parent newSceneParent = FXMLLoader.load(getClass().getResource(scene));
 		Scene newScene = new Scene(newSceneParent);
 		Stage window = (Stage) (((Node) event.getSource()).getScene().getWindow());
@@ -74,7 +74,7 @@ public class MethodHelper {
 	 * @throws Exception
 	 */
 	public void changeCreationScene(ActionEvent event, String scene) throws Exception {
-		scene = "../scenes/" + scene;
+		scene = "/application/scenes/" + scene;
 		if (previousScene == null) {
 			changeScene(event, scene);
 		} else {
@@ -99,7 +99,7 @@ public class MethodHelper {
 		alert.setTitle(title);
 		alert.setHeaderText(contentText);
 		DialogPane dialogPane = alert.getDialogPane();
-		dialogPane.getStylesheets().add(getClass().getResource("../../setupFiles/stylesheet.css").toExternalForm());
+		dialogPane.getStylesheets().add(getClass().getResource("/setupFiles/stylesheet.css").toExternalForm());
 		dialogPane.getStyleClass().add("myDialog");
 		Window window = alert.getDialogPane().getScene().getWindow();
 		window.setOnCloseRequest(e -> {
@@ -183,7 +183,7 @@ public class MethodHelper {
 		Alert alert = new Alert(Alert.AlertType.WARNING);
 		alert.setHeaderText(message);
 		DialogPane dialogPane = alert.getDialogPane();
-		dialogPane.getStylesheets().add(getClass().getResource("../../setupFiles/stylesheet.css").toExternalForm());
+		dialogPane.getStylesheets().add(getClass().getResource("/setupFiles/stylesheet.css").toExternalForm());
 		dialogPane.getStyleClass().add("myDialog");
 		alert.show();
 	}
