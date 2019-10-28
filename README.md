@@ -1,6 +1,6 @@
 # VARpedia - SOFTENG206 Assignment 4
 
-##This was tested using the Beta Linux Image on ECSE Labs in UG4.
+####This was tested using the Beta Linux Image on ECSE Labs in UG4.
 
 ## Getting Started
 
@@ -21,6 +21,8 @@ Enter the following command in the terminal: ``java -jar VARpedia.jar``
 Application should now be running as below:
 
 ![alt text](/src/setupFiles/readmeImages/mainMenu.png)
+
+NOTE: this VARpedia.jar should not be moved from the default folder; this may result in the application not running correctly.
 
 ## Authors
 
