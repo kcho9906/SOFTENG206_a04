@@ -4,7 +4,8 @@ import java.io.BufferedReader;
 import java.io.File;
 import java.io.InputStreamReader;
 import java.util.Optional;
-
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -15,6 +16,7 @@ import javafx.scene.Scene;
 import javafx.scene.control.Alert;
 import javafx.scene.control.ButtonType;
 import javafx.scene.control.DialogPane;
+import javafx.scene.control.TextField;
 import javafx.stage.Stage;
 import javafx.stage.Window;
 
@@ -29,7 +31,7 @@ public class MethodHelper {
 
 	private double _duration;
 	private ObservableList<Creation> _answeredCreations = FXCollections.observableArrayList();
-	private Scene previousScene;
+	private Scene previousScene = null;
 
 	// fields which contain the information to the past correct answers to the quiz
 	private int _correctAnswers = 0;
@@ -74,7 +76,6 @@ public class MethodHelper {
 	 * @throws Exception
 	 */
 	public void changeCreationScene(ActionEvent event, String scene) throws Exception {
-		scene = "/application/scenes/" + scene;
 		if (previousScene == null) {
 			changeScene(event, scene);
 		} else {
@@ -299,4 +300,30 @@ public class MethodHelper {
 		return _searchTerm;
 	}
 
+	/**
+	 * Method limits the user to only be able to enter alphabet letters a-z. The method will output an error message
+	 * notifying users special characters are not permitted
+	 * @param creationNameInput: text field user is inputting into
+	 * @param oldValue: old value of the text field
+	 * @param newValue: new value of the text field
+	 */
+	public void limitSpecialCharacters(TextField creationNameInput, String oldValue, String newValue) {
+		Pattern pattern = Pattern.compile("[^a-z0-9_]", Pattern.CASE_INSENSITIVE);
+		Matcher matcher = pattern.matcher(newValue);
+		boolean hasSpecialCharacter = matcher.find();
+		if (hasSpecialCharacter) {
+			createAlertBox("Cannot contain special characters.\nPlease only include alphabet characters.");
+			creationNameInput.setText(oldValue);
+		} else {
+
+			// changes the status of the method helper is list is empty
+			if (newValue.isEmpty()) {
+
+				setHasText(false);
+			} else {
+
+				setHasText(true);
+			}
+		}
+	}
 }

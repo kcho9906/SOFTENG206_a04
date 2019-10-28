@@ -2,7 +2,6 @@ package application.controllers;
 
 import java.net.URL;
 import java.util.ResourceBundle;
-
 import application.Main;
 import application.helpers.Creation;
 import application.helpers.MethodHelper;

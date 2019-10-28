@@ -3,7 +3,6 @@ package application.controllers;
 import java.io.File;
 import java.net.URL;
 import java.util.ResourceBundle;
-
 import application.Main;
 import application.helpers.MethodHelper;
 import javafx.beans.InvalidationListener;
@@ -209,7 +208,6 @@ public class MediaController implements Initializable {
 	@FXML
 	void returnToMenu(ActionEvent event) throws Exception {
 
-		System.out.println(duration);
 		_player.seek(duration);
 		_player.stop();
 		_player.dispose();

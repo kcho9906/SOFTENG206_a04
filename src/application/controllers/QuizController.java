@@ -7,7 +7,6 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
-
 import application.Main;
 import application.helpers.Creation;
 import application.helpers.MethodHelper;

@@ -3,7 +3,6 @@ package application.controllers;
 import java.io.File;
 import java.net.URL;
 import java.util.ResourceBundle;
-
 import application.Main;
 import application.helpers.Creation;
 import application.helpers.MethodHelper;
@@ -84,7 +83,7 @@ public class CreationListController implements Initializable {
 
 		String creationName = creationTableView.getSelectionModel().getSelectedItem().toString();
 		File videoFile = new File("src/creations/" + creationName + "/" + creationName + ".mp4");
-		FXMLLoader loader = new FXMLLoader(getClass().getResource("/applications/scenes/Media.fxml"));
+		FXMLLoader loader = new FXMLLoader(getClass().getResource("/application/scenes/Media.fxml"));
 		MediaController controller = new MediaController(videoFile);
 		loader.setController(controller);
 		Parent newSceneParent = loader.load();

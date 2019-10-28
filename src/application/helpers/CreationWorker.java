@@ -1,7 +1,6 @@
 package application.helpers;
 
 import java.io.File;
-
 import application.Main;
 import javafx.collections.ObservableList;
 import javafx.concurrent.Task;

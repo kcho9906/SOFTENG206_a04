@@ -5,9 +5,6 @@ import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
 import java.util.concurrent.ExecutionException;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 import application.Main;
 import application.helpers.CreationWorker;
 import application.helpers.FlickrImageExtractor;
@@ -99,7 +96,7 @@ public class ImageController implements Initializable {
 
 				try {
 
-					FXMLLoader loader = new FXMLLoader(getClass().getResource("/applications/scenes/Media.fxml"));
+					FXMLLoader loader = new FXMLLoader(getClass().getResource("/application/scenes/Media.fxml"));
 					MediaController controller = new MediaController(videoFile);
 					loader.setController(controller);
 					Parent newSceneParent = loader.load();
@@ -325,22 +322,8 @@ public class ImageController implements Initializable {
 			@Override
 			public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
 
-				Pattern pattern = Pattern.compile("[^a-z0-9 ]", Pattern.CASE_INSENSITIVE);
-				Matcher matcher = pattern.matcher(newValue);
-				boolean hasSpecialCharacter = matcher.find();
-				if (hasSpecialCharacter) {
-					methodHelper.createAlertBox("Cannot contain special characters.\nPlease only include alphabet characters.");
-					creationNameInput.setText(oldValue);
-				}
-
-				// changes the status of the method helper is list is empty
-				if (newValue.isEmpty()) {
-
-					methodHelper.setHasText(false);
-				} else {
-
-					methodHelper.setHasText(true);
-				}
+				// Blocks special characters from being entered as a search term
+				methodHelper.limitSpecialCharacters(creationNameInput, oldValue, newValue);
 
 				// if both conditions are met, the button will appropriately enable and disable.
 				if (methodHelper.getImagesSelected() && methodHelper.getHasText()) {

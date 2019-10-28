@@ -7,7 +7,6 @@ import java.util.Collections;
 import java.util.ResourceBundle;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
-
 import application.Main;
 import application.helpers.MethodHelper;
 import application.helpers.TerminalWorker;
@@ -556,13 +555,8 @@ public class AudioController implements Initializable {
 		searchTextField.textProperty().addListener(new ChangeListener<String>() {
 			@Override
 			public void changed(ObservableValue<? extends String> observable, String oldValue, String newValue) {
-				Pattern pattern = Pattern.compile("[^a-z0-9 ]", Pattern.CASE_INSENSITIVE);
-				Matcher matcher = pattern.matcher(newValue);
-				boolean hasSpecialCharacter = matcher.find();
-				if (hasSpecialCharacter) {
-					methodHelper.createAlertBox("Cannot contain special characters.\nPlease only include alphabet characters.");
-					searchTextField.setText(oldValue);
-				}
+
+				methodHelper.limitSpecialCharacters(searchTextField, oldValue, newValue);
 			}
 		});
 	}
