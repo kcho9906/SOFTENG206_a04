@@ -216,8 +216,34 @@ public class MethodHelper {
 		createFileDirectory("src/audio");
 	}
 
-	// -------------------------------Getters and
-	// Setters--------------------------------//
+    /**
+     * Method limits the user to only be able to enter alphabet letters a-z. The method will output an error message
+     * notifying users special characters are not permitted
+     * @param creationNameInput: text field user is inputting into
+     * @param oldValue: old value of the text field
+     * @param newValue: new value of the text field
+     */
+    public void limitSpecialCharacters(TextField creationNameInput, String oldValue, String newValue) {
+        Pattern pattern = Pattern.compile("[^a-z0-9_]", Pattern.CASE_INSENSITIVE);
+        Matcher matcher = pattern.matcher(newValue);
+        boolean hasSpecialCharacter = matcher.find();
+        if (hasSpecialCharacter) {
+            createAlertBox("Cannot contain special characters.\nPlease only include alphabet characters.");
+            creationNameInput.setText(oldValue);
+        } else {
+
+            // changes the status of the method helper is list is empty
+            if (newValue.isEmpty()) {
+
+                setHasText(false);
+            } else {
+
+                setHasText(true);
+            }
+        }
+    }
+
+	// -------------------------------Getters and Setters--------------------------------//
 	public void setDuration(double duration) {
 
 		_duration = duration;
@@ -298,32 +324,5 @@ public class MethodHelper {
 
 	public String getSearchTerm() {
 		return _searchTerm;
-	}
-
-	/**
-	 * Method limits the user to only be able to enter alphabet letters a-z. The method will output an error message
-	 * notifying users special characters are not permitted
-	 * @param creationNameInput: text field user is inputting into
-	 * @param oldValue: old value of the text field
-	 * @param newValue: new value of the text field
-	 */
-	public void limitSpecialCharacters(TextField creationNameInput, String oldValue, String newValue) {
-		Pattern pattern = Pattern.compile("[^a-z0-9_]", Pattern.CASE_INSENSITIVE);
-		Matcher matcher = pattern.matcher(newValue);
-		boolean hasSpecialCharacter = matcher.find();
-		if (hasSpecialCharacter) {
-			createAlertBox("Cannot contain special characters.\nPlease only include alphabet characters.");
-			creationNameInput.setText(oldValue);
-		} else {
-
-			// changes the status of the method helper is list is empty
-			if (newValue.isEmpty()) {
-
-				setHasText(false);
-			} else {
-
-				setHasText(true);
-			}
-		}
 	}
 }
