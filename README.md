@@ -1,6 +1,6 @@
 # VARpedia - SOFTENG206 Assignment 4
 
-####This was tested using the Beta Linux Image on ECSE Labs in UG4.
+## This was tested using the Beta Linux Image on ECSE Labs in UG4.
 
 ## Getting Started
 
