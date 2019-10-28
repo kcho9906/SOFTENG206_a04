@@ -16,7 +16,7 @@ Open terminal in folder that contains VARpedia.jar
 
 ![alt text](/src/setupFiles/readmeImages/openInTerminal.png)
 
-Enter the following command in the terminal: ``java -jar VARpedia-jar``
+Enter the following command in the terminal: ``java -jar VARpedia.jar``
 
 Application should now be running as below:
 
@@ -39,7 +39,7 @@ Throb_On instrumental by Stefan Kartenberg (c) copyright 2018 Licensed under a C
 
 ### Flickr API 
 
-This API is license by SmugMug, Inc.
+This API is licensed by SmugMug, Inc.
  
 This was provided to the developing team by Nasser Giacaman 
 
